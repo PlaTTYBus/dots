@@ -1,10 +1,11 @@
 { 
   hosts = [ "tuxedo" ];
-  
+
   config =
     {
       config,
       lib,
+      inputs,
       ...
     }:
     {
