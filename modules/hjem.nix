@@ -16,6 +16,10 @@
       config = {
         hjem = {
           clobberByDefault = true;
+          ${user} = {
+            user = user;
+            directory = "/persist/home/${user}";
+          }
         };
       };
     };
