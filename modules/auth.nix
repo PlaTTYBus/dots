@@ -17,7 +17,7 @@
       };
 
       users.users."${user}".openssh.authorizedKeys.keyFiles = [
-            ./modules/id_ed25519.pub
+            ./id_ed25519.pub
       ];
     }
 
