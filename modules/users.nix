@@ -16,7 +16,7 @@
   };
 
   config =
-    {
+  {
       users = {
         mutableUsers = false; # set to true if *NOT* using impermanence
         # setup users with persistent passwords
@@ -44,5 +44,5 @@
         rp.neededForUsers = true;
         up.neededForUsers = true;
       };
-    }
+  };
 }
