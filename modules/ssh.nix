@@ -23,11 +23,11 @@
     sops.secrets = {
       ssh_github = {
         owner = user;
-        path = "/persist/${user}/.ssh/keys/github";
+        path = "/persist/home/${user}/.ssh/keys/github";
       };
       ssh_ustp = {
         owner = user;
-        path = "/persist/${user}/.ssh/keys/ustp";
+        path = "/persist/home/${user}/.ssh/keys/ustp";
       };
     };
   };
