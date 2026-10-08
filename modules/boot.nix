@@ -1,0 +1,50 @@
+{
+  packages =
+    { pkgs, ... }:
+    let
+      drv =
+        { stdenvNoCC, fetchurl, ... }:
+        stdenvNoCC.mkDerivation {
+          pname = "distro-grub-themes-nixos";
+          version = "3.2";
+          src = fetchurl {
+            url = "https://github.com/AdisonCavani/distro-grub-themes/releases/download/v3.2/nixos.tar";
+            hash = "sha256-oW5DxujStieO0JsFI0BBl+4Xk9xe+8eNclkq6IGlIBY";
+          };
+          unpackPhase = "mkdir $out && tar -xvf $src -C $out";
+        };
+    in
+    {
+      distro-grub-themes-nixos = pkgs.callPackage drv { };
+    };
+
+  config =
+    { lib, pkgs, ... }:
+    {
+      # Bootloader.
+      boot = {
+        # always allow booting from usb
+        initrd.availableKernelModules = [ "uas" ];
+        loader = {
+          efi = {
+            canTouchEfiVariables = true;
+            efiSysMountPoint = "/boot";
+          };
+          grub = {
+            enable = true;
+            devices = [ "nodev" ];
+            efiSupport = true;
+            theme = pkgs.custom.distro-grub-themes-nixos;
+          };
+          timeout = 3;
+        };
+        supportedFilesystems.ntfs = true;
+      };
+
+      # faster boot times
+      systemd.services.NetworkManager-wait-online.wantedBy = lib.mkForce [ ];
+
+      # reduce journald logs
+      services.journald.settings.Journal.SystemMaxUse = "50M";
+    };
+}

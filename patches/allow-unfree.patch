@@ -1,0 +1,13 @@
+diff --git a/pkgs/stdenv/generic/check-meta.nix b/pkgs/stdenv/generic/check-meta.nix
+index 8069e1b35904..aad6719b5487 100644
+--- a/pkgs/stdenv/generic/check-meta.nix
++++ b/pkgs/stdenv/generic/check-meta.nix
+@@ -74,7 +74,7 @@ let
+   # messages and make problems easier to spot.
+   inHydra = config.inHydra or false;
+ 
+-  allowUnfree = config.allowUnfree || getEnv "NIXPKGS_ALLOW_UNFREE" == "1";
++  allowUnfree = true;
+ 
+   allowNonSource =
+     let
