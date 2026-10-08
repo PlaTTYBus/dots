@@ -49,7 +49,6 @@
       nix-ld.enable = true;
     };
 
-    # i dgaf
     nixpkgs.config.allowUnfree = true;
 
     nix =

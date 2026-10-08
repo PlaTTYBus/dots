@@ -9,19 +9,6 @@
       user,
       ...
     }:
-    let
-      projects = "/persist/home/${user}/projects";
-      # fetch wallpapers from pixiv for user
-      pixiv = pkgs.writeShellApplication {
-        name = "pixiv";
-        runtimeInputs = [ pkgs.custom.direnv-cargo-run ];
-        text = /* sh */ ''
-          pushd ${projects}/pixiv > /dev/null
-          direnv-cargo-run "${projects}/pixiv" "$@"
-          popd > /dev/null
-        '';
-      };
-    in
     {
       custom = {
         hardware = {
