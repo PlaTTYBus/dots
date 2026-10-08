@@ -18,7 +18,6 @@
           clobberByDefault = true;
           users.${user} = {
             user = user;
-            directory = "/persist/home/${user}";
           };
         };
       };

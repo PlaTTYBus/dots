@@ -23,11 +23,11 @@
     sops.secrets = {
       ssh_github = {
         owner = user;
-        path = "/persist/${config.hj.directory}/.ssh/keys/github";
+        path = "/persist/${user}/.ssh/keys/github";
       };
       ssh_ustp = {
         owner = user;
-        path = "/persist${config.hj.directory}/.ssh/keys/ustp";
+        path = "/persist/${user}/.ssh/keys/ustp";
       };
     };
   };

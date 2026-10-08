@@ -142,8 +142,6 @@ in
                 "Desktop"
                 "Documents"
                 "Pictures"
-              ]
-              ++ lib.optionals (host != "desktop") [
                 "Downloads"
               ]
               ++ cfg.home.directories
