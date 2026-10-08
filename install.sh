@@ -178,10 +178,7 @@ done
 
 echo "Installing NixOS..."
 
-sudo nixos-install \
-    --no-root-password \
-    --option extra-experimental-features "pipe-operators" \
-    --flake "$repo${git_rev:-main}#$host" --option tarball-ttl 0
+sudo nixos-install --no-root-password --option extra-experimental-features "pipe-operators" --flake "$repo/${git_rev:-main}#$host" --option tarball-ttl 0
 
 # nixos_file="$(find "$tmpdir" -name nixos.nix | head -n1)"
 # sudo nixos-install --no-root-password --option extra-experimental-features "pipe-operators" --flake .#vmware --option tarball-ttl 0
@@ -211,8 +208,8 @@ sudo nixos-install \
 # echo "Fixing ownership..."
 # sudo chown -R 1000:100 "$target"
 
-echo "Unmounting partitions and exporting zpool"
-sudo umount -R /mnt
-sudo zpool export zroot
+# echo "Unmounting partitions and exporting zpool"
+# sudo umount -R /mnt
+# sudo zpool export zroot
 
 echo "Installation complete. It is now safe to reboot."
