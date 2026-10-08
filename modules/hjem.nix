@@ -19,7 +19,7 @@
           ${user} = {
             user = user;
             directory = "/persist/home/${user}";
-          }
+          };
         };
       };
     };
