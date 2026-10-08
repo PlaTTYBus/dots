@@ -36,7 +36,6 @@
           };
 
           umbriel.settings = {
-            # don't blind me on startup
             general.autostart = [ "${lib.getExe pkgs.brightnessctl} s 40%" ];
           };
         };
@@ -51,4 +50,5 @@
 
       # disable thumbprint reader
       services.fprintd.enable = false;
+    };
 }
