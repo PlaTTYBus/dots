@@ -39,7 +39,7 @@
           enable = true;
           extraArgs = "--keep-since 5d --keep 5";
         };
-        flake = "/persist/home/${user}/projects/dotfiles";
+        flake = "/persist/home/${user}/projects/dots";
       };
 
       nix-index.enable = true;
