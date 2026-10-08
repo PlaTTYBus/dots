@@ -152,7 +152,7 @@ echo "Creating /persist"
 sudo zfs create -o mountpoint=legacy zroot/persist
 sudo mount --mkdir -t zfs zroot/persist /mnt/persist
 
-repo="${repo:-github:PlaTTYBus/dots}"
+repo="github:PlaTTYBus/dots"
 hosts=("tuxedo" "vmware")
 
 # tmpdir="$(mktemp -d)"
