@@ -112,21 +112,6 @@ in
       ];
     };
 
-    # uncomment to use separate home dataset
-    # neededForBoot is required, so there won't be permission errors creating directories or symlinks
-    # https://github.com/nix-community/impermanence/issues/149#issuecomment-1806604102
-    # fileSystems."/home" = lib.mkForce {
-    #   device = "tmpfs";
-    #   fsType = "tmpfs";
-    #   neededForBoot = true;
-    #   options = [
-    #     "defaults"
-    #      # whatever size feels comfortable, smaller is better
-    #     "size=1G"
-    #     "mode=755"
-    #   ];
-    # };
-
     # shut sudo up
     security.sudo.extraConfig = "Defaults lecture=never";
 

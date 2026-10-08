@@ -181,33 +181,33 @@ sudo nixos-install \
     --option extra-experimental-features "pipe-operators" \
     --flake "$tmpdir#$host"
 
-nixos_file="$(find "$tmpdir" -name nixos.nix | head -n1)"
+# nixos_file="$(find "$tmpdir" -name nixos.nix | head -n1)"
+#
+# if [[ -z "$nixos_file" ]]; then
+#     echo "Failed to locate nixos.nix"
+#     exit 1
+# fi
+#
+# username=$(
+#     grep -m1 'user ? "' "$nixos_file" | cut -d'"' -f2
+# )
+#
+# if [[ -z "$username" ]]; then
+#     echo "Failed to determine username from $nixos_file"
+#     exit 1
+# fi
 
-if [[ -z "$nixos_file" ]]; then
-    echo "Failed to locate nixos.nix"
-    exit 1
-fi
-
-username=$(
-    grep -m1 'user ? "' "$nixos_file" | cut -d'"' -f2
-)
-
-if [[ -z "$username" ]]; then
-    echo "Failed to determine username from $nixos_file"
-    exit 1
-fi
-
-target="/mnt/persist/home/$username/projects/dots"
+# target="/mnt/persist/home/$username/projects/dots"
 
 # Remove this when preservation is introduced, as it will be handled by the flake itself
-echo "Creating target directory..."
-sudo mkdir -p "$(dirname "$target")"
+# echo "Creating target directory..."
+# sudo mkdir -p "$(dirname "$target")"
 
-echo "Moving flake to $target..."
-sudo mv "$tmpdir" "$target"
+# echo "Moving flake to $target..."
+# sudo mv "$tmpdir" "$target"
 
-echo "Fixing ownership..."
-sudo chown -R 1000:100 "$target"
+# echo "Fixing ownership..."
+# sudo chown -R 1000:100 "$target"
 
 echo "Unmounting partitions and exporting zpool"
 sudo umount -R /mnt

@@ -41,13 +41,6 @@
       fsType = "zfs";
     };
 
-    # uncomment to use separate home dataset
-    # "/home" = {
-    #   device = "zroot/home";
-    #   fsType = "zfs";
-    #   neededForBoot = true;
-    # };
-
     # boot partition
     "/boot" = {
       device = "/dev/disk/by-label/NIXBOOT";
@@ -122,74 +115,3 @@
     zls = "zfs list -o name,lused,used,avail,compressratio";
   };
 }
-
-/*
-  # setup zfs event daemon for email notifications
-      sops.secrets.zfs-zed.owner = user;
-
-      # setup email for zfs event daemon to use
-      programs.msmtp = {
-        enable = true;
-        setSendmail = true;
-        accounts = {
-          default = {
-            host = "smtp.gmail.com";
-            tls = true;
-            auth = true;
-            port = 587;
-            inherit user;
-            from = "${user}@gmail.com";
-            # app specific password needed for 2fa
-            passwordeval = "cat ${config.sops.secrets.zfs-zed.path}";
-          };
-        };
-      };
-
-      services.zfs.zed = {
-        enableMail = true;
-        settings = {
-          ZED_DEBUG_LOG = "/tmp/zed.debug.log";
-          ZED_EMAIL_ADDR = [ "${user}@gmail.com" ];
-          ZED_EMAIL_PROG = lib.getExe pkgs.msmtp;
-          ZED_EMAIL_OPTS = "@ADDRESS@";
-
-          ZED_NOTIFY_INTERVAL_SECS = 3600;
-          ZED_NOTIFY_DATA = true;
-          ZED_NOTIFY_VERBOSE = true;
-
-          ZED_USE_ENCLOSURE_LEDS = false;
-          ZED_SCRUB_AFTER_RESILVER = true;
-        };
-
-        # example of testing in a VM
-        /*
-            sudo zpool create -f \
-                -o ashift=12 \
-                -o autotrim=on \
-                -O compression=zstd \
-                -O acltype=posixacl \
-                -O atime=off \
-                -O xattr=sa \
-                -O normalization=formD \
-                -O mountpoint=none \
-                nas raidz1 /dev/vdb /dev/vdc /dev/vdd /dev/vde
-
-          nix filesystem config for new zpool
-          fileSystems."/nas" = {
-              device = "nas/root";
-              fsType = "zfs";
-          };
-
-          see pool status:
-          zpool status -v nas
-
-          simulating a failed disk:
-          sudo zpool offline -f nas /dev/disk/by-partuuid/DISK_UUID
-
-          NOTE: -f faults the disk, which causes zed to send an email
-
-          https://forum.proxmox.com/threads/no-email-notification-for-zfs-status-degraded.87629/#post-520096
-
-          manually offing a disk without -f *does not* send an email!
-    };
-*/
