@@ -50,6 +50,7 @@
             sd # better sed
             trash-cli
             xdg-utils
+            tree
           ])
           ++ [
             md
