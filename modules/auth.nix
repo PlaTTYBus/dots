@@ -16,15 +16,9 @@
         };
       };
 
-      users.users =
-        let
-          keyFiles = [
-            ./id_ed25519.pub
-          ];
-        in
-        {
-          ${user}.openssh.authorizedKeys.keyFiles = keyFiles;
-        };
+      users.users."${user}".openssh.authorizedKeys.keyFiles = [
+            ./modules/id_ed25519.pub
+      ];
     }
 
     # keyring settings
