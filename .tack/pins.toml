@@ -26,10 +26,10 @@ systems = "systems"
 
 # channel urls are faster and more reliable than github -.-
 [inputs.nixpkgs]
-url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst"
+url = "github:NixOS/nixpkgs/nixos-unstable"
 
 [inputs.nixpkgs-stable]
-url = "https://channels.nixos.org/nixos-26.05/nixexprs.tar.zst"
+url = "github:NixOS/nixpkgs/nixos-26.05"
 
 [inputs.multiverse]
 url = "github:fzakaria/nixpkgs-multiverse"
