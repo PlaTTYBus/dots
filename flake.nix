@@ -69,7 +69,7 @@
         desktop = mkHost "desktop" hostInfo.desktop;
         tuxedo = mkHost "tuxedo" hostInfo.tuxedo;
         vmware = mkHost "vmware" hostInfo.vmware;
-      }
+      };
 
       devShells = forAllSystems (pkgs: {
         default = import ./devshell.nix { inherit pkgs; };
