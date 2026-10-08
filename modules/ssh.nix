@@ -1,5 +1,5 @@
 {
-  config = { config, ... }:
+  config = { config, user, ... }:
   {
     hj.files = {
       # Config
