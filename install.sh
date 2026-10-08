@@ -11,6 +11,8 @@
 #   4. Move the flake into /persist/home/<username>/projects/dots
 #   5. Fix ownership of the flake directory to the user
 
+# sh <(curl -L https://raw.githubusercontent.com/plattybus/dots/main/install.sh)
+
 
 set -o errexit
 set -o nounset
@@ -153,10 +155,10 @@ sudo mount --mkdir -t zfs zroot/persist /mnt/persist
 repo="${repo:-https://github.com/PlaTTYBus/dots.git}"
 hosts=("tuxedo" "vmware")
 
-tmpdir="$(mktemp -d)"
+# tmpdir="$(mktemp -d)"
 
-echo "Cloning flake repository..."
-git clone "$repo" "$tmpdir"
+# echo "Cloning flake repository..."
+# git clone "$repo" "$tmpdir"
 
 echo "Available hosts:"
 for i in "${!hosts[@]}"; do
@@ -179,10 +181,10 @@ echo "Installing NixOS..."
 sudo nixos-install \
     --no-root-password \
     --option extra-experimental-features "pipe-operators" \
-    --flake "$tmpdir#$host"
+    --flake "$repo#$host"
 
 # nixos_file="$(find "$tmpdir" -name nixos.nix | head -n1)"
-#
+# sudo nixos-install --no-root-password --option extra-experimental-features "pipe-operators" --flake .#vmware --option tarball-ttl 0
 # if [[ -z "$nixos_file" ]]; then
 #     echo "Failed to locate nixos.nix"
 #     exit 1
