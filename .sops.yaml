@@ -1,0 +1,9 @@
+# .sops.yaml
+
+keys:
+  - &pviel age1pqk9e3l22qkatakpyxr7540ejg56lj0y0mlsl368v6g5kxystpfssn5nut
+creation_rules:
+  - path_regex: hosts/secrets.json$
+    key_groups:
+    - age:
+      - *pviel
