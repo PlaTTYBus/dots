@@ -59,7 +59,7 @@
     "type": "tarball",
     "url": "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst",
     "rev": "c59305bab2065cfecc4944690d9eedbb56f3a9fa",
-    "narHash": "sha256-VBA0QerzzmL+4wxgtwiCdiLwLpJg2/9xOxhgO3BRJQA="
+    "narHash": "sha256-MFBjw66d4h06MvpW6lI17RwarLteD0sk859CncGwb1Q="
   },
   "nixpkgs-stable": {
     "type": "tarball",
