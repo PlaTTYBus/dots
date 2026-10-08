@@ -19,7 +19,6 @@
       users.users =
         let
           keyFiles = [
-            ./id_rsa.pub
             ./id_ed25519.pub
           ];
         in
