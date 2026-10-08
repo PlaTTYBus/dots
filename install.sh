@@ -152,7 +152,7 @@ echo "Creating /persist"
 sudo zfs create -o mountpoint=legacy zroot/persist
 sudo mount --mkdir -t zfs zroot/persist /mnt/persist
 
-repo="${repo:-https://github.com/PlaTTYBus/dots.git}"
+repo="${repo:-github:PlaTTYBus/dots}"
 hosts=("tuxedo" "vmware")
 
 # tmpdir="$(mktemp -d)"
@@ -181,7 +181,7 @@ echo "Installing NixOS..."
 sudo nixos-install \
     --no-root-password \
     --option extra-experimental-features "pipe-operators" \
-    --flake "$repo#$host"
+    --flake "$repo${git_rev:-main}#$host" --option tarball-ttl 0
 
 # nixos_file="$(find "$tmpdir" -name nixos.nix | head -n1)"
 # sudo nixos-install --no-root-password --option extra-experimental-features "pipe-operators" --flake .#vmware --option tarball-ttl 0
