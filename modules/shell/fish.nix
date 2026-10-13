@@ -9,6 +9,7 @@
       ...
     }:
     let
+    inherit (pkgs) lib;
       # reloads fish completions whenever directories are added to $XDG_DATA_DIRS,
       # e.g. in nix shells or direnv
       fish-completion-sync = pkgs.fetchFromGitHub {
@@ -20,7 +21,7 @@
     in
     {
       fish = inputs.wrappers.wrappers.fish.wrap rec {
-        inherit pkgs lib;
+        inherit pkgs;
 
         flags = {
           # allow extra config from nixos programs.fish, such as direnv setup etc
@@ -43,7 +44,7 @@
             pkgs.zoxide
           ];
 
-        # NOTE: this relies on https://github.com/BirdeeHub/nix-wrapper-modules/pull/583 being patched in
+
         # create the shell abbrs from passthru.shellAliases in runtimePkgs
         abbreviations = {
           ":e" = "nvim";
