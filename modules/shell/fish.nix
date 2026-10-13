@@ -1,15 +1,14 @@
 {
   packages =
     {
+      inputs,
       lib,
       pkgs,
       self,
       system,
-      inputs,
       ...
     }:
     let
-    inherit (pkgs) lib;
       # reloads fish completions whenever directories are added to $XDG_DATA_DIRS,
       # e.g. in nix shells or direnv
       fish-completion-sync = pkgs.fetchFromGitHub {
@@ -44,7 +43,7 @@
             pkgs.zoxide
           ];
 
-
+        # NOTE: this relies on https://github.com/BirdeeHub/nix-wrapper-modules/pull/583 being patched in
         # create the shell abbrs from passthru.shellAliases in runtimePkgs
         abbreviations = {
           ":e" = "nvim";
@@ -77,13 +76,13 @@
           # cd aliases
           ".." = "cd ..";
           "..." = "cd ../..";
-        };
+        }
         # extract the shellAliases and abbrs from each runtimePkg
-        #// (
-        #  runtimePkgs
-        #  |> map (p: (p.passthru.shellAliases or { }) // (p.passthru.abbreviations or { }))
-        #  |> lib.mergeAttrsList
-        #);
+        // (
+          runtimePkgs
+          |> map (p: (p.passthru.shellAliases or { }) // (p.passthru.abbreviations or { }))
+          |> lib.mergeAttrsList
+        );
 
         plugins = [
           # do not add failed commands to history
@@ -111,6 +110,7 @@
             set sponge_regex_patterns 'password|passwd|^kill'
 
             # setup zoxide
+            ${lib.getExe pkgs.zoxide} init fish --cmd cd | source
 
             # setup starship
             if test "$TERM" != dumb
@@ -171,6 +171,16 @@
 
       custom.programs.print-config = {
         fish = /* sh */ "moor ${pkgs.fish.configuration.constructFiles.generatedConfig.outPath}";
+      };
+
+      custom.persist = {
+        home = {
+          # fish history
+          cache.directories = [
+            ".local/share/fish"
+            ".local/share/zoxide"
+          ];
+        };
       };
     };
 }
