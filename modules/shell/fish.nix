@@ -43,7 +43,6 @@
             pkgs.zoxide
           ];
 
-        # NOTE: this relies on https://github.com/BirdeeHub/nix-wrapper-modules/pull/583 being patched in
         # create the shell abbrs from passthru.shellAliases in runtimePkgs
         abbreviations = {
           ":e" = "nvim";
@@ -171,16 +170,6 @@
 
       custom.programs.print-config = {
         fish = /* sh */ "moor ${pkgs.fish.configuration.constructFiles.generatedConfig.outPath}";
-      };
-
-      custom.persist = {
-        home = {
-          # fish history
-          cache.directories = [
-            ".local/share/fish"
-            ".local/share/zoxide"
-          ];
-        };
       };
     };
 }
