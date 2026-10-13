@@ -116,9 +116,7 @@
 
   config =
     {
-      lib,
       pkgs,
-      user,
       ...
     }:
     {
