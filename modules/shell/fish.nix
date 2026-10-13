@@ -78,11 +78,11 @@
           "..." = "cd ../..";
         }
         # extract the shellAliases and abbrs from each runtimePkg
-        // (
-          runtimePkgs
-          |> map (p: (p.passthru.shellAliases or { }) // (p.passthru.abbreviations or { }))
-          |> lib.mergeAttrsList
-        );
+        #// (
+        #  runtimePkgs
+        #  |> map (p: (p.passthru.shellAliases or { }) // (p.passthru.abbreviations or { }))
+        #  |> lib.mergeAttrsList
+        #);
 
         plugins = [
           # do not add failed commands to history
