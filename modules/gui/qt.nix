@@ -1,0 +1,123 @@
+{
+  packages =
+    { pkgs, ... }:
+    let
+      drv =
+        {
+          lib,
+          stdenv,
+          fetchFromGitHub,
+        }:
+        stdenv.mkDerivation {
+          pname = "tokyo-night-kvantum";
+          version = "0-unstable-2024-08-08";
+
+          src = fetchFromGitHub {
+            owner = "0xsch1zo";
+            repo = "Kvantum-Tokyo-Night";
+            rev = "82d104e0047fa7d2b777d2d05c3f22722419b9ee";
+            hash = "sha256-Uy/WthoQrDnEtrECe35oHCmszhWg38fmDP8fdoXQgTk=";
+          };
+          installPhase = ''
+            runHook preInstall
+            mkdir -p $out/share/Kvantum
+            cp -a Kvantum-Tokyo-Night $out/share/Kvantum
+            runHook postInstall
+          '';
+
+          meta = {
+            description = "Tokyo Night Kvantum theme";
+            homepage = "https://github.com/0xsch1zo/Kvantum-Tokyo-Night";
+            license = lib.licenses.gpl3Only;
+            mainProgram = "kvantum-tokyo-night";
+            platforms = lib.platforms.all;
+          };
+        };
+    in
+    {
+      tokyo-night-kvantum = pkgs.callPackage drv { };
+    };
+
+  tags = [ "gui" ];
+
+  config =
+    # make qt use a dark theme, adapted from:
+    # https://github.com/fufexan/dotfiles/blob/main/home/programs/qt.nix
+    # also see:
+    # https://discourse.nixos.org/t/struggling-to-configure-gtk-qt-theme-on-laptop/42268/
+    {
+      config,
+      lib,
+      pkgs,
+      user,
+      ...
+    }:
+    {
+      environment = {
+        sessionVariables = {
+          QT_QPA_PLATFORMTHEME = "qt5ct";
+          QT_STYLE_OVERRIDE = "kvantum";
+        };
+
+        systemPackages = with pkgs; [
+          kdePackages.qt6ct
+          kdePackages.qtstyleplugin-kvantum
+          kdePackages.qtwayland
+        ];
+      };
+
+      # use gtk theme on qt apps
+      qt = {
+        enable = true;
+        platformTheme = "qt5ct";
+        style = "kvantum";
+      };
+
+      # use dynamic theme for qt5ct.conf and qt6ct.conf
+      custom.programs.noctalia.user-templates =
+        let
+          defaultFont = "${config.custom.gtk.font.name},${toString config.custom.gtk.font.size}";
+          createQtctConf = filename: font: {
+            # dummy values so noctalia doesn't complain
+            input_path = pkgs.writeText filename (
+              lib.generators.toINI { } {
+                Appearance = {
+                  custom_palette = false;
+                  icon_theme = "Tela-{{ colors.primary.default.hex_stripped }}";
+                  standard_dialogs = "xdgdesktopportal";
+                  style = "kvantum";
+                };
+                Fonts = {
+                  fixed = font;
+                  general = font;
+                };
+              }
+            );
+            output_path = "/home/${user}/.config/${filename}";
+          };
+        in
+        {
+          "qt5ct.conf" = createQtctConf "qt5ct/qt5ct.conf" ''"${defaultFont},-1,5,50,0,0,0,0,0"'';
+          "qt6ct.conf" =
+            createQtctConf "qt6ct/qt6ct.conf" ''"${defaultFont},-1,5,400,0,0,0,0,0,0,0,0,0,0,1,Regular"'';
+        };
+
+      hj.xdg.config.files = {
+        # Kvantum
+        "Kvantum/Kvantum-Tokyo-Night".source =
+          "${pkgs.custom.tokyo-night-kvantum}/share/Kvantum/Kvantum-Tokyo-Night";
+
+        "Kvantum/kvantum.kvconfig" = {
+          generator = lib.generators.toINI { };
+          value = {
+            General.theme = "Kvantum-Tokyo-Night";
+          };
+        };
+
+        "kdeglobals".text = ''
+          [UiSettings]
+          ColorScheme=Kvantum-Tokyo-Night
+        '';
+      };
+    };
+}

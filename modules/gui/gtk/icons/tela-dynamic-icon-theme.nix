@@ -1,0 +1,141 @@
+{
+  packages =
+    { lib, pkgs, ... }:
+    let
+      tela-blue = "#5677fc";
+      # copy the generated theme directly
+      tela-template = pkgs.runCommand "tela-template" { } /* sh */ ''
+        # copy the nix icon
+        mkdir -p $out/scalable/mimetypes/
+        cp ${./nix.svg} $out/scalable/mimetypes/text-x-nix.svg
+
+        # copy everything that is not "@2x", can be generated later
+        src="${pkgs.tela-icon-theme}/share/icons/Tela-blue-dark/"
+        # exit code 23 is for partial transfer because of broken symlinks
+        ${lib.getExe pkgs.rsync} -rL --chmod=Du+w,Fu+w --ignore-errors --exclude='/*@2x' "$src"/ "$out"/ \
+            || [ $? -eq 23 ]
+
+        # replace video icon color so it can be dynamic
+        chmod -R +w "$out"
+        find "$out" -type f -name "*.svg" -exec sed -i \
+          -e 's/#209ae7/${tela-blue}/g' \
+          -e 's/#4154ba/${tela-blue}/g' \
+          {} +
+
+        # generate a list of all the files that need to be replaced
+        ${lib.getExe pkgs.ripgrep} -l "${tela-blue}" $out | sed "s|$out/||" > $out/replacements.txt
+      '';
+    in
+    {
+      tela-dynamic-icon-theme =
+        # just replace all instances of tela blue
+        pkgs.writeShellApplication {
+          name = "tela-dynamic-icon-theme";
+          runtimeInputs = with pkgs; [
+            dconf
+            gtk3
+            lndir
+          ];
+          text = /* sh */ ''
+            if [[ -z "''${1:-}" ]]; then
+                echo "ERROR: A hex color is required. (e.g. #FFFFFF)"
+                exit 1
+            fi
+
+            # strip the leading #
+            THEME_NAME="Tela-''${1#\#}"
+            THEME_DIR="/tmp/$THEME_NAME"
+
+            # uncomment for debugging
+            # rm -rf "$THEME_DIR"
+
+            if [[ ! -d "$THEME_DIR" ]]; then
+                mkdir -p "$THEME_DIR"
+                lndir "${tela-template}" "$THEME_DIR"
+
+                # write the replaced color for each file in replacements.txt
+                while IFS= read -r file; do
+                    [ -z "$file" ] && continue
+                    src="${tela-template}/$file"
+                    dst="$THEME_DIR/$file"
+
+                    rm -f "$dst"
+
+                    sed "s/#5677fc/$1/g" "$src" > "$dst"
+                done <"$THEME_DIR/replacements.txt"
+
+                # generate the 2x icon symlinks
+                for dir in 16 22 24 32 scalable;
+                  do ln -sr "$THEME_DIR/$dir" "$THEME_DIR/$dir@2x";
+                done
+            fi
+
+            mkdir -p "$HOME/.local/share/icons"
+            ln -sfn "$THEME_DIR" "$HOME/.local/share/icons/$THEME_NAME"
+            dconf write "/org/gnome/desktop/interface/icon-theme" "'$THEME_NAME'"
+            gtk-update-icon-cache -f -t "$THEME_DIR"
+          '';
+        };
+    };
+
+  tags = [ "gui" ];
+
+  config =
+    {
+      config,
+      lib,
+      pkgs,
+      user,
+      ...
+    }:
+    {
+      options.custom = {
+        gtk = {
+          iconTheme = {
+            package = lib.mkOption {
+              type = lib.types.package;
+              default = pkgs.tela-icon-theme;
+              description = "Package providing the icon theme.";
+            };
+
+            name = lib.mkOption {
+              type = lib.types.str;
+              default = "Tela-blue-dark";
+              description = "The name of the icon theme within the package.";
+            };
+          };
+        };
+      };
+
+      config = {
+        environment.systemPackages = [
+          # use base tela icon theme that will be replaced by dynamic one at startup
+          config.custom.gtk.iconTheme.package
+          # associate nix files with nix icon
+          (pkgs.writeTextFile {
+            name = "nix-mimetype";
+            destination = "/share/mime/packages/nix.xml";
+            text = ''
+              <?xml version="1.0" encoding="UTF-8"?>
+              <mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+                  <mime-type type="text/x-nix">
+                      <glob pattern="*.nix"/>
+                      <icon name="text-x-nix"/>
+                  </mime-type>
+              </mime-info>
+            '';
+          })
+        ];
+
+        # set dynamic icon theme with noctalia
+        custom.programs.noctalia.user-templates = {
+          "gtk-icon-theme" = {
+            # dummy values so noctalia doesn't complain
+            input_path = "/home/${user}/.config/user-dirs.conf";
+            post_hook = ''${lib.getExe pkgs.custom.tela-dynamic-icon-theme} "{{ colors.primary.default.hex }}"'';
+            output_path = "/dev/null";
+          };
+        };
+      };
+    };
+}

@@ -1,0 +1,186 @@
+[audio]
+enable_sounds = false
+
+[backdrop]
+enabled = true
+
+[bar.default]
+background_opacity = 0.5
+capsule_thickness = 0.75
+center = ["workspaces"]
+end = ["battery", "volume", "clock"]
+margin_edge = 0
+margin_ends = 0
+padding = 16
+radius = 0
+start = ["control-center"]
+thickness = 30
+widget_spacing = 16
+
+[bar.default.dead_zone.actions]
+scroll_down = "volume-down 1"
+scroll_up = "volume-up 1"
+
+[calendar]
+enabled = true
+
+[calendar.account.default]
+type = "google"
+
+[control_center]
+sidebar_section = "none"
+
+[desktop_widgets]
+enabled = false
+
+[idle]
+behavior_order = ["idle-behavior", "lock-and-suspend"]
+
+[location]
+auto_locate = true
+
+[lockscreen]
+fingerprint = false
+blur_intensity = 0.0
+tint_intensity = 0.3
+
+[lockscreen_widgets]
+enabled = true
+schema_version = 2
+
+[lockscreen_widgets.grid]
+cell_size = 64
+major_interval = 4
+visible = true
+
+[notification]
+layer = "overlay"
+scale = 0.9
+show_actions = false
+show_app_name = false
+
+[osd]
+position = "top_right"
+
+[osd.kinds]
+media = false
+
+[shell]
+font_family = "Geist Medium"
+password_style = "random"
+polkit_agent = true
+umbriel_overview_type_to_launch_enabled = true
+
+[shell.greeter_sync]
+auto_sync = true
+
+[shell.launcher]
+categories = false
+show_app_origin_indicator = false
+sort_by_usage = false
+
+[shell.launcher.providers.session]
+global = true
+
+[shell.panel]
+open_near_click_control_center = true
+session_placement = "floating"
+session_position = "center"
+transparency_mode = "glass"
+
+[shell.screenshot]
+annotate = true
+confirm_region = true
+directory = "/home/pviel/Pictures/Screenshots"
+filename_pattern = "%Y-%m-%dT%H:%M:%S%z"
+remember_last_region = false
+skip_annotate_on_copy_save = true
+
+[[shell.session.actions]]
+action = "shutdown"
+countdown_seconds = 0.0
+enabled = true
+shortcut = "1"
+variant = "destructive"
+
+[[shell.session.actions]]
+action = "reboot"
+countdown_seconds = 0.0
+enabled = true
+shortcut = "2"
+variant = "default"
+
+[[shell.session.actions]]
+action = "lock"
+countdown_seconds = 0.0
+enabled = false
+shortcut = "5"
+variant = "default"
+
+[[shell.session.actions]]
+action = "logout"
+countdown_seconds = 0.0
+enabled = true
+shortcut = "3"
+variant = "default"
+
+[[shell.session.actions]]
+action = "lock_and_suspend"
+countdown_seconds = 0.0
+enabled = true
+shortcut = "4"
+variant = "default"
+
+[shell.window_switcher]
+mru = true
+style = "compact"
+
+[theme]
+source = "wallpaper"
+wallpaper_scheme = "m3-tonal-spot"
+
+[theme.templates]
+builtin_ids = ["btop", "cava", "kitty", "umbriel"]
+community_ids = ["yazi"]
+
+[wallpaper]
+directory = "/home/pviel/Pictures/Wallpapers"
+transition_on_startup = true
+
+[wallpaper.automation]
+enabled = true
+interval_seconds = 86400
+
+[widget.battery]
+color = "primary"
+icon_color = "primary"
+
+[widget.clock]
+color = "primary"
+
+[widget.control-center]
+custom_image = "/home/pviel/projects/dots/modules/gui/gtk/icons/nix.svg"
+custom_image_colorize = true
+glyph = ""
+
+[widget.session]
+custom_image = "/home/pviel/projects/dots/modules/gui/gtk/icons/nix.svg"
+glyph = ""
+icon_color = "primary"
+
+[widget.volume]
+color = "primary"
+
+[widget.volume.actions]
+middle = "exec toggle-speaker"
+scroll_down = "volume-down 1"
+scroll_up = "volume-up 1"
+
+[widget.workspaces]
+enabled = true
+empty_color = "tertiary"
+label_source = "name"
+font_family = "Liberation Sans"
+font_weight = 700
+labels_only_when_occupied = false
+pill_scale = 0.8
