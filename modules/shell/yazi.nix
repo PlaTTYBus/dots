@@ -3,6 +3,7 @@
     {
       inputs,
       pkgs,
+      lib,
       ...
     }:
     let
@@ -115,6 +116,7 @@
             };
           };
         }
+
 
         # smart-enter: enter for directory, open for file
         {
