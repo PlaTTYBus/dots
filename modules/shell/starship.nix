@@ -3,6 +3,7 @@
     {
       inputs,
       pkgs,
+      lib,
       ...
     }:
     let
@@ -15,7 +16,7 @@
         inherit pkgs;
         settings = {
           add_newline = false;
-          format = pkgs.lib.concatStrings [
+          format = lib.concatStrings [
             # begin left format
             "$username"
             "$hostname"
