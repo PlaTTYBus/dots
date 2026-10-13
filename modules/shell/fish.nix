@@ -1,6 +1,7 @@
 {
   packages =
     {
+      lib,
       pkgs,
       self,
       system,
