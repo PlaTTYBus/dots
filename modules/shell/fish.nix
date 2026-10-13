@@ -1,7 +1,5 @@
 { lib, pkgs, inputs, self, system, ... }:
-{
-  packages =
-    let
+let
       # reloads fish completions whenever directories are added to $XDG_DATA_DIRS,
       # e.g. in nix shells or direnv
       fish-completion-sync = pkgs.fetchFromGitHub {
@@ -11,6 +9,8 @@
         hash = "sha256-kHpdCQdYcpvi9EFM/uZXv93mZqlk1zCi2DRhWaDyK5g=";
       };
     in
+{
+  packages =
     {
       fish = inputs.wrappers.wrappers.fish.wrap rec {
         inherit pkgs;
