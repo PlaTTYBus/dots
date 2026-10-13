@@ -93,14 +93,10 @@
         gtk.bookmarks = [
           "/home/${user}/Downloads"
           "/home/${user}/projects"
-          "/home/${user}/projects/dotfiles"
-          "/home/${user}/projects/nixpkgs"
+          "/home/${user}/projects/dots"
           "/home/${user}/Documents"
           "/home/${user}/Pictures/Wallpapers"
-        ]
-        ++ lib.optionals (host == "desktop") [
-          "/home/${user}/Pictures/wallpapers_in Walls In"
-        ]
+        ];
       };
     };
 }
