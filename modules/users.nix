@@ -8,7 +8,7 @@
   config =
   {
       users = {
-        mutableUsers = false;
+        mutableUsers = true;
         # create a password with for root and $user with:
         # mkpasswd -m sha-512 'PASSWORD' and place in secrets.json under the appropriate key
         users = {
