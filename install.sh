@@ -189,27 +189,23 @@ if [[ -z "$nixos_file" ]]; then
 fi
 
 username=$(grep -m1 -E '^\s*user\s*=\s*"' "$nixos_file" | cut -d'"' -f2 || true)
-
 if [[ -z "$username" ]]; then
     echo "Failed to determine username from $nixos_file"
     exit 1
-else
-    echo "Detected username: $username"
 fi
+echo "Detected username: $username"
 
 target="/mnt/home/$username/projects/dots"
-
-echo "Creating target directory..."
+echo "Moving flake to target directory: $target"
 sudo mkdir -p "$target"
-
-echo "Moving flake to $target..."
-sudo mv "$tmpdir"/* "$target"
+sudo cp -a "$tmpdir"/. "$target"/
+rm -rf "$tmpdir"
 
 echo "Fixing ownership..."
 sudo chown -R 1000:100 "$target"
 
 echo "Installing NixOS..."
-sudo nixos-install --no-root-password --option extra-experimental-features "pipe-operators" --flake "$tmpdir#$host" --option tarball-ttl 0
+sudo nixos-install --no-root-password --option extra-experimental-features "pipe-operators" --flake "$target#$host" --option tarball-ttl 0
 
 echo "Installation complete. It is safe to reboot now."
 sudo umount -R /mnt
