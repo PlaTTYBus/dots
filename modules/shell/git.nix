@@ -2,7 +2,6 @@
   packages =
     {
       inputs,
-      lib,
       pkgs,
       ...
     }:
@@ -50,7 +49,7 @@
               sort = "-committerdate";
             };
             core = {
-              excludesFile = pkgs.writeText ".gitignore" (lib.concatStringsSep "\n" gitignores);
+              excludesFile = pkgs.writeText ".gitignore" (pkgs.lib.concatStringsSep "\n" gitignores);
             };
             diff = {
               tool = "difftastic";
