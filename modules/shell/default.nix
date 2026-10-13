@@ -8,7 +8,7 @@
       ...
     }:
     let
-      homeDir = "/persist/home/${user}";
+      homeDir = "/home/${user}";
       xdg-user-dirs = {
         # xdg user dirs
         XDG_DESKTOP_DIR = "${homeDir}/Desktop";
@@ -30,7 +30,7 @@
     {
       environment = {
         shellAliases = {
-          dots = "cd /persist/home/${user}/projects/dots";
+          dots = "cd /home/${user}/projects/dots";
         };
 
         systemPackages =

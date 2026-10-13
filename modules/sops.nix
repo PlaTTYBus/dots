@@ -20,8 +20,7 @@
         # of stage 2 boot before impermanence
         gnupg.sshKeyPaths = [ ];
         age = {
-          # NOTE: paths from persist are used so they exist before impermanence kicks in
-          # sshKeyPaths = [ "/persist/home/${user}/.ssh/id_ed25519" ];
+          # sshKeyPaths = [ "/home/${user}/.ssh/id_ed25519" ];
           keyFile = "/home/${user}/.config/sops/age/keys.txt";
           # This will generate a new key if the key specified above does not exist
           generateKey = false;

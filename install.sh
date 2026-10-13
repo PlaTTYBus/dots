@@ -7,11 +7,11 @@
 # - Changed the installation workflow to:
 #   1. Clone the flake into tmp dir
 #   2. Install NixOS using the flake and the selected host from tmp dir
-#   3. Find the nixos.nix file and extract the username from it
+#   3. Find the flake.nix file and extract the username from it
 #   4. Move the flake into /home/<username>/projects/dots
 #   5. Fix ownership of the flake directory to the user
 
-# sh <(curl -L https://raw.githubusercontent.com/plattybus/dots/main/install.sh)
+# bash <(curl -L https://raw.githubusercontent.com/plattybus/dots/main/install.sh)
 
 
 set -o errexit
@@ -187,9 +187,7 @@ if [[ -z "$nixos_file" ]]; then
     exit 1
 fi
 
-username=$(
-    grep -m1 'user ? "' "$nixos_file" | cut -d'"' -f2
-)
+username=$(grep -m1 -E '^\s*user\s*=\s*"' "$nixos_file" | cut -d'"' -f2 || true)
 
 if [[ -z "$username" ]]; then
     echo "Failed to determine username from $nixos_file"
@@ -201,19 +199,21 @@ fi
 target="/mnt/home/$username/projects/dots"
 
 echo "Creating target directory..."
-sudo mkdir -p "$(dirname "$target")"
+sudo mkdir -p "$target"
 
 echo "Moving flake to $target..."
-sudo mv "$tmpdir" "$target"
+sudo mv "$tmpdir"/* "$target"
 
 echo "Fixing ownership..."
 sudo chown -R 1000:100 "$target"
 
-echo "Drop your sops age key:"
-echo "(1) vi /mnt/home/pviel/.config/sops/age/keys.txt"
-echo "(2) sudo umount -R /mnt"
-echo "(3) sudo zpool export zroot"
-mkdir -p /mnt/home/pviel/.config/sops/age
-touch /mnt/home/pviel/.config/sops/age/keys.txt
+echo "Installation complete. It is safe to reboot now."
+sudo umount -R /mnt
+sudo zpool export zroot
 
-echo "Installation complete."
+# echo "Drop your sops age key:"
+# echo "(1) vi /mnt/home/pviel/.config/sops/age/keys.txt"
+# echo "(2) sudo umount -R /mnt"
+# echo "(3) sudo zpool export zroot"
+# mkdir -p /mnt/home/pviel/.config/sops/age
+
