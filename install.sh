@@ -157,7 +157,7 @@ sudo zfs create -o mountpoint=legacy zroot/tank
 sudo mount --mkdir -t zfs zroot/tank /mnt/tank
 
 echo "Cloning flake repository..."
-repo="https://github.com/PlaTTYBus/dots.git"
+repo="${repo:-https://github.com/PlaTTYBus/dots.git}"
 tmpdir="$(mktemp -d)"
 git clone "$repo" "$tmpdir"
 
@@ -179,7 +179,7 @@ while true; do
 done
 
 echo "Installing NixOS..."
-sudo nixos-install --no-root-password --option extra-experimental-features "pipe-operators" --flake "$repo#$host" --option tarball-ttl 0
+sudo nixos-install --no-root-password --option extra-experimental-features "pipe-operators" --flake "$tmpdir#$host" --option tarball-ttl 0
 
 nixos_file="$(find "$tmpdir" -name flake.nix | head -n1)"
 if [[ -z "$nixos_file" ]]; then
