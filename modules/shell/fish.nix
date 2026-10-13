@@ -1,14 +1,6 @@
 { lib, pkgs, inputs, ... }:
 {
   packages =
-    {
-      inputs,
-      lib,
-      pkgs,
-      self,
-      system,
-      ...
-    }:
     let
       # reloads fish completions whenever directories are added to $XDG_DATA_DIRS,
       # e.g. in nix shells or direnv
