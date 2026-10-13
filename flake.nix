@@ -33,6 +33,7 @@
         specialArgs = {
           inherit inputs self;
           user = "pviel";
+          lib = lib;
         };
         validTags = [
           "gui"
