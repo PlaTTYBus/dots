@@ -117,46 +117,6 @@
           };
         }
 
-        # browsing forwards and backwards in time through snapshots
-        # https://github.com/iynaix/time-travel.yazi
-        {
-          plugins.time-travel = pkgs.fetchFromGitHub {
-            owner = "iynaix";
-            repo = "time-travel.yazi";
-            rev = "aaec6e26e525bd146354a5137ec40f1f23257a4e";
-            hash = "sha256-/+KiuGUox763dMQvHl1l3+Ci3vL8NwRuKNu9pi3gjyE=";
-          };
-
-          settings = {
-            keymap.mgr.prepend_keymap = [
-              {
-                on = [
-                  "z"
-                  "h"
-                ];
-                run = "plugin time-travel prev";
-                desc = "Go to previous snapshot";
-              }
-              {
-                on = [
-                  "z"
-                  "l"
-                ];
-                run = "plugin time-travel next";
-                desc = "Go to next snapshot";
-              }
-              {
-                on = [
-                  "z"
-                  "e"
-                ];
-                run = "plugin time-travel exit";
-                desc = "Exit browsing snapshots";
-              }
-            ];
-          };
-        }
-
         # smart-enter: enter for directory, open for file
         {
           plugins = { inherit (pkgs.yaziPlugins) smart-enter; };
