@@ -204,6 +204,13 @@ rm -rf "$tmpdir"
 echo "Fixing ownership..."
 sudo chown -R 1000:100 "$target"
 
+echo "Enter sops age key (e.g. AGE-SECRET-KEY-...):"
+read -rsp "Enter sops age key (e.g. AGE-SECRET-KEY-...):" sops_key
+mkdir -p "/home/pviel/.config/sops/age"
+printf '%s\n' "$sops_key" | sudo tee "/mnt/home/$username/.config/sops/age/keys.txt" > /dev/null
+sudo chmod 600 "/mnt/home/$username/.config/sops/age/keys.txt"
+sudo chown -R 1000:100 "/mnt/home/$username"
+
 echo "Installing NixOS..."
 sudo nixos-install --no-root-password --option extra-experimental-features "pipe-operators" --flake "$target#$host" --option tarball-ttl 0
 
@@ -216,4 +223,5 @@ sudo zpool export zroot
 # echo "(2) sudo umount -R /mnt"
 # echo "(3) sudo zpool export zroot"
 # mkdir -p /mnt/home/pviel/.config/sops/age
+
 
