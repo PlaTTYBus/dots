@@ -27,14 +27,8 @@
     # use run0 for sudo
     security = {
       sudo = {
-        enable = false;
-        extraConfig = "Defaults passwd_tries=5";
-      };
-      polkit.enable = true;
-      run0 = {
         enable = true;
-        sudo-shim.enable = true;
-        persistentAuth.enable = true;
+        extraConfig = "Defaults passwd_tries=5";
       };
     };
 
