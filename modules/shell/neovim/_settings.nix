@@ -169,19 +169,12 @@
         enable = true;
         extensions.crates-nvim.enable = false;
       };
-      typescript = {
-        enable = true;
-        extensions.ts-error-translator.enable = true;
-      };
     };
 
     lsp = {
       enable = true;
       formatOnSave = true;
       lspkind.enable = true;
-      presets = {
-        tailwindcss-language-server.enable = true;
-      };
       otter-nvim.enable = true; # provide lsp for embedded languages
       servers = {
         nixd = {

@@ -1,6 +1,8 @@
 {
   config = { config, user, ... }:
   {
+    programs.ssh.startAgent.enable = true;
+
     hj.files = {
       # Config
       ".ssh/config".text = ''
