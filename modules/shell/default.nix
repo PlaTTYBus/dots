@@ -37,6 +37,7 @@
           (with pkgs; [
             bonk # mkdir and touch in one
             curl
+            sops
             ets # add timestamp to beginning of each line
             fd # better find
             fx # terminal json viewer and processor

@@ -4,7 +4,6 @@ pkgs.mkShell {
     with pkgs;
     [
       age
-      sops
       cachix
       deadnix
       statix
