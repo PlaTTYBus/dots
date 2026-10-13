@@ -29,24 +29,5 @@
     networking.hostId = "2b859231";
     services.xserver.videoDrivers = [ "vmware" ];
     virtualisation.vmware.guest.enable = true;
-    services = {
-        spice-vdagentd.enable = true;
-        spice-webdavd.enable = true;
-    };
-      
-    # fix for spice-vdagentd not starting in wms
-    systemd.user.services.spice-agent = {
-      enable = true;
-      wantedBy = [ "graphical-session.target" ];
-      serviceConfig = {
-        ExecStart = "${lib.getExe' pkgs.spice-vdagent "spice-vdagent"} -x";
-      };
-      unitConfig = {
-        ConditionVirtualization = "vm";
-        Description = "Spice guest session agent";
-        After = [ "graphical-session-pre.target" ];
-        PartOf = [ "graphical-session.target" ];
-      };
-    };
   };
 }
