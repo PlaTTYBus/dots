@@ -15,8 +15,8 @@
       '';
 
        # Public Keys
-      ".ssh/keys/github.pub".text = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOc19UTkQ5O+ky5Wk+NaCPt7nopLUXEKmbbLXhNP1zvW tenno@ordis";
-      ".ssh/keys/ustp.pub".text = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIETGCQVu53bLEtLyp3rCIiDMrYOhz8TBvlZuFjmc/xLS tenno@ordis";
+      ".ssh/keys/github.pub".text = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDlLpDO8rUBx/fcnOXU3btUz/1vb8LoTYNPBe2wYcx6p pviel@vmware";
+      ".ssh/keys/ustp.pub".text = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICUI0Xc9C4tNTzHSMwxm00SipqwPi+Pvxi/ZLUKK3c5d pviel@vmware";
     };
 
     # Private Keys
