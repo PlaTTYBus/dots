@@ -1,8 +1,9 @@
 {
   config = { config, user, ... }:
   {
-    programs.ssh = {
-      extraConfig = ''
+    # Public Keys
+    hj.files = {
+      ".ssh/config".text = ''
         Host github.com
             User git
             IdentityFile /home/${user}/.ssh/keys/github
@@ -11,12 +12,9 @@
             IdentitiesOnly yes
             Preferredauthentications publickey
             IdentityFile /home/${user}/.ssh/keys/ustp
-      '';
-    };
-    # Public Keys
-    hj.files = {
       ".ssh/keys/github.pub".text = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDlLpDO8rUBx/fcnOXU3btUz/1vb8LoTYNPBe2wYcx6p pviel@vmware";
       ".ssh/keys/ustp.pub".text = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICUI0Xc9C4tNTzHSMwxm00SipqwPi+Pvxi/ZLUKK3c5d pviel@vmware";
+      '';
     };
 
     # Private Keys
