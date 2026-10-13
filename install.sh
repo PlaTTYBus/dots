@@ -8,7 +8,7 @@
 #   1. Clone the flake into tmp dir
 #   2. Install NixOS using the flake and the selected host from tmp dir
 #   3. Find the nixos.nix file and extract the username from it
-#   4. Move the flake into /persist/home/<username>/projects/dots
+#   4. Move the flake into /home/<username>/projects/dots
 #   5. Fix ownership of the flake directory to the user
 
 # sh <(curl -L https://raw.githubusercontent.com/plattybus/dots/main/install.sh)
@@ -156,14 +156,13 @@ echo "Creating /tank"
 sudo zfs create -o mountpoint=legacy zroot/tank
 sudo mount --mkdir -t zfs zroot/tank /mnt/tank
 
-repo="github:PlaTTYBus/dots"
-hosts=("desktop" "tuxedo" "vmware")
-tmpdir="$(mktemp -d)"
-
 echo "Cloning flake repository..."
+repo="https://github.com/PlaTTYBus/dots.git"
+tmpdir="$(mktemp -d)"
 git clone "$repo" "$tmpdir"
 
 echo "Available hosts:"
+hosts=("desktop" "tuxedo" "vmware")
 for i in "${!hosts[@]}"; do
     printf "%d) %s\n" $((i + 1)) "${hosts[i]}"
 done
@@ -180,7 +179,7 @@ while true; do
 done
 
 echo "Installing NixOS..."
-sudo nixos-install --no-root-password --option extra-experimental-features "pipe-operators" --flake "$repo/${git_rev:-main}#$host" --option tarball-ttl 0
+sudo nixos-install --no-root-password --option extra-experimental-features "pipe-operators" --flake "$repo#$host" --option tarball-ttl 0
 
 nixos_file="$(find "$tmpdir" -name flake.nix | head -n1)"
 if [[ -z "$nixos_file" ]]; then
