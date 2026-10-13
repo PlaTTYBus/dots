@@ -110,7 +110,6 @@
             set sponge_regex_patterns 'password|passwd|^kill'
 
             # setup zoxide
-            ${lib.getExe pkgs.zoxide} init fish --cmd cd | source
 
             # setup starship
             if test "$TERM" != dumb
