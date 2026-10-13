@@ -1,5 +1,7 @@
 {
   "$declared": {
+    "focal": "github:iynaix/focal",
+    "helium": "https://github.com/imputnet/helium-linux/releases/download/{version}/helium-{version}-x86_64.AppImage",
     "hjem": "github:feel-co/hjem",
     "lamina": "github:iynaix/lamina",
     "multiverse": "github:fzakaria/nixpkgs-multiverse",
@@ -12,7 +14,24 @@
     "systems": "github:nix-systems/default",
     "tack": "github:manic-systems/tack",
     "umbriel": "github:noctalia-dev/umbriel",
+    "wfetch": "github:iynaix/wfetch",
     "wrappers": "github:BirdeeHub/nix-wrapper-modules"
+  },
+  "focal": {
+    "type": "github",
+    "owner": "iynaix",
+    "repo": "focal",
+    "rev": "3917fbaff589171395c0bd1825e37e851b329895",
+    "narHash": "sha256-gnvBWOT+/3DEEs/jLqiWl1S8W7c8i6rDG0VfyFqa5gY=",
+    "lastModified": 1789100955
+  },
+  "helium": {
+    "type": "fixed",
+    "url": "https://github.com/imputnet/helium-linux/releases/download/0.19.2.1/helium-0.19.2.1-x86_64.AppImage",
+    "sha256": "sha256-oEVQo8fHC9rTrNOkQw7ajSr8C/cXOpxYpAP+q5UXCH8=",
+    "unpack": "file",
+    "tag": "0.19.2.1",
+    "version": "0.19.2.1"
   },
   "hjem": {
     "type": "github",
@@ -98,9 +117,9 @@
     "type": "github",
     "owner": "manic-systems",
     "repo": "tack",
-    "rev": "6a310d8a45856d305687410a3548466b7893e5a9",
-    "narHash": "sha256-Zk4wnKLPyCyrWaWQVRp4kSJHQF4ESivDUwr4Ocg/ANo=",
-    "lastModified": 1791927330
+    "rev": "47a8edf4a7b3728300f308a6b6111213acbb3164",
+    "narHash": "sha256-E9cCqGahMkI/g+GUGwQ2ubdHVLStfPzMrvogYGU0IV4=",
+    "lastModified": 1791931591
   },
   "umbriel": {
     "type": "git",
@@ -110,6 +129,14 @@
     "narHash": "sha256-YSjQ4RDiYVZkbcdffxwD0y7JxmC8DGfIyGiH1EFVoho=",
     "lastModified": 1791930007,
     "submodules": true
+  },
+  "wfetch": {
+    "type": "github",
+    "owner": "iynaix",
+    "repo": "wfetch",
+    "rev": "ed818e77ca1e4e8e31600e9dc9895a236830dc73",
+    "narHash": "sha256-CD2lLe99IAm+boFCD2bYPoq5XitPpQd47IkEod67BEU=",
+    "lastModified": 1791686588
   },
   "wrappers": {
     "type": "github",

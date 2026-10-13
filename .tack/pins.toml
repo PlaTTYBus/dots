@@ -64,3 +64,15 @@ submodules = true
 
 [inputs.lamina]
 url = "github:iynaix/lamina"
+
+[inputs.helium]
+url = "https://github.com/imputnet/helium-linux/releases/download/{version}/helium-{version}-x86_64.AppImage"
+type = "fixed"
+tag = "{version}"
+group = "binary"
+
+[inputs.focal]
+url = "github:iynaix/focal"
+
+[inputs.wfetch]
+url = "github:iynaix/wfetch"
