@@ -28,7 +28,10 @@
     security = {
       sudo = {
         enable = true;
-        extraConfig = "Defaults passwd_tries=5";
+        extraConfig = ''
+          Defaults passwd_tries=5
+          Defaults lecture=never
+        '';
       };
     };
 
