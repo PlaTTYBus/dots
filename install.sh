@@ -110,12 +110,33 @@ echo "Creating Boot Disk"
 sudo mkfs.fat -F 32 "$BOOTDISK" -n NIXBOOT
 
 # setup encryption
-use_encryption=$(yesno "Use encryption? (Encryption must also be enabled within host config with boot.zfs.requestEncryptionCredentials = true)")
-if [[ $use_encryption == "y" ]]; then
-    encryption_options=(-O encryption=aes-256-gcm -O keyformat=passphrase -O keylocation=prompt)
-else
-    encryption_options=()
-fi
+echo "Available hosts:"
+hosts=("desktop" "tuxedo" "vmware")
+for i in "${!hosts[@]}"; do
+    printf "%d) %s\n" $((i + 1)) "${hosts[i]}"
+done
+
+while true; do
+    echo
+    read -rp "Enter the number of the host to install: " selection
+    if [[ "$selection" =~ ^[0-9]+$ ]] &&
+       (( selection >= 1 && selection <= ${#hosts[@]} )); then
+        host="${hosts[$((selection - 1))]}"
+        break
+    fi
+    echo "Invalid selection."
+done
+
+case "$host" in
+    desktop|tuxedo)
+        echo "Encryption enabled for $host"
+        encryption_options=(-O encryption=aes-256-gcm -O keyformat=passphrase -O keylocation=prompt)
+        ;;
+    *)
+        echo "Encryption disabled for $host"
+        encryption_options=()
+        ;;
+esac
 
 echo "Creating base zpool"
 sudo zpool create -f \
@@ -161,26 +182,6 @@ repo="${repo:-https://github.com/PlaTTYBus/dots.git}"
 tmpdir="$(mktemp -d)"
 git clone "$repo" "$tmpdir"
 
-echo "Available hosts:"
-hosts=("desktop" "tuxedo" "vmware")
-for i in "${!hosts[@]}"; do
-    printf "%d) %s\n" $((i + 1)) "${hosts[i]}"
-done
-
-while true; do
-    echo
-    read -rp "Enter the number of the host to install: " selection
-    if [[ "$selection" =~ ^[0-9]+$ ]] &&
-       (( selection >= 1 && selection <= ${#hosts[@]} )); then
-        host="${hosts[$((selection - 1))]}"
-        break
-    fi
-    echo "Invalid selection."
-done
-
-echo "Installing NixOS..."
-sudo nixos-install --no-root-password --option extra-experimental-features "pipe-operators" --flake "$tmpdir#$host" --option tarball-ttl 0
-
 nixos_file="$(find "$tmpdir" -name flake.nix | head -n1)"
 if [[ -z "$nixos_file" ]]; then
     echo "Failed to locate flake.nix"
@@ -206,6 +207,9 @@ sudo mv "$tmpdir"/* "$target"
 
 echo "Fixing ownership..."
 sudo chown -R 1000:100 "$target"
+
+echo "Installing NixOS..."
+sudo nixos-install --no-root-password --option extra-experimental-features "pipe-operators" --flake "$tmpdir#$host" --option tarball-ttl 0
 
 echo "Installation complete. It is safe to reboot now."
 sudo umount -R /mnt
