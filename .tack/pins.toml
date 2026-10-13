@@ -46,9 +46,6 @@ url = "github:BirdeeHub/nix-wrapper-modules"
 [inputs.nixos-hardware]
 url = "github:NixOS/nixos-hardware"
 
-[inputs.preservation]
-url = "github:nix-community/preservation"
-
 [inputs.sops-nix]
 url = "github:Mic92/sops-nix"
 

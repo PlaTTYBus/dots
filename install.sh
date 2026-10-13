@@ -209,8 +209,11 @@ sudo mv "$tmpdir" "$target"
 echo "Fixing ownership..."
 sudo chown -R 1000:100 "$target"
 
-echo "Unmounting partitions and exporting zpool"
-sudo umount -R /mnt
-sudo zpool export zroot
+echo "Drop your sops age key:"
+echo "(1) vi /mnt/home/pviel/.config/sops/age/keys.txt"
+echo "(2) sudo umount -R /mnt"
+echo "(3) sudo zpool export zroot"
+mkdir -p /mnt/home/pviel/.config/sops/age
+touch /mnt/home/pviel/.config/sops/age/keys.txt
 
-echo "Installation complete. It is now safe to reboot."
+echo "Installation complete."
