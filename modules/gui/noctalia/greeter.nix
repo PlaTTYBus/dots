@@ -14,7 +14,7 @@
 
       # NOTE: using patches to the nixos module for autologin, default session
       services.displayManager = {
-        autoLogin.user = user;
+        # autoLogin.user = user;
 
         defaultSession = lib.mkDefault "umbriel";
 
