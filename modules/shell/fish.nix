@@ -1,0 +1,170 @@
+{
+  packages =
+    {
+      inputs,
+      lib,
+      pkgs,
+      self,
+      system,
+      ...
+    }:
+    let
+      # reloads fish completions whenever directories are added to $XDG_DATA_DIRS,
+      # e.g. in nix shells or direnv
+      fish-completion-sync = pkgs.fetchFromGitHub {
+        owner = "iynaix";
+        repo = "fish-completion-sync";
+        rev = "4f058ad2986727a5f510e757bc82cbbfca4596f0";
+        hash = "sha256-kHpdCQdYcpvi9EFM/uZXv93mZqlk1zCi2DRhWaDyK5g=";
+      };
+    in
+    {
+      fish = inputs.wrappers.wrappers.fish.wrap rec {
+        inherit pkgs;
+
+        flags = {
+          # allow extra config from nixos programs.fish, such as direnv setup etc
+          "--no-config" = false;
+        };
+
+        runtimePkgs =
+          (with self.packages.${system}; [
+            bat # includes batman
+            eza
+            eza-tree
+            git
+            moor
+            neovim-plattybus
+            ripgrep
+            starship
+            yazi
+          ])
+          ++ [
+            pkgs.zoxide
+          ];
+
+        # NOTE: this relies on https://github.com/BirdeeHub/nix-wrapper-modules/pull/583 being patched in
+        # create the shell abbrs from passthru.shellAliases in runtimePkgs
+        abbreviations = {
+          ":e" = "nvim";
+          ":q" = "exit";
+          ":wq" = "exit";
+          c = "clear";
+          cat = "bat";
+          ccat = "command cat";
+          cp = "cp -ri";
+          crate = "cargo";
+          isodate = "date -u '+%Y-%m-%dT%H:%M:%SZ'";
+          man = "batman";
+          mime = "xdg-mime query filetype";
+          mkdir = "mkdir -p";
+          mount = "mount --mkdir";
+          mv = "mv -i";
+          nano = "nvim";
+          neovim = "nvim";
+          open = "xdg-open";
+          ping = "ping -c 5";
+          py = "python";
+          rm = "rm -I";
+          sl = "ls";
+          v = "nvim";
+          w = "watch -cn1 -x cat";
+
+          # zoxide included in runtimePkgs
+          z = "zoxide query -i";
+
+          # cd aliases
+          ".." = "cd ..";
+          "..." = "cd ../..";
+        }
+        # extract the shellAliases and abbrs from each runtimePkg
+        // (
+          runtimePkgs
+          |> map (p: (p.passthru.shellAliases or { }) // (p.passthru.abbreviations or { }))
+          |> lib.mergeAttrsList
+        );
+
+        plugins = [
+          # do not add failed commands to history
+          pkgs.fishPlugins.sponge
+        ];
+
+        configFile.content = /* fish */ ''
+          # shut up welcome message
+          set fish_greeting
+
+          if status is-interactive
+            # setup vi mode
+            fish_vi_key_bindings
+
+            # setup fish-completion-sync
+            source ${fish-completion-sync}/init.fish
+
+            # set options for sponge
+            set sponge_regex_patterns 'password|passwd|^kill'
+
+            # setup zoxide
+            ${lib.getExe pkgs.zoxide} init fish --cmd cd | source
+
+            # setup starship
+            if test "$TERM" != dumb
+                starship init fish | source
+                enable_transience
+            end
+
+            # fix starship prompt to only have newlines after the first command
+            # https://github.com/starship/starship/issues/560#issuecomment-2409922650
+            function prompt_newline --on-event fish_postexec
+                echo ""
+            end
+
+            function starship_transient_prompt_func
+                # tput cuu1
+                starship module character
+            end
+
+            # abbr requires a function, so add manually
+            function last_hist_item; echo $history[1]; end
+            abbr --add !! --position anywhere --function last_hist_item
+          end
+        '';
+      };
+    };
+
+  config =
+    {
+      config,
+      lib,
+      pkgs,
+      user,
+      ...
+    }:
+    {
+      nixpkgs.overlays = [
+        (_: _prev: {
+          fish = pkgs.custom.fish;
+        })
+      ];
+
+      users.users.${user}.shell = pkgs.fish; # overlay-ed above
+
+      programs.fish = {
+        enable = true;
+        # use abbrs instead of aliases
+        shellAliases = lib.mkForce { };
+        shellAbbrs = config.environment.shellAliases // {
+          ehistory = ''nvim "/home/${user}/.local/share/fish/fish_history"'';
+        };
+      };
+
+      environment = {
+        # install fish completions for fish
+        # https://github.com/nix-community/home-manager/pull/2408
+        pathsToLink = [ "/share/fish" ];
+      };
+
+      custom.programs.print-config = {
+        fish = /* sh */ "moor ${pkgs.fish.configuration.constructFiles.generatedConfig.outPath}";
+      };
+    };
+}
