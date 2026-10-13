@@ -17,7 +17,6 @@
         hjem = {
           clobberByDefault = true;
           users.${user} = {
-            user = user;
             directory = "/home/${user}";
           };
         };

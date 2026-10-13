@@ -17,6 +17,8 @@
     users.users."${user}".openssh.authorizedKeys.keyFiles = [
       ./id_ed25519.pub
     ];
+    
+
 
     # keyring settings
     services.gnome.gnome-keyring.enable = true;
