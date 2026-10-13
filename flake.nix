@@ -32,8 +32,10 @@
         modules = [ ./modules ];
         specialArgs = {
           inherit inputs self;
+          lib = lib // {
+            custom = import ./lib.nix { inherit lib; };
+          };
           user = "pviel";
-          lib = lib;
         };
         validTags = [
           "gui"
@@ -81,7 +83,13 @@
       packages = forAllSystems (
         pkgs:
         mkPackages pkgs [ ./modules ] {
-          inherit inputs self lib;
+          inherit
+            inputs
+            self
+            ;
+          lib = lib // {
+            custom = import ./lib.nix { inherit lib; };
+          };
         }
       );
     };
