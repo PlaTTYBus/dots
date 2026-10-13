@@ -20,7 +20,7 @@
     in
     {
       fish = inputs.wrappers.wrappers.fish.wrap rec {
-        inherit pkgs;
+        inherit pkgs lib;
 
         flags = {
           # allow extra config from nixos programs.fish, such as direnv setup etc
