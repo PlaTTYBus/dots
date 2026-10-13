@@ -1,11 +1,11 @@
-{lib, ...}:{
+{
   packages =
     {
-      inputs,
       lib,
       pkgs,
       self,
       system,
+      inputs,
       ...
     }:
     let
