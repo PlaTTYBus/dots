@@ -1,10 +1,6 @@
 {
   config = { config, user, ... }:
   {
-    programs.ssh = {
-      startAgent = true;
-    };
-
     hj.files = {
       # Config
       ".ssh/config".text = ''
