@@ -212,13 +212,13 @@ sudo chmod 600 "/mnt/home/$username/.config/sops/age/keys.txt"
 sudo chown -R 1000:100 "/mnt/home/$username"
 
 echo "Installing NixOS..."
-# sudo nixos-install --no-root-password --option extra-experimental-features "pipe-operators" --flake "$target#$host" --option tarball-ttl 0
-# sudo nixos-install --no-root-password --option extra-experimental-features "pipe-operators" --flake "$target#$host" --option tarball-ttl 0
+sudo nixos-install --no-root-password --option extra-experimental-features "pipe-operators" --flake "$target#$host" --option tarball-ttl 0
+# sudo nixos-install --no-root-password --option extra-experimental-features "pipe-operators" --flake "/mnt/home/pviel/projects/dots#vmware" --option tarball-ttl 0
 
 
-# echo "Installation complete. It is safe to reboot now."
-# sudo umount -R /mnt
-# sudo zpool export zroot
+echo "Installation complete. It is safe to reboot now."
+sudo umount -R /mnt
+sudo zpool export zroot
 
 # echo "Drop your sops age key:"
 # echo "(1) vi /mnt/home/pviel/.config/sops/age/keys.txt"
