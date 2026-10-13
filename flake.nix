@@ -81,7 +81,7 @@
       packages = forAllSystems (
         pkgs:
         mkPackages pkgs [ ./modules ] {
-          inherit inputs self;
+          inherit inputs self lib;
         }
       );
     };
