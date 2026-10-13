@@ -2,13 +2,13 @@
   packages =
     {
       inputs,
-      lib,
       pkgs,
       self,
       system,
       ...
     }:
     let
+    inherit (pkgs) lib;
       # reloads fish completions whenever directories are added to $XDG_DATA_DIRS,
       # e.g. in nix shells or direnv
       fish-completion-sync = pkgs.fetchFromGitHub {
