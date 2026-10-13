@@ -1,6 +1,11 @@
 {
   config = { config, user, ... }:
   {
+    # Authorized Keys
+    users.users."${user}".openssh.authorizedKeys.keyFiles = [
+      ./id_ed25519.pub
+    ];
+
     # Public Keys
     hj.files = {
       ".ssh/config".text = ''

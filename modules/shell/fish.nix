@@ -1,6 +1,6 @@
 {
   packages =
-   {
+    {
       inputs,
       lib,
       pkgs,
@@ -94,6 +94,12 @@
           set fish_greeting
 
           if status is-interactive
+            # use vi key bindings with hybrid emacs keybindings
+            function fish_user_key_bindings
+                fish_default_key_bindings -M insert
+                fish_vi_key_bindings --no-erase insert
+            end
+
             # setup vi mode
             fish_vi_key_bindings
 

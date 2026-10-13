@@ -16,9 +16,6 @@
       config = {
         hjem = {
           clobberByDefault = true;
-          users.${user} = {
-            directory = "/home/${user}";
-          };
         };
       };
     };

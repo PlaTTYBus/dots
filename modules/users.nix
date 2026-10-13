@@ -20,10 +20,6 @@
               "networkmanager"
               "wheel"
             ];
-            openssh.authorizedKeys.keys = [
-              (lib.mkForce config.sops.secrets.ssh_github.path)
-              (lib.mkForce config.sops.secrets.ssh_ustp.path)
-            ];
           };
         };
       };
