@@ -204,9 +204,8 @@ rm -rf "$tmpdir"
 echo "Fixing ownership..."
 sudo chown -R 1000:100 "$target"
 
-echo "Enter sops age key (e.g. AGE-SECRET-KEY-...):"
 read -rsp "Enter sops age key (e.g. AGE-SECRET-KEY-...):" sops_key
-mkdir -p "/home/pviel/.config/sops/age"
+sudo mkdir -p /mnt/home/$username/.config/sops/age
 printf '%s\n' "$sops_key" | sudo tee "/mnt/home/$username/.config/sops/age/keys.txt" > /dev/null
 sudo chmod 600 "/mnt/home/$username/.config/sops/age/keys.txt"
 sudo chown -R 1000:100 "/mnt/home/$username"
