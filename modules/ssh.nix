@@ -1,7 +1,9 @@
 {
   config = { config, user, ... }:
   {
-    programs.ssh.startAgent.enable = true;
+    programs.ssh = {
+      startAgent = true;
+    };
 
     hj.files = {
       # Config
