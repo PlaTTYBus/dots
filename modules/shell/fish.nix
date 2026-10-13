@@ -76,7 +76,7 @@
           # cd aliases
           ".." = "cd ..";
           "..." = "cd ../..";
-        }
+        };
         # extract the shellAliases and abbrs from each runtimePkg
         #// (
         #  runtimePkgs
