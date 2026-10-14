@@ -76,3 +76,6 @@ url = "github:iynaix/focal"
 
 [inputs.wfetch]
 url = "github:iynaix/wfetch"
+
+[inputs.hjem-rum]
+url = "github:snugnug/hjem-rum"

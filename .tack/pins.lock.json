@@ -3,6 +3,7 @@
     "focal": "github:iynaix/focal",
     "helium": "https://github.com/imputnet/helium-linux/releases/download/{version}/helium-{version}-x86_64.AppImage",
     "hjem": "github:feel-co/hjem",
+    "hjem-rum": "github:snugnug/hjem-rum",
     "lamina": "github:iynaix/lamina",
     "multiverse": "github:fzakaria/nixpkgs-multiverse",
     "nix-index-database": "github:nix-community/nix-index-database",
@@ -41,6 +42,14 @@
     "narHash": "sha256-Q5hGcKBaqz1L0neSRDfQgQPBKmSCkV1N5YBRwp+RtUc=",
     "lastModified": 1791807571
   },
+  "hjem-rum": {
+    "type": "github",
+    "owner": "snugnug",
+    "repo": "hjem-rum",
+    "rev": "4194064c687bf6ca7a79cbe127cbe5a3f51ed5d5",
+    "narHash": "sha256-ntcojKoFfndHu9/cw6zRyan2AECyxMwJ0e1Qr7a+m40=",
+    "lastModified": 1789576270
+  },
   "lamina": {
     "type": "github",
     "owner": "iynaix",
@@ -53,9 +62,9 @@
     "type": "github",
     "owner": "fzakaria",
     "repo": "nixpkgs-multiverse",
-    "rev": "acabf7666dbd3896a7db4f145bcbc90ed6dc01aa",
-    "narHash": "sha256-bUnuHCRgwH8+SfXktsLXtdPtcALEmEAEOT7Jk9y940s=",
-    "lastModified": 1791882132
+    "rev": "e2beb64000bc08ff00542844bc1ea006eb79f8b5",
+    "narHash": "sha256-MTM/yGDkydRpMGZfgHFngbd/IXVVMmtJwmS9wxGXrnw=",
+    "lastModified": 1792002016
   },
   "nix-index-database": {
     "type": "github",
@@ -85,9 +94,9 @@
     "type": "github",
     "owner": "NixOS",
     "repo": "nixpkgs",
-    "rev": "7993f34ee47e28a3d607a525aadc6c94b73be728",
-    "narHash": "sha256-ZGq3ptZzA+oO0N/Wi/F+GbuTijLkYExD01LvpNFAvr0=",
-    "lastModified": 1791765022
+    "rev": "a033e66ab94a6bedf2c3d58d93a36319d3cbbbaf",
+    "narHash": "sha256-yvkDdToRZ4IgPc9tSBzzCYJvTLf8n5eE3rgUkpCuD5A=",
+    "lastModified": 1791883866
   },
   "nvf": {
     "type": "github",
@@ -125,9 +134,9 @@
     "type": "git",
     "url": "https://github.com/noctalia-dev/umbriel.git",
     "ref": "HEAD",
-    "rev": "6a9e1e96bd7ea4c6ab1aa4610205349ff3da7459",
-    "narHash": "sha256-oboAbzVWK8nym36ghQ3t3hqfLvsrSxj1WZo4XpwBvIo=",
-    "lastModified": 1791948030,
+    "rev": "693b68996a832b21dbfd33a180d2a23cdf5575b6",
+    "narHash": "sha256-hqx2h14F7Q/ec75xrt1Lmklnmoui3tQgouGfWlROBTk=",
+    "lastModified": 1791985089,
     "submodules": true
   },
   "wfetch": {
