@@ -5,6 +5,16 @@
   ...
 }:
 {
+  # silence warning about setting multiple user password options
+  # https://github.com/NixOS/nixpkgs/pull/287506#issuecomment-1950958990
+  options = {
+    warnings = lib.mkOption {
+      apply = lib.filter (
+        w: !(lib.hasInfix "If multiple of these password options are set at the same time" w)
+      );
+    };
+  };  
+  
   config =
   {
       users = {

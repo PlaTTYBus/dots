@@ -145,7 +145,7 @@
 
     systemd.tmpfiles.rules = [
       # cleanup nixpkgs-review cache on boot
-      "D! /home/${user}/.cache/nixpkgs-review 1755 ${user} users 5d"
+      # "D! /home/${user}/.cache/nixpkgs-review 1755 ${user} users 5d"
       # cleanup channels so nix stops complaining
       "D! /nix/var/nix/profiles/per-user/root 1755 root root 1d"
     ];
