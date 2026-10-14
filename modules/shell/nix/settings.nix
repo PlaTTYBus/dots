@@ -114,12 +114,12 @@
           ];
         };
         extraOptions = ''
-          !include ${config.sops.secrets.nix-extra.path}
+          !include ${config.sops.secrets.nix_extra.path}
         '';
       };
 
     # setup github auth token for nix to use
-    sops.secrets.nix-extra.owner = user;
+    sops.secrets.nix_extra.owner = user;
 
     # never going to read html docs locally
     documentation = {
