@@ -63,10 +63,36 @@
         # required for nix-shell -p to work
         # package = pkgs.lixPackageSets.latest.lix;
         package = pkgs.nixVersions.latest;
+        registry = registry // {
+          n = registry.nixpkgs;
+          master = {
+            from = {
+              type = "indirect";
+              id = "nixpkgs-master";
+            };
+            to = {
+              type = "github";
+              owner = "NixOS";
+              repo = "nixpkgs";
+            };
+          };
+          # for nix flake init
+          templates = {
+            from = {
+              id = "templates";
+              type = "indirect";
+            };
+            to = {
+              type = "github";
+              owner = "NixOS";
+              repo = "templates";
+            };
+          };
+        };
         optimise.automatic = true;
         settings = {
           flake-registry = ""; # don't use the global flake registry, define everything explicitly
-          nix-path = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flake-inputs;
+          nix-path = lib.mapAttrsToList (n: v: "${n}=${v}") flake-inputs;
           warn-dirty = false;
           # removes ~/.nix-profile and ~/.nix-defexpr
           use-xdg-base-directories = true;
@@ -87,7 +113,13 @@
             "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
           ];
         };
+        extraOptions = ''
+          !include ${config.sops.secrets.github_token.path}
+        '';
       };
+
+    # setup github auth token for nix to use
+    sops.secrets.github_token.owner = user;
 
     # never going to read html docs locally
     documentation = {
