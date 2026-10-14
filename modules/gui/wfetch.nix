@@ -1,5 +1,5 @@
 {
-  tags = [ "gui" ];
+  tags = [ "wm" ];
 
   config =
     { pkgs, user, ... }:
