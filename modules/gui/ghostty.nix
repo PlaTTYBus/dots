@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  pkgs,
   ...
 }:
 {
@@ -30,7 +31,7 @@
 
   config = 
     {
-      hjem.users.pviel.rum.programs.ghostty = {
+      hj.rum.programs.ghostty = {
         enable = true;
         settings = {
           font-family = "JetBrainsMono Nerd Font";
