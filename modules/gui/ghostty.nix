@@ -47,7 +47,7 @@
         };
       };
 
-      custom-programs = {
+      custom.programs = {
         terminal = {
           app_id = "ghostty";
         };
