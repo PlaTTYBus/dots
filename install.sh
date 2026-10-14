@@ -178,7 +178,7 @@ sudo zfs create -o mountpoint=legacy zroot/tank
 sudo mount --mkdir -t zfs zroot/tank /mnt/tank
 
 echo "Installing NixOS..."
-sudo nixos-install --no-root-password --option extra-experimental-features "pipe-operators" --flake "$target#$host" --option tarball-ttl 0
+sudo nixos-install --no-root-password --option extra-experimental-features "pipe-operators" --flake "github:PlaTTYBus/dots#$host" --option tarball-ttl 0
 # sudo nixos-install --no-root-password --option extra-experimental-features "pipe-operators" --flake "/mnt/home/pviel/projects/dots#vmware" --option tarball-ttl 0
 
 echo "Installation complete. It is safe to reboot now."
