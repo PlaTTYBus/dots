@@ -72,6 +72,8 @@
         // xdg-user-dirs;
       };
 
+      xdg.userDirs.createDirectories = true;
+
       # follow xdg user dirs spec, see hm for original implementation
       # https://github.com/nix-community/home-manager/blob/master/modules/misc/xdg-user-dirs.nix
       hj.xdg.config.files = {
