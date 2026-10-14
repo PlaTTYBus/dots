@@ -1,6 +1,6 @@
 {
   config = 
-  { inputs, system, user, ... }:
+  { inputs, system, user, config, ... }:
   {
     programs.tack = {
       enable = true;
