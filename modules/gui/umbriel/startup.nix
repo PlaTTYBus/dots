@@ -31,10 +31,10 @@
         }
 
         # terminal
-        rec {
-          match.app_id = "${config.custom.programs.terminal.app_id}-vertical";
+        {
+          match.app_id = "ghostty";
           spawn = "ghostty --class=${match.app_id}";
-          workspace = 7;
+          workspace = 3;
         }
       ];
     in
