@@ -12,6 +12,7 @@
 #   5. Fix ownership of the flake directory to the user
 
 # bash <(curl -L https://raw.githubusercontent.com/plattybus/dots/main/install.sh)
+# nix eval '.#nixosConfigurations.vmware.config.services.desktopManager.plasma6.enable'
 
 
 set -o errexit

@@ -43,8 +43,6 @@
 
       networking.hostId = "e08abb5a"; # required for zfs
 
-      hardware.framework.laptop13.audioEnhancement.enable = true;
-
       # touchpad support
       services.libinput.enable = true;
 
