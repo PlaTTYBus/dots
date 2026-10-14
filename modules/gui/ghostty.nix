@@ -1,4 +1,8 @@
 {
+  lib,
+  ...
+}:
+{
   options.custom = {
         # terminal options
         programs.terminal = {
