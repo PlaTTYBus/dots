@@ -7,7 +7,7 @@
       services = {
         desktopManager.plasma6.enable = true;
 
-        # displayManager.defaultSession = lib.mkForce "plasma";
+        displayManager.defaultSession = lib.mkForce "plasma";
       };
 
       # set dark theme, adapted from plasma-manager
