@@ -31,7 +31,7 @@
         }
 
         # terminal
-        {
+        rec {
           match.app_id = "ghostty";
           spawn = "ghostty --class=${match.app_id}";
           workspace = 3;
