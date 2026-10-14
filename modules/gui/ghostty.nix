@@ -29,5 +29,5 @@
                 desktop = "ghostty.desktop";
               };
       };
-  }
+  };
 }
