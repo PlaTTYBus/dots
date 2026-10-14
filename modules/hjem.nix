@@ -11,6 +11,7 @@
         inputs.hjem.nixosModules.default
         # alias for hjem
         (lib.mkAliasOptionModule [ "hj" ] [ "hjem" "users" user ])
+
       ];
 
       config = {
@@ -19,6 +20,9 @@
           users.${user} = {
             directory = "/home/${user}";
           };
+          extraModules= [
+            inputs.hjem-rum.nixosModules.default
+          ];
         };
       };
     };
