@@ -1,5 +1,5 @@
 {
-  tags = [ "vm" ];
+  enabled = false;
 
   config =
     { lib, pkgs, ... }:
