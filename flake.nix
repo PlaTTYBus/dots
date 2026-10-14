@@ -62,7 +62,6 @@
 
         vmware = mkHostInfo [
           "gui"
-          "wm"
           "vm"
         ];
       };
