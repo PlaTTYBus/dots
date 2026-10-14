@@ -33,7 +33,7 @@
         # terminal
         rec {
           match.app_id = "${config.custom.programs.terminal.app_id}-vertical";
-          spawn = "kitty --class=${match.app_id}";
+          spawn = "ghostty --class=${match.app_id}";
           workspace = 7;
         }
       ];

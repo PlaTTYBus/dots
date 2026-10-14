@@ -18,8 +18,10 @@
       };
     };
 
-  tags = [ "gui" ];
+  # tags = [ "gui" ];
 
+  enabled = false;
+  
   config =
     {
       config,
@@ -35,7 +37,7 @@
         programs.terminal = {
           package = lib.mkOption {
             type = lib.types.package;
-            default = pkgs.kitty;
+            default = pkgs.ghostty;
             description = "Package to use for the terminal";
           };
 
