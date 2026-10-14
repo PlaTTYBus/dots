@@ -6,6 +6,6 @@
     nixConfTokens = true; # use GITHUB_TOKEN
   };
   environment.sessionVariables = {
-    GITHUB_TOKEN = config.sops.secrets.github_token.path;
+    GITHUB_TOKEN = sops.secrets.github_token.path;
   };
 }
