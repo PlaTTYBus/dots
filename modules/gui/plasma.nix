@@ -1,5 +1,5 @@
 {
-  hosts = [ "vm" ];
+  tags = [ "vm" ];
 
   config =
     { lib, pkgs, ... }:
