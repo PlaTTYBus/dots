@@ -21,7 +21,7 @@
             directory = "/home/${user}";
           };
           extraModules= [
-            inputs.hjem-rum.nixosModules.default
+            inputs.hjem-rum.hjemModules.default
           ];
         };
       };
