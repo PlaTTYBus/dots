@@ -13,12 +13,11 @@
         umbriel.settings = {
           keybinds =
             let
-              termExec = cmd: "spawn:kitty ${cmd}";
-              emacsExec = elisp: "spawn:emacs-launcher '${elisp}'";
+              termExec = cmd: "spawn:ghostty ${cmd}";
             in
             # shared keybinds
             {
-              "Mod+Return" = "spawn:kitty";
+              "Mod+Return" = "spawn:ghostty";
               "Mod+Shift+Return" = "spawn:noctalia msg panel-toggle launcher";
 
               "Mod+E" = "spawn:nemo /home/${user}/Downloads";
@@ -27,12 +26,7 @@
               "Mod+W" = "spawn:helium --profile-directory=Default";
               "Mod+Shift+W" = "spawn:helium --profile-directory=Default --incognito";
 
-              "Mod+V" = "spawn:emacsclient -c";
-              "Mod+Shift+V" = termExec "nvim";
-
-              "Mod+period" = emacsExec ''(projectile-find-file-in-directory "/persist/home/${user}/projects")'';
-              "Mod+Shift+period" =
-                emacsExec ''(projectile-find-file-in-directory "/persist/home/${user}/projects/nixpkgs")'';
+              "Mod+V" = termExec "nvim";
 
               "Ctrl+Alt+Delete" = "spawn:noctalia msg panel-toggle session";
 

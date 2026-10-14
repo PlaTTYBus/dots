@@ -23,11 +23,5 @@
           font-style = "Medium";
         };
       };
-      custom.programs = {
-              terminal = {
-                app_id = "ghostty";
-                desktop = "ghostty.desktop";
-              };
-      };
   };
 }
