@@ -177,40 +177,6 @@ echo "Creating /tank"
 sudo zfs create -o mountpoint=legacy zroot/tank
 sudo mount --mkdir -t zfs zroot/tank /mnt/tank
 
-echo "Cloning flake repository..."
-repo="${repo:-https://github.com/PlaTTYBus/dots.git}"
-tmpdir="$(mktemp -d)"
-git clone "$repo" "$tmpdir"
-
-nixos_file="$(find "$tmpdir" -name flake.nix | head -n1)"
-if [[ -z "$nixos_file" ]]; then
-    echo "Failed to locate flake.nix"
-    exit 1
-fi
-
-username=$(grep -m1 -E '^\s*user\s*=\s*"' "$nixos_file" | cut -d'"' -f2 || true)
-if [[ -z "$username" ]]; then
-    echo "Failed to determine username from $nixos_file"
-    exit 1
-fi
-echo "Detected username: $username"
-
-target="/mnt/home/$username/projects/dots"
-echo "Moving flake to target directory: $target"
-sudo mkdir -p "$target"
-sudo cp -a "$tmpdir"/. "$target"/
-rm -rf "$tmpdir"
-
-echo "Fixing ownership..."
-sudo chown -R 1000:100 "$target"
-
-read -rsp "Enter sops age key (e.g. AGE-SECRET-KEY-...):" sops_key
-echo
-sudo mkdir -p "/mnt/home/$username/.config/sops/age"
-printf '%s\n' "$sops_key" | sudo tee "/mnt/home/$username/.config/sops/age/keys.txt" > /dev/null
-sudo chmod 600 "/mnt/home/$username/.config/sops/age/keys.txt"
-sudo chown -R 1000:100 "/mnt/home/$username"
-
 echo "Installing NixOS..."
 sudo nixos-install --no-root-password --option extra-experimental-features "pipe-operators" --flake "$target#$host" --option tarball-ttl 0
 # sudo nixos-install --no-root-password --option extra-experimental-features "pipe-operators" --flake "/mnt/home/pviel/projects/dots#vmware" --option tarball-ttl 0

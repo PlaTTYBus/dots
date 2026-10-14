@@ -15,13 +15,11 @@
         # to edit secrets file, run "sops modules/hosts/secrets.json"
         defaultSopsFile = ./hosts/secrets.json;
         useSystemdActivation = true;
-
-        # use full path to persist as the secrets activation script runs at the start
-        # of stage 2 boot before impermanence
+        
         gnupg.sshKeyPaths = [ ];
         age = {
           # sshKeyPaths = [ "/home/${user}/.ssh/id_ed25519" ];
-          keyFile = "/home/${user}/.config/sops/age/keys.txt";
+          keyFile = "/var/lib/sops-nix/keys.txt";
           # This will generate a new key if the key specified above does not exist
           generateKey = false;
         };
