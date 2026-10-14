@@ -142,11 +142,16 @@
       # make a symlink of flake within the generation (e.g. /run/current-system/src)
       systemBuilderCommands = "ln -s ${self.sourceInfo.outPath} $out/src";
     };
-
+    
     systemd.tmpfiles.rules = [
-      # cleanup nixpkgs-review cache on boot
-      # "D! /home/${user}/.cache/nixpkgs-review 1755 ${user} users 5d"
-      # cleanup channels so nix stops complaining
+      # Ensure the user's cache directory exists and is user-owned.
+      "d /home/${user}/.cache 0700 ${user} users -"
+      "z /home/${user}/.cache 0700 ${user} users -"
+
+      # Clean up nixpkgs-review cache on boot.
+      "D! /home/${user}/.cache/nixpkgs-review 1755 ${user} users 5d"
+
+      # Clean up channels so nix stops complaining.
       "D! /nix/var/nix/profiles/per-user/root 1755 root root 1d"
     ];
   };

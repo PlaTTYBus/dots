@@ -72,7 +72,6 @@
         // xdg-user-dirs;
       };
 
-      xdg.userDirs.createDirectories = true;
 
       # follow xdg user dirs spec, see hm for original implementation
       # https://github.com/nix-community/home-manager/blob/master/modules/misc/xdg-user-dirs.nix
@@ -84,5 +83,16 @@
           value = lib.mapAttrs (_: value: ''"${value}"'') xdg-user-dirs;
         };
       };
+
+      systemd.tmpfiles.rules = [
+        "d /home/${user}/Desktop 0755 ${user} users -"
+        "d /home/${user}/Documents 0755 ${user} users -"
+        "d /home/${user}/Downloads 0755 ${user} users -"
+        "d /home/${user}/Music 0755 ${user} users -"
+        "d /home/${user}/Pictures 0755 ${user} users -"
+        "d /home/${user}/Public 0755 ${user} users -"
+        "d /home/${user}/Templates 0755 ${user} users -"
+        "d /home/${user}/Videos 0755 ${user} users -"
+  ];
     };
 }
