@@ -30,8 +30,8 @@
         };
       };
     };
-
-    hj.rum.programs.ghostty = {
+    config = {
+      hj.rum.programs.ghostty = {
       enable = true;
       settings = {
         font-family = "JetBrainsMono Nerd Font";
@@ -57,6 +57,7 @@
       terminal = {
         app_id = "ghostty";
       };
+    };
     };
   };
 }
