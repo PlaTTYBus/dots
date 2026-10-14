@@ -92,7 +92,7 @@
         optimise.automatic = true;
         settings = {
           flake-registry = ""; # don't use the global flake registry, define everything explicitly
-          nix-path = lib.mapAttrsToList (n: v: "${n}=${v}") flake-inputs;
+          nix-path = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flake-inputs;
           warn-dirty = false;
           # removes ~/.nix-profile and ~/.nix-defexpr
           use-xdg-base-directories = true;
