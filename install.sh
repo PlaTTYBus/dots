@@ -250,10 +250,8 @@ else
     if ! command -v git >/dev/null 2>&1; then
         git_cmd=(nix shell --extra-experimental-features "nix-command flakes" nixpkgs#git -c git)
     fi
-    # clone over https as no ssh key is available on the live iso
+    # clone over https, pushing after boot authenticates with the github token from sops (see github.nix)
     sudo "${git_cmd[@]}" clone https://github.com/PlaTTYBus/dots "$dots_dir"
-    # push over ssh after boot, the key is provided by sops
-    sudo "${git_cmd[@]}" -C "$dots_dir" remote set-url origin git@github.com:PlaTTYBus/dots.git
     sudo chown -R "$uid:$gid" "$dots_dir"
 fi
 

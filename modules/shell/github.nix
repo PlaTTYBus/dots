@@ -31,6 +31,12 @@
   # adapted from home-manager:
   # https://github.com/nix-community/home-manager/blob/142acd7a7d9eb7f0bb647f053b4ddfd01fdfbf1d/modules/programs/gh.nix#L191
   programs.git.config = {
+    # use https with the token above for all github remotes, so the passphrase protected ssh key is never needed
+    url."https://github.com/".insteadOf = [
+      "git@github.com:"
+      "ssh://git@github.com/"
+    ];
+
     credential =
       [
         "https://github.com"
