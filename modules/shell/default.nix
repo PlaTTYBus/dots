@@ -84,15 +84,11 @@
         };
       };
 
-      systemd.tmpfiles.rules = [
-        "d /home/${user}/Desktop 0755 ${user} users -"
-        "d /home/${user}/Documents 0755 ${user} users -"
-        "d /home/${user}/Downloads 0755 ${user} users -"
-        "d /home/${user}/Music 0755 ${user} users -"
-        "d /home/${user}/Pictures 0755 ${user} users -"
-        "d /home/${user}/Public 0755 ${user} users -"
-        "d /home/${user}/Templates 0755 ${user} users -"
-        "d /home/${user}/Videos 0755 ${user} users -"
-  ];
+      # create the xdg user dirs with hjem, paths are relative to the home directory
+      hj.files =
+        xdg-user-dirs
+        |> lib.attrValues
+        |> map (dir: lib.nameValuePair (lib.removePrefix "${homeDir}/" dir) { type = "directory"; })
+        |> lib.listToAttrs;
     };
 }

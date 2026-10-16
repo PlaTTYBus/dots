@@ -11,7 +11,8 @@
             insmod fat
             insmod search_fs_uuid
             insmod chain
-            search --fs-uuid --set=root {TODO: replace with actual UUID}
+            # find the windows efi partition by its bootloader, no hardcoded uuid needed
+            search --no-floppy --file --set=root /EFI/Microsoft/Boot/bootmgfw.efi
             chainloader /EFI/Microsoft/Boot/bootmgfw.efi
           }
         '';

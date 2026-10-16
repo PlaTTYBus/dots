@@ -17,10 +17,11 @@
           spawn = "helium --profile-directory=Default";
           workspace = 1;
         }
-        # neovim
-        {
-          match.app_id = "nvim";
-          spawn = "nvim";
+        # neovim, needs a terminal to show a window
+        # ghostty only accepts a --class containing a dot
+        rec {
+          match.app_id = "dev.${user}.nvim";
+          spawn = "ghostty --class=${match.app_id} -e nvim";
           workspace = 2;
         }
         # file manager
@@ -31,9 +32,9 @@
         }
 
         # terminal
-        rec {
-          match.app_id = "ghostty";
-          spawn = "ghostty --class=${match.app_id}";
+        {
+          match.app_id = config.custom.programs.terminal.app_id;
+          spawn = "ghostty";
           workspace = 3;
         }
       ];

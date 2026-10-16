@@ -19,7 +19,7 @@
         gnupg.sshKeyPaths = [ ];
         age = {
           # sshKeyPaths = [ "/home/${user}/.ssh/id_ed25519" ];
-          keyFile = "/home/pviel/.config/sops/age/keys.txt";
+          keyFile = "/home/${user}/.config/sops/age/keys.txt";
           # This will generate a new key if the key specified above does not exist
           generateKey = false;
         };

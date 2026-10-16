@@ -45,9 +45,6 @@
         ];
       };
 
-      # add tags to a hostInfo
-      addTags = info: extraTags: (info // { tags = (info.tags or [ ]) ++ extraTags; });
-
       hostInfo = {
         desktop = mkHostInfo [
           "gui"

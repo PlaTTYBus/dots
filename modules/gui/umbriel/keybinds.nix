@@ -13,15 +13,18 @@
         umbriel.settings = {
           keybinds =
             let
-              termExec = cmd: "spawn:ghostty ${cmd}";
+              # ghostty needs -e to run a command, positional args are rejected
+              termExec = cmd: "spawn:ghostty -e ${cmd}";
             in
             # shared keybinds
             {
+              # NOTE: +new-window only talks to an already running instance over D-Bus and fails otherwise,
+              # plain ghostty already reuses a running instance
               "Mod+Return" = "spawn:ghostty";
               "Mod+Shift+Return" = "spawn:noctalia msg panel-toggle launcher";
 
               "Mod+E" = "spawn:nemo /home/${user}/Downloads";
-              "Mod+Shift+E" = "spawn:${termExec "yazi /home/${user}/Downloads"}";
+              "Mod+Shift+E" = termExec "yazi /home/${user}/Downloads";
 
               "Mod+W" = "spawn:helium --profile-directory=Default";
               "Mod+Shift+W" = "spawn:helium --profile-directory=Default --incognito";

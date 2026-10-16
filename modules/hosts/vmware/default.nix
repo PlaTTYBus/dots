@@ -27,7 +27,6 @@
     };
     boot.zfs.requestEncryptionCredentials = lib.mkForce false; # VM is not encrypted
     networking.hostId = "2b859231";
-    services.xserver.videoDrivers = [ "vmware" ];
     virtualisation.vmware.guest.enable = true;
   };
 }

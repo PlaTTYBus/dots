@@ -1,22 +1,13 @@
 # NOTE: zfs datasets are created via install.sh
 {
-  config,
   pkgs,
-  tags,
   ...
 }:
 {
   boot = {
     kernelPackages = pkgs.linuxPackages_xanmod_latest;
     zfs = {
-      devNodes =
-        if builtins.elem "vm" tags then
-          "/dev/disk/by-partuuid"
-        # use by-id for intel mobo when not in a vm
-        else if config.hardware.cpu.intel.updateMicrocode then
-          "/dev/disk/by-id"
-        else
-          "/dev/disk/by-partuuid";
+      devNodes = "/dev/disk/by-partuuid";
 
       package = pkgs.zfs_unstable;
 

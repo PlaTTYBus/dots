@@ -22,7 +22,6 @@
     services.gnome.gnome-keyring.enable = true;
     security.pam.services.login.enableGnomeKeyring = true;
 
-    # use run0 for sudo
     security = {
       sudo = {
         enable = true;

@@ -32,7 +32,23 @@
           package = umbrielWrapper.wrap {
             inherit pkgs;
             package = inputs.umbriel.packages.${system}.default;
-            inherit (config.custom.programs.umbriel) settings;
+            settings =
+              let
+                inherit (config.custom.programs.umbriel) settings;
+                # when Mod is Alt (e.g. in vms), explicit Alt binds resolve to the same chord as Mod binds,
+                # umbriel does not warn about this, so drop the colliding Alt binds and keep the Mod ones
+                normalize = key: lib.toLower (lib.replaceStrings [ "Mod+" ] [ "Alt+" ] key);
+                modChords = settings.keybinds |> lib.attrNames |> lib.filter (lib.hasPrefix "Mod+") |> map normalize;
+              in
+              if (settings.general.mod_key or null) == "Alt" then
+                settings
+                // {
+                  keybinds = lib.filterAttrs (
+                    key: _: lib.hasPrefix "Mod+" key || !(lib.elem (normalize key) modChords)
+                  ) settings.keybinds;
+                }
+              else
+                settings;
 
             includeOptional = [
               # use noctalia colors

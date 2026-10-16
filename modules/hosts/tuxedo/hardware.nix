@@ -23,7 +23,6 @@
         extraModulePackages = [ ];
       };
 
-      services.displayManager.defaultSession = "umbriel";
       services.upower.enable = true;
 
       networking.useDHCP = lib.mkDefault true;

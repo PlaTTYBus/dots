@@ -182,6 +182,50 @@ echo "Installing NixOS..."
 sudo nixos-install --no-root-password --option extra-experimental-features "pipe-operators" --flake "github:PlaTTYBus/dots#$host" --option tarball-ttl 0
 # sudo nixos-install --no-root-password --option extra-experimental-features "pipe-operators" --flake "/mnt/home/pviel/projects/dots#vmware" --option tarball-ttl 0
 
+# sops-nix needs the age key on first boot to decrypt the user passwords, otherwise no user can log in
+echo ""
+echo "Setting up the sops age key"
+user="pviel"
+age_dir="/mnt/home/$user/.config/sops/age"
+age_keyfile="$age_dir/keys.txt"
+
+# owner as created by nixos-install, fall back to the defaults for the first normal user
+uid=$(awk -F: -v u="$user" '$1 == u { print $3 }' /mnt/etc/passwd 2>/dev/null)
+gid=$(awk -F: -v u="$user" '$1 == u { print $4 }' /mnt/etc/passwd 2>/dev/null)
+uid=${uid:-1000}
+gid=${gid:-100}
+
+while true; do
+    # -s hides the key while typing / pasting
+    read -rsp "Paste the age secret key (AGE-SECRET-KEY-1...), leave empty to skip: " age_key
+    echo ""
+    # strip surrounding whitespace from pasting
+    age_key=$(echo "$age_key" | tr -d '[:space:]')
+
+    if [[ -z "$age_key" ]]; then
+        echo "WARNING: no age key saved, secrets (including user passwords) will fail to decrypt on boot."
+        echo "Copy the key to $age_keyfile before rebooting."
+        break
+    fi
+
+    if [[ "$age_key" =~ ^AGE-SECRET-KEY-1[0-9A-Z]{58}$ ]]; then
+        # the home directory does not exist yet before first boot, so create the whole tree with the user as owner
+        for dir in "/mnt/home/$user" "/mnt/home/$user/.config" "/mnt/home/$user/.config/sops" "$age_dir"; do
+            sudo install -d -m 700 -o "$uid" -g "$gid" "$dir"
+        done
+        # umask so the key is never readable by others, not even briefly
+        (umask 077 && printf '%s\n' "$age_key" | sudo tee "$age_keyfile" > /dev/null)
+        sudo chown "$uid:$gid" "$age_keyfile"
+        sudo chmod 600 "$age_keyfile"
+        unset age_key
+        echo "Saved age key to $age_keyfile"
+        break
+    fi
+
+    echo "Invalid age key, it should look like AGE-SECRET-KEY-1 followed by 58 characters. Please try again."
+done
+
+echo ""
 echo "Installation complete. It is safe to reboot now."
 sudo umount -R /mnt
 sudo zpool export zroot

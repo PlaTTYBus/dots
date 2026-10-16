@@ -50,10 +50,7 @@
         };
       };
 
-      boot.zfs.requestEncryptionCredentials = lib.mkForce false;
-
       services = {
-        displayManager.defaultSession = "umbriel";
 /*
         pipewire = {
           wireplumber.extraConfig = {

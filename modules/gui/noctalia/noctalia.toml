@@ -140,7 +140,7 @@ source = "wallpaper"
 wallpaper_scheme = "m3-tonal-spot"
 
 [theme.templates]
-builtin_ids = ["btop", "cava", "kitty", "umbriel"]
+builtin_ids = ["btop", "cava", "umbriel"]
 community_ids = ["yazi"]
 
 [wallpaper]

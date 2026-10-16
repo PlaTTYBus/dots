@@ -118,6 +118,8 @@ inputs.wrappers.lib.wrapModule (
     };
 
     config.filesToPatch = [
+      # the session launcher falls back to exec'ing umbriel directly, which would skip the -c flag
+      "bin/start-umbriel"
       "lib/systemd/user/umbriel.service"
       "share/systemd/user/umbriel.service"
       "share/wayland-sessions/umbriel.desktop"
