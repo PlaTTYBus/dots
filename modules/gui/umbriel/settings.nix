@@ -261,9 +261,10 @@
                 keyboard = {
                   # ASCII keybind fallback uses only layouts listed for this keyboard; a single
                   # non-Latin layout has no implicit Latin fallback.
-                  layout = ""; # "us,de" loads both; switch with keyboard-layout-next
-                  variant = "";
-                  options = ""; # XKB options, e.g. "grp:alt_shift_toggle"
+                  # use the system layout from services.xserver.xkb (also used by the tty and xwayland),
+                  # an empty layout makes libxkbcommon fall back to "us"
+                  # "us,de" loads both; switch with keyboard-layout-next
+                  inherit (config.services.xserver.xkb) layout variant options; # options e.g. "grp:alt_shift_toggle"
                   repeat_rate = 25; # 0-1000 Hz
                   repeat_delay = 600; # 0-10000 ms
                   numlock_toggle = true; # true enables NumLock when a keyboard connects; false leaves it off
