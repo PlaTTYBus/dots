@@ -8,12 +8,22 @@
       lib,
       pkgs,
       system,
+      tags,
       user,
       ...
     }:
     let
       tomlFormat = pkgs.formats.toml { };
       umbrielWrapper = import ./_wrapper.nix { inherit inputs; };
+
+      umbrielPackage = inputs.umbriel.packages.${system}.default;
+      # vmwgfx returns TTM handles for imported dmabufs, which makes wlroots reject every gpu rendered
+      # client (noctalia, ghostty, ...). Only patched for vms, so real hosts keep the cached wlroots
+      umbrielVmPackage = umbrielPackage.override {
+        wlroots_0_20 = pkgs.wlroots_0_20.overrideAttrs (o: {
+          patches = (o.patches or [ ]) ++ [ ./wlroots-vmwgfx-dmabuf.patch ];
+        });
+      };
     in
     {
       options.custom = {
@@ -31,7 +41,7 @@
           enable = true;
           package = umbrielWrapper.wrap {
             inherit pkgs;
-            package = inputs.umbriel.packages.${system}.default;
+            package = if builtins.elem "vm" tags then umbrielVmPackage else umbrielPackage;
             settings =
               let
                 inherit (config.custom.programs.umbriel) settings;
