@@ -3,13 +3,13 @@
 # CREDITS: Yoinked by Iynaix (https://github.com/iynaix/dotfiles/blob/main/install.sh)
 # Changes I made:
 # - Check for blkdiscard support and skip if not supported
+# - Encrypt the pool only for the desktop and tuxedo hosts
 # - Export zpool at the end of the script to avoid "device busy" errors when rebooting
-# - Changed the installation workflow to:
-#   1. Clone the flake into tmp dir
-#   2. Install NixOS using the flake and the selected host from tmp dir
-#   3. Find the flake.nix file and extract the username from it
-#   4. Move the flake into /home/<username>/projects/dots
-#   5. Fix ownership of the flake directory to the user
+# - After nixos-install:
+#   1. Read the username from the flake
+#   2. Save the pasted sops age key to /home/<username>/.config/sops/age/keys.txt
+#   3. Clone the flake into /home/<username>/projects/dots
+# See README.md for a step by step description
 
 # bash <(curl -L https://raw.githubusercontent.com/plattybus/dots/main/install.sh)
 # nix eval '.#nixosConfigurations.vmware.config.services.desktopManager.plasma6.enable'

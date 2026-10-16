@@ -256,7 +256,7 @@
               # layout.dwindle.preserve_split = true
 
               input = {
-                middle_click_paste = true; # primary-selection clipboard, applies on reload
+                middle_click_paste = false; # primary-selection clipboard, disabled like gtk-enable-primary-paste, applies on reload
 
                 keyboard = {
                   # ASCII keybind fallback uses only layouts listed for this keyboard; a single
