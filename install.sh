@@ -236,6 +236,27 @@ while true; do
     echo "Invalid age key, it should look like AGE-SECRET-KEY-1 followed by 58 characters. Please try again."
 done
 
+# clone the flake so it is ready at ~/projects/dots (/etc/nixos and nh point there)
+echo ""
+dots_dir="/mnt/home/$user/projects/dots"
+if [[ -e "$dots_dir" ]]; then
+    echo "$dots_dir already exists, skipping clone"
+else
+    echo "Cloning flake to $dots_dir"
+    sudo install -d -m 700 -o "$uid" -g "$gid" "/mnt/home/$user"
+    sudo install -d -m 755 -o "$uid" -g "$gid" "/mnt/home/$user/projects"
+    # fall back to git from nixpkgs in case the iso does not ship it
+    git_cmd=(git)
+    if ! command -v git >/dev/null 2>&1; then
+        git_cmd=(nix shell --extra-experimental-features "nix-command flakes" nixpkgs#git -c git)
+    fi
+    # clone over https as no ssh key is available on the live iso
+    sudo "${git_cmd[@]}" clone https://github.com/PlaTTYBus/dots "$dots_dir"
+    # push over ssh after boot, the key is provided by sops
+    sudo "${git_cmd[@]}" -C "$dots_dir" remote set-url origin git@github.com:PlaTTYBus/dots.git
+    sudo chown -R "$uid:$gid" "$dots_dir"
+fi
+
 echo ""
 echo "Installation complete. It is safe to reboot now."
 sudo umount -R /mnt
