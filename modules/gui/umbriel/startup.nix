@@ -4,9 +4,7 @@
   config =
     {
       config,
-      host,
       lib,
-      pkgs,
       user,
       ...
     }:
@@ -22,7 +20,7 @@
         rec {
           match.app_id = "dev.${user}.nvim";
           spawn = "ghostty --class=${match.app_id} -e nvim";
-          workspace = 2;
+          workspace = 3;
         }
         # file manager
         {
@@ -31,11 +29,11 @@
           workspace = 4;
         }
 
-        # terminal
+        # terminal, opens a window in the ghostty background service (started via dbus if not running yet)
         {
           match.app_id = config.custom.programs.terminal.app_id;
-          spawn = "ghostty";
-          workspace = 3;
+          spawn = "ghostty +new-window";
+          workspace = 2;
         }
       ];
     in

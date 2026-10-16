@@ -1,11 +1,8 @@
 {
-  config,
-  host,
-  lib,
   pkgs,
-  user,
   ...
-}:{
+}:
+{
   # setup pipewire for audio
   security.rtkit.enable = true;
   services = {

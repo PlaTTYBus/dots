@@ -144,7 +144,7 @@ builtin_ids = ["btop", "cava", "umbriel"]
 community_ids = ["yazi"]
 
 [wallpaper]
-directory = "/home/pviel/Pictures/Wallpapers"
+# directory is set in default.nix from the username
 transition_on_startup = true
 
 [wallpaper.automation]

@@ -1,4 +1,4 @@
-# By @Iynaix 
+# By @Iynaix
 { lib, ... }:
 rec {
   generators = {

@@ -48,7 +48,11 @@
                 # when Mod is Alt (e.g. in vms), explicit Alt binds resolve to the same chord as Mod binds,
                 # umbriel does not warn about this, so drop the colliding Alt binds and keep the Mod ones
                 normalize = key: lib.toLower (lib.replaceStrings [ "Mod+" ] [ "Alt+" ] key);
-                modChords = settings.keybinds |> lib.attrNames |> lib.filter (lib.hasPrefix "Mod+") |> map normalize;
+                modChords =
+                  settings.keybinds
+                  |> lib.attrNames
+                  |> lib.filter (lib.hasPrefix "Mod+")
+                  |> map normalize;
               in
               if (settings.general.mod_key or null) == "Alt" then
                 settings
@@ -71,9 +75,15 @@
 
         xdg.portal = {
           config = {
-            common.default = [ "gnome" ];
-            obs.default = [ "gnome" ];
+            # xdg-desktop-portal-gnome is not installed, gtk is the generic fallback
+            common.default = [ "gtk" ];
+            # this replaces umbriel-portals.conf from the umbriel portal package, so keep its default,
+            # otherwise screencasting and screenshots never reach the umbriel portal
             umbriel = {
+              default = [
+                "umbriel"
+                "gtk"
+              ];
               "org.freedesktop.impl.portal.FileChooser" = "gtk";
             };
           };

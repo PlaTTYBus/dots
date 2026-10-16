@@ -53,20 +53,9 @@
       ...
     }:
     {
-      environment = {
-        sessionVariables = {
-          QT_QPA_PLATFORMTHEME = "qt5ct";
-          QT_STYLE_OVERRIDE = "kvantum";
-        };
+      environment.systemPackages = [ pkgs.kdePackages.qtwayland ];
 
-        systemPackages = with pkgs; [
-          kdePackages.qt6ct
-          kdePackages.qtstyleplugin-kvantum
-          kdePackages.qtwayland
-        ];
-      };
-
-      # use gtk theme on qt apps
+      # the qt module installs qt5ct, qt6ct and kvantum and sets QT_QPA_PLATFORMTHEME / QT_STYLE_OVERRIDE
       qt = {
         enable = true;
         platformTheme = "qt5ct";

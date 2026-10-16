@@ -111,64 +111,66 @@ inputs.wrappers.lib.wrapModule (
       };
     };
 
-    config.package = lib.mkDefault pkgs.umbriel;
+    config = {
+      package = lib.mkDefault pkgs.umbriel;
 
-    config.flags = {
-      "-c" = config.constructFiles.generatedConfig.path;
-    };
+      flags = {
+        "-c" = config.constructFiles.generatedConfig.path;
+      };
 
-    config.filesToPatch = [
-      # the session launcher falls back to exec'ing umbriel directly, which would skip the -c flag
-      "bin/start-umbriel"
-      "lib/systemd/user/umbriel.service"
-      "share/systemd/user/umbriel.service"
-      "share/wayland-sessions/umbriel.desktop"
-    ];
+      filesToPatch = [
+        # the session launcher falls back to exec'ing umbriel directly, which would skip the -c flag
+        "bin/start-umbriel"
+        "lib/systemd/user/umbriel.service"
+        "share/systemd/user/umbriel.service"
+        "share/wayland-sessions/umbriel.desktop"
+      ];
 
-    config.drv.installPhase = lib.mkIf (!config.disableConfigValidation) ''
-      runHook preInstall
-      ${lib.getExe config.package} config validate -c ${config.constructFiles.generatedConfig.path}
-      runHook postInstall
-    '';
+      drv.installPhase = lib.mkIf (!config.disableConfigValidation) ''
+        runHook preInstall
+        ${lib.getExe config.package} config validate -c ${config.constructFiles.generatedConfig.path}
+        runHook postInstall
+      '';
 
-    # User supplied settings are written to a separate file before being included in a
-    # minimal wrapper file with just includes.
-    # This is so files in includeOptional are able to override settings within the
-    # user config; otherwise the including file takes priority over any other settings, see:
-    # https://docs.noctalia.dev/umbriel/configuration/?section=include#include
-    config.constructFiles.userConfig =
-      if config."config.toml".content or "" != "" then
-        {
-          relPath = "${config.binName}-user-config.toml";
-          content = config."config.toml".content;
-        }
-      else
-        {
-          relPath = "${config.binName}-user-config.toml";
-          builder = ''${pkgs.remarshal}/bin/json2toml "$1" "$2"'';
-          content = builtins.toJSON config.settings;
-        };
+      # User supplied settings are written to a separate file before being included in a
+      # minimal wrapper file with just includes.
+      # This is so files in includeOptional are able to override settings within the
+      # user config; otherwise the including file takes priority over any other settings, see:
+      # https://docs.noctalia.dev/umbriel/configuration/?section=include#include
+      constructFiles.userConfig =
+        if config."config.toml".content or "" != "" then
+          {
+            relPath = "${config.binName}-user-config.toml";
+            content = config."config.toml".content;
+          }
+        else
+          {
+            relPath = "${config.binName}-user-config.toml";
+            builder = ''${pkgs.remarshal}/bin/json2toml "$1" "$2"'';
+            content = builtins.toJSON config.settings;
+          };
 
-    config.constructFiles.generatedConfig = {
-      relPath = "${config.binName}-config.lua";
-      builder = ''${pkgs.remarshal}/bin/json2toml "$1" "$2"'';
-      content = builtins.toJSON {
-        include = {
-          files = [ config.constructFiles.userConfig.path ];
-          optional.files = config.includeOptional;
+      constructFiles.generatedConfig = {
+        relPath = "${config.binName}-config.toml";
+        builder = ''${pkgs.remarshal}/bin/json2toml "$1" "$2"'';
+        content = builtins.toJSON {
+          include = {
+            files = [ config.constructFiles.userConfig.path ];
+            optional.files = config.includeOptional;
+          };
         };
       };
-    };
 
-    config.systemd.user.service.umbriel = lib.mkIf (!config.disableConfigHotReload) {
-      Unit.X-Reload-Triggers = [ "${config.constructFiles.generatedConfig.path}" ];
-      Service = {
-        ExecReload = "${lib.getExe config.package} config-replace ${config.constructFiles.generatedConfig.path}";
-        X-ReloadIfChanged = true;
+      systemd.user.service.umbriel = lib.mkIf (!config.disableConfigHotReload) {
+        Unit.X-Reload-Triggers = [ "${config.constructFiles.generatedConfig.path}" ];
+        Service = {
+          ExecReload = "${lib.getExe config.package} config-replace ${config.constructFiles.generatedConfig.path}";
+          X-ReloadIfChanged = true;
+        };
       };
-    };
 
-    config.meta.platforms = lib.platforms.linux;
-    config.passthru.providedSessions = pkgs.umbriel.passthru.providedSessions;
+      meta.platforms = lib.platforms.linux;
+      passthru.providedSessions = pkgs.umbriel.passthru.providedSessions;
+    };
   }
 )

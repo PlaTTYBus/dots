@@ -20,7 +20,7 @@
           users.${user} = {
             directory = "/home/${user}";
           };
-          extraModules= [
+          extraModules = [
             inputs.hjem-rum.hjemModules.default
           ];
         };

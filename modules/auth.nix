@@ -1,5 +1,4 @@
 {
-  lib,
   user,
   ...
 }:
@@ -13,10 +12,6 @@
         KbdInteractiveAuthentication = false;
       };
     };
-
-    
-    
-
 
     # keyring settings
     services.gnome.gnome-keyring.enable = true;

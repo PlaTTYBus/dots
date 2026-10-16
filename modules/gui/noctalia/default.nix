@@ -44,12 +44,12 @@
       inputs,
       lib,
       pkgs,
-      tags,
       user,
       ...
     }:
     let
       tomlFormat = pkgs.formats.toml { };
+      wallpaperDir = "Pictures/Wallpapers";
 
       noctalia-reload = pkgs.writeShellApplication {
         name = "noctalia-reload";
@@ -102,6 +102,9 @@
           pkgs.wlr-randr
         ];
 
+        # wallpaper folder for noctalia, created by hjem relative to the home directory
+        hj.files.${wallpaperDir}.type = "directory";
+
         custom = {
           programs = {
             umbriel.settings.layer_rule = [
@@ -114,6 +117,8 @@
             ];
 
             noctalia.settings = {
+              wallpaper.directory = "/home/${user}/${wallpaperDir}";
+
               # base control center shortcuts across all hosts
               control_center.shortcuts = [
                 { type = "caffeine"; } # idle inhibit

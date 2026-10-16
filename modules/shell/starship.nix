@@ -7,9 +7,11 @@
       ...
     }:
     let
-      accent_bg = "blue";
       # divine orb style :)
       important_style = "bg:white fg:bold #ff0000";
+
+      # rounded pill segment, uses the named terminal colors so it follows the noctalia color scheme
+      pill = color: content: "[](${color})[${content}](bold fg:black bg:${color})[](${color})";
     in
     {
       starship = inputs.wrappers.wrappers.starship.wrap {
@@ -17,16 +19,18 @@
         settings = {
           add_newline = false;
           format = lib.concatStrings [
-            # begin left format
             "$username"
             "$hostname"
-            "$directory(${accent_bg}) "
+            "$directory"
             "$git_branch"
             "$git_state"
             "$git_status"
             "$nix_shell"
-            " "
             "$character"
+          ];
+          right_format = lib.concatStrings [
+            "$cmd_duration"
+            "$localip"
           ];
 
           # modules
@@ -35,21 +39,26 @@
             success_symbol = "[](purple)";
             vimcmd_symbol = "[](green)";
           };
+          # only shown as root or over ssh
           username = {
             style_root = important_style;
             style_user = important_style;
-            format = "[ $user ]($style) in ";
+            format = "[ $user ]($style) ";
           };
           hostname = {
-            style = important_style;
+            ssh_only = false;
+            ssh_symbol = "󰣀 ";
+            format = "${pill "purple" "󰒋 $ssh_symbol$hostname"} ";
           };
           directory = {
-            format = "[ $path ]($style)";
-            style = "bold bg:${accent_bg} fg:black";
+            truncation_length = 3;
+            truncate_to_repo = true;
+            read_only = " ";
+            format = "${pill "blue" " $path$read_only"} ";
           };
           git_branch = {
             symbol = "";
-            format = "on [$symbol $branch]($style)";
+            format = "[$symbol $branch]($style) ";
             style = "yellow";
           };
           git_state = {
@@ -71,6 +80,21 @@
             format = "[$symbol]($style) ";
             symbol = "";
             style = "bright-magenta";
+          };
+
+          # right prompt
+          # runtime of the last command, shown when it took longer than half a second
+          cmd_duration = {
+            min_time = 500;
+            format = "[ $duration]($style) ";
+            style = "yellow";
+          };
+          # local ip address, hidden when not connected
+          localip = {
+            disabled = false;
+            ssh_only = false;
+            format = "[󰩟 $localipv4]($style)";
+            style = "cyan";
           };
         };
       };

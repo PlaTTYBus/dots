@@ -52,7 +52,7 @@
           # ABP
           "gighmmpiobklfepjocnamgkkbiglidom"
           # Privacy Badger
-          "pkehgijcmpdhfbdbbnkijodmdjhbjlg"
+          "pkehgijcmpdhfbdbbnkijodmdjhbjlgp"
         ];
       };
 

@@ -18,9 +18,8 @@
             in
             # shared keybinds
             {
-              # NOTE: +new-window only talks to an already running instance over D-Bus and fails otherwise,
-              # plain ghostty already reuses a running instance
-              "Mod+Return" = "spawn:ghostty";
+              # opens a window in the ghostty background service, dbus activation starts it if needed
+              "Mod+Return" = "spawn:ghostty +new-window";
               "Mod+Shift+Return" = "spawn:noctalia msg panel-toggle launcher";
 
               "Mod+E" = "spawn:nemo /home/${user}/Downloads";

@@ -142,7 +142,7 @@
       # make a symlink of flake within the generation (e.g. /run/current-system/src)
       systemBuilderCommands = "ln -s ${self.sourceInfo.outPath} $out/src";
     };
-    
+
     systemd.tmpfiles.rules = [
       # Ensure the user's cache directory exists and is user-owned.
       "d /home/${user}/.cache 0700 ${user} users -"

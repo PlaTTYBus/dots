@@ -1,80 +1,72 @@
 {
   hosts = [ "desktop" ];
 
-  config =
-    {
-      lib,
-      pkgs,
-      tags,
-      user,
-      ...
-    }:
-    {
-      custom = {
-        hardware = {
-          monitors = [
-            {
-              name = "DP-1";
-              width = 2560;
-              height = 1440;
-              refreshRate = "360.000";
-              vrr = false;
-              x = 1440;
-              y = 1080;
-              workspaces = [
-                1
-                2
-                3
-                4
-                5
-              ];
-              hdr = true; # toggle to use hdr
-            }
+  config = _: {
+    custom = {
+      hardware = {
+        monitors = [
+          {
+            name = "DP-1";
+            width = 2560;
+            height = 1440;
+            refreshRate = "360.000";
+            vrr = false;
+            x = 1440;
+            y = 1080;
+            workspaces = [
+              1
+              2
+              3
+              4
+              5
+            ];
+            hdr = true; # toggle to use hdr
+          }
+        ];
+      };
+      lock.enable = false;
+
+      programs = {
+        btop.settings = {
+          custom_gpu_name0 = "AMD Radeon RX 9070XT";
+        };
+
+        noctalia.settings = {
+          control_center.hidden_tabs = [
+            "monitor"
+            "network"
+            "bluetooth"
+            "power"
           ];
         };
-        lock.enable = false;
-
-        programs = {
-          btop.settings = {
-            custom_gpu_name0 = "AMD Radeon RX 9070XT";
-          };
-
-          noctalia.settings = {
-            control_center.hidden_tabs = [
-              "monitor"
-              "network"
-              "bluetooth"
-              "power"
-            ];
-          };
-        };
       };
-
-      services = {
-/*
-        pipewire = {
-          wireplumber.extraConfig = {
-            "99-disable-devices" = {
-              "monitor.alsa.rules" = [
-                {
-                  matches = [
-                    { "device.name" = "alsa_card.pci-0000_03_00.1"; }
-                    { "device.name" = "alsa_card.usb-Generic_USB_Audio-00"; }
-                    { "device.name" = "alsa_card.pci-0000_0f_00.1"; }
-                  ];
-                  actions = {
-                    update-props = {
-                      "device.disabled" = true;
-                    };
-                  };
-                }
-              ];
-            };
-          };
-        };
-        */
-      };
-
-      networking.hostId = "9ea0e958";
     };
+
+    services = {
+      /*
+              pipewire = {
+                wireplumber.extraConfig = {
+                  "99-disable-devices" = {
+                    "monitor.alsa.rules" = [
+                      {
+                        matches = [
+                          { "device.name" = "alsa_card.pci-0000_03_00.1"; }
+                          { "device.name" = "alsa_card.usb-Generic_USB_Audio-00"; }
+                          { "device.name" = "alsa_card.pci-0000_0f_00.1"; }
+                        ];
+                        actions = {
+                          update-props = {
+                            "device.disabled" = true;
+                          };
+                        };
+                      }
+                    ];
+                  };
+                };
+              };
+      */
+    };
+
+    networking.hostId = "9ea0e958";
+  };
 }

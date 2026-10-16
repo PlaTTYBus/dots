@@ -117,7 +117,6 @@
           };
         }
 
-
         # smart-enter: enter for directory, open for file
         {
           plugins = { inherit (pkgs.yaziPlugins) smart-enter; };

@@ -63,7 +63,7 @@
             Settings = {
               gtk-theme-name = gtkCfg.theme.name;
               gtk-icon-theme-name = config.custom.gtk.iconTheme.name;
-              gtk-font-name = "${gtkCfg.font.name} 10";
+              gtk-font-name = "${gtkCfg.font.name} ${toString gtkCfg.font.size}";
               gtk-application-prefer-dark-theme = 1;
               gtk-error-bell = 0;
             };
@@ -75,7 +75,7 @@
               "xdg/gtk-3.0/settings.ini".text = gtkIni;
               "xdg/gtk-4.0/settings.ini".text = gtkIni;
               "xdg/gtk-2.0/gtkrc".text = ''
-                gtk-font-name = "${gtkCfg.font.name} 10";
+                gtk-font-name = "${gtkCfg.font.name} ${toString gtkCfg.font.size}";
                 gtk-icon-theme-name = "${config.custom.gtk.iconTheme.name}";
                 gtk-theme-name = "${gtkCfg.theme.name}";
               '';
@@ -107,7 +107,7 @@
                       color-scheme = "prefer-dark"; # set dark theme for gtk 4
                       cursor-theme = gtkCfg.cursor.name;
                       cursor-size = lib.gvariant.mkUint32 gtkCfg.cursor.size;
-                      font-name = "${gtkCfg.font.name} 10";
+                      font-name = "${gtkCfg.font.name} ${toString gtkCfg.font.size}";
                       gtk-theme = gtkCfg.theme.name;
                       icon-theme = gtkCfg.iconTheme.name;
                       # disable middle click paste
