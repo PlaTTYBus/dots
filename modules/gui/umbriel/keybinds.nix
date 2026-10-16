@@ -80,7 +80,11 @@
               # Open/close the Overview: a zoomed-out view of workspaces and windows.
               # You can also move the mouse into the top-left hot corner,
               # or do a four-finger swipe up on a touchpad.
-              "Mod+O" = "overview-toggle";
+              "Mod+O" = {
+                action = "cheatsheet-toggle";
+                repeat = false;
+              };
+              "Mod+Shift+O" = "overview-toggle";
 
               "Mod+H" = "window-focus-or-output-left";
               "Mod+J" = "window-focus-or-workspace-down";

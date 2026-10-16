@@ -44,12 +44,16 @@
 
             # strip the leading #
             THEME_NAME="Tela-''${1#\#}"
-            THEME_DIR="/tmp/$THEME_NAME"
+            # generate into the cache instead of /tmp, so the icons still exist on the next boot
+            CACHE_DIR="''${XDG_CACHE_HOME:-$HOME/.cache}/dynamic-themes"
+            THEME_DIR="$CACHE_DIR/$THEME_NAME"
 
             # uncomment for debugging
             # rm -rf "$THEME_DIR"
 
-            if [[ ! -d "$THEME_DIR" ]]; then
+            # regenerate when the template changed, the theme symlinks into it and would break after garbage collection
+            if [[ "$(cat "$THEME_DIR/.source" 2>/dev/null)" != "${tela-template}" ]]; then
+                rm -rf "$THEME_DIR"
                 mkdir -p "$THEME_DIR"
                 lndir "${tela-template}" "$THEME_DIR"
 
@@ -68,10 +72,16 @@
                 for dir in 16 22 24 32 scalable;
                   do ln -sr "$THEME_DIR/$dir" "$THEME_DIR/$dir@2x";
                 done
+
+                echo "${tela-template}" > "$THEME_DIR/.source"
             fi
 
             mkdir -p "$HOME/.local/share/icons"
             ln -sfn "$THEME_DIR" "$HOME/.local/share/icons/$THEME_NAME"
+
+            # remove the icon themes generated for previous colors
+            find "$CACHE_DIR" -mindepth 1 -maxdepth 1 -name 'Tela-*' ! -name "$THEME_NAME" -exec rm -rf {} +
+            find "$HOME/.local/share/icons" -maxdepth 1 -name 'Tela-*' -xtype l -delete
             dconf write "/org/gnome/desktop/interface/icon-theme" "'$THEME_NAME'"
             gtk-update-icon-cache -f -t "$THEME_DIR"
           '';

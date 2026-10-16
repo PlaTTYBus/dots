@@ -72,7 +72,7 @@
               general = {
                 mod_key = lib.mkIf (builtins.elem "vm" tags) "Alt";
                 xwayland = true; # requires restart to change
-                show_cheatsheet = true;
+                show_cheatsheet = false;
                 focus_on_activate = true; # unsolicited requests cannot add focus; trusted launches may still focus
                 honor_restored_maximize = false; # let apps restore their saved maximized state
               };

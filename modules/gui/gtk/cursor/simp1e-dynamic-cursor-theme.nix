@@ -13,21 +13,31 @@
 
         text = /* sh */ ''
           # $1 is the accent color, $2 is a comma separated list of sizes to generate
-          out="/tmp/simp1e-cursors"
+          # build in the cache instead of /tmp, so the cursor theme still exists on the next boot
+          out="''${XDG_CACHE_HOME:-$HOME/.cache}/dynamic-themes/simp1e-cursors"
 
-          if [ ! -d "$out" ]; then
-            cp -r --no-preserve=mode ${pkgs.simp1e-cursors.src} $out
-            chmod -R u+w $out
-            rm $out/src/color_schemes/*.txt
-            rm $out/src/templates/left.svg
+          # refresh the sources when simp1e-cursors is updated
+          if [[ "$(cat "$out/.source" 2>/dev/null)" != "${pkgs.simp1e-cursors.src}" ]]; then
+            rm -rf "$out"
+            mkdir -p "$(dirname "$out")"
+            cp -r --no-preserve=mode ${pkgs.simp1e-cursors.src} "$out"
+            chmod -R u+w "$out"
+            rm "$out"/src/color_schemes/*.txt
+            rm "$out/src/templates/left.svg"
+            echo "${pkgs.simp1e-cursors.src}" > "$out/.source"
           fi
 
           cp "/tmp/Simp1e-Noctalia.txt" "$out/src/color_schemes/Simp1e-Noctalia.txt"
 
-          HOME=/tmp sh $out/build.sh --sizes="$2"
+          HOME=/tmp sh "$out/build.sh" --sizes="$2"
 
           THEME_NAME="Simp1e-Noctalia-$1"
-          ln -s "$out/built_themes/$THEME_NAME" "$HOME/.local/share/icons/$THEME_NAME"
+          mkdir -p "$HOME/.local/share/icons"
+          ln -sfn "$out/built_themes/$THEME_NAME" "$HOME/.local/share/icons/$THEME_NAME"
+
+          # remove the cursor themes built for previous colors
+          find "$out/built_themes" -mindepth 1 -maxdepth 1 -name 'Simp1e-Noctalia-*' ! -name "$THEME_NAME" -exec rm -rf {} +
+          find "$HOME/.local/share/icons" -maxdepth 1 -name 'Simp1e-Noctalia-*' -xtype l -delete
 
           # update gtk with cursor
           dconf write "/org/gnome/desktop/interface/cursor-theme" "'$THEME_NAME'"

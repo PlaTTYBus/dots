@@ -49,12 +49,18 @@
 
             # strip the leading #s
             THEME_NAME="Tokyonight-''${1#\#}-''${2#\#}"
-            THEME_DIR="/tmp/$THEME_NAME"
+            # generate into the cache instead of /tmp, so the theme still exists on the next boot,
+            # apps autostarted before noctalia regenerates it would fall back to adwaita otherwise
+            CACHE_DIR="''${XDG_CACHE_HOME:-$HOME/.cache}/dynamic-themes"
+            THEME_DIR="$CACHE_DIR/$THEME_NAME"
+            mkdir -p "$CACHE_DIR"
 
             # uncomment for debugging
             # rm -rf "$THEME_DIR"
 
-            if [[ ! -d "$THEME_DIR" ]]; then
+            # regenerate when the template changed, e.g. after an update of the theme
+            if [[ "$(cat "$THEME_DIR/.source" 2>/dev/null)" != "${tokyonight-template-default}" ]]; then
+              rm -rf "$THEME_DIR"
               cp -r ${tokyonight-template-default} "$THEME_DIR"
               chmod -R +w "$THEME_DIR"
 
@@ -80,10 +86,16 @@
               background-color: $2;
             }
             EOF
+
+              echo "${tokyonight-template-default}" > "$THEME_DIR/.source"
             fi
 
             mkdir -p "$HOME/.local/share/themes"
             ln -sfn "$THEME_DIR" "$HOME/.local/share/themes/$THEME_NAME"
+
+            # remove the themes generated for previous colors
+            find "$CACHE_DIR" -mindepth 1 -maxdepth 1 -name 'Tokyonight-*' ! -name "$THEME_NAME" -exec rm -rf {} +
+            find "$HOME/.local/share/themes" -maxdepth 1 -name 'Tokyonight-*' -xtype l -delete
             dconf write "/org/gnome/desktop/interface/gtk-theme" "'$THEME_NAME'"
           '';
         };

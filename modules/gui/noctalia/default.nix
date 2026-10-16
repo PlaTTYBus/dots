@@ -144,11 +144,8 @@
                     {
                       inherit (d) name;
                       value = {
-                        start = [
-                          "control-center"
-                          "workspaces"
-                        ];
-                        center = [ ];
+                        start = [ "control-center" ];
+                        center = [ "workspaces" ];
                         margin_ends = builtins.div (normalized_width - target_width) 2;
                       };
                     }
