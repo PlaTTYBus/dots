@@ -178,14 +178,25 @@ echo "Creating /tank"
 sudo zfs create -o mountpoint=legacy zroot/tank
 sudo mount --mkdir -t zfs zroot/tank /mnt/tank
 
+flake="github:PlaTTYBus/dots"
+
 echo "Installing NixOS..."
-sudo nixos-install --no-root-password --option extra-experimental-features "pipe-operators" --flake "github:PlaTTYBus/dots#$host" --option tarball-ttl 0
+sudo nixos-install --no-root-password --option extra-experimental-features "pipe-operators" --flake "$flake#$host" --option tarball-ttl 0
 # sudo nixos-install --no-root-password --option extra-experimental-features "pipe-operators" --flake "/mnt/home/pviel/projects/dots#vmware" --option tarball-ttl 0
 
 # sops-nix needs the age key on first boot to decrypt the user passwords, otherwise no user can log in
 echo ""
 echo "Setting up the sops age key"
-user="pviel"
+
+# read the username from the specialArgs set in flake.nix, the flake is already fetched by nixos-install
+if ! user=$(nix eval --raw \
+    --extra-experimental-features "nix-command flakes pipe-operators" \
+    --option tarball-ttl 0 \
+    "$flake#nixosConfigurations.$host._module.specialArgs.user"); then
+    read -rp "Could not read the username from the flake, please enter it: " user
+fi
+echo "Using user: $user"
+
 age_dir="/mnt/home/$user/.config/sops/age"
 age_keyfile="$age_dir/keys.txt"
 
