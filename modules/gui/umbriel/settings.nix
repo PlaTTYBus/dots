@@ -301,7 +301,8 @@
                 cursor = {
                   theme = config.custom.gtk.cursor.name;
                   size = config.custom.gtk.cursor.size;
-                  hardware_cursor = true; # false forces software cursor composition
+                  # false forces software cursor composition, the hardware cursor plane is invisible on vmwgfx
+                  hardware_cursor = !(builtins.elem "vm" tags);
                   follows_focus = false; # warp to windows selected by focus navigation
                   hide_when_typing = false; # hide after typing unless a pointer button is held
                   hide_timeout_ms = 0; # 0-3600000, 0 disables hiding
