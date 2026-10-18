@@ -21,7 +21,7 @@
       # client (noctalia, ghostty, ...). Only patched for vms, so real hosts keep the cached wlroots
       umbrielVmPackage = umbrielPackage.override {
         wlroots_0_20 = pkgs.wlroots_0_20.overrideAttrs (o: {
-          patches = (o.patches or [ ]) ++ [ ./wlroots-vmwgfx-dmabuf.patch ];
+          patches = (o.patches or [ ]) ++ [ ../../../patches/wlroots-vmwgfx-dmabuf.patch ];
         });
       };
     in

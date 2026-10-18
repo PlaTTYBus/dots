@@ -11,7 +11,7 @@
     {
       # fix some ugly styling for nemo in tokyonight
       tokyonight-gtk-theme = tokyonight-base-package.overrideAttrs (o: {
-        patches = (o.patches or [ ]) ++ [ ./tokyonight-style.patch ];
+        patches = (o.patches or [ ]) ++ [ ../../../../patches/tokyonight-style.patch ];
 
         postInstall = (o.postInstall or "") + ''
           rm -rf $out/share/themes/*Light*

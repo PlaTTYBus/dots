@@ -15,7 +15,7 @@
             mesonFlags = (o.mesonFlags or [ ]) ++ [ (lib.mesonEnable "tests" false) ];
 
             patches = (o.patches or [ ]) ++ [
-              ./face-aware-crop.patch
+              ../../../patches/face-aware-crop.patch
             ];
 
             nativeBuildInputs = o.nativeBuildInputs ++ [ pkgs.wrapGAppsHook3 ];
@@ -129,11 +129,28 @@
                   {
                     name = "nix";
                     kind = "path";
-                    location = "${inputs.noctalia-plugins}";
+                    location = "${
+                      pkgs.applyPatches {
+                        name = "noctalia-plugins";
+                        src = inputs.noctalia-plugins;
+                        patches = [ ../../../patches/wallhaven-default-filters.patch ];
+                      }
+                    }";
                     enabled = true;
                   }
                 ];
               };
+
+              plugin_settings."noctalia/wallhaven" =
+                let
+                  mon = lib.head config.custom.hardware.monitors;
+                in
+                {
+                  category_anime = false;
+                  category_people = false;
+                  resolution_width = if mon.isVertical then mon.height else mon.width;
+                  resolution_height = if mon.isVertical then mon.width else mon.height;
+                };
 
               # base control center shortcuts across all hosts
               control_center.shortcuts = [

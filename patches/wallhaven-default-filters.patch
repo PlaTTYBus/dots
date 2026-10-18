@@ -1,0 +1,117 @@
+--- a/wallhaven/panel.luau
++++ b/wallhaven/panel.luau
+@@ -759,8 +759,39 @@
+   }))
+ end
+ 
++local defaultsApplied = false
++
++local function configBool(key, fallback)
++  local value = noctalia.getConfig(key)
++  if type(value) == "boolean" then
++    return value
++  end
++  return fallback
++end
++
++local function configSize(key)
++  local value = noctalia.getConfig(key)
++  if type(value) == "number" and value > 0 then
++    return tostring(math.floor(value))
++  end
++  return ""
++end
++
++local function applyDefaultFilters()
++  if defaultsApplied then
++    return
++  end
++  defaultsApplied = true
++  categoryGeneral = configBool("category_general", categoryGeneral)
++  categoryAnime = configBool("category_anime", categoryAnime)
++  categoryPeople = configBool("category_people", categoryPeople)
++  resolutionWidth = configSize("resolution_width")
++  resolutionHeight = configSize("resolution_height")
++end
++
+ function onOpen(_context)
+   closeButton = noctalia.getSetting("shell.show_close_buttons") ~= false
++  applyDefaultFilters()
+   normalizePurityFilters()
+   fetchWallpapers()
+ end
+--- a/wallhaven/plugin.toml
++++ b/wallhaven/plugin.toml
+@@ -23,6 +23,40 @@
+ description_key = "settings.download_dir.description"
+ default = ""
+ 
++[[setting]]
++key = "category_general"
++type = "bool"
++label_key = "settings.category_general.label"
++default = true
++
++[[setting]]
++key = "category_anime"
++type = "bool"
++label_key = "settings.category_anime.label"
++default = true
++
++[[setting]]
++key = "category_people"
++type = "bool"
++label_key = "settings.category_people.label"
++default = true
++
++[[setting]]
++key = "resolution_width"
++type = "int"
++label_key = "settings.resolution_width.label"
++description_key = "settings.resolution_width.description"
++default = 0
++min = 0
++
++[[setting]]
++key = "resolution_height"
++type = "int"
++label_key = "settings.resolution_height.label"
++description_key = "settings.resolution_height.description"
++default = 0
++min = 0
++
+ [[panel]]
+ id = "browser"
+ entry = "panel.luau"
+--- a/wallhaven/translations/en.json
++++ b/wallhaven/translations/en.json
+@@ -34,12 +34,29 @@
+       "description": "Optional Wallhaven API key for higher rate limits and NSFW access",
+       "label": "API Key"
+     },
++    "category_anime": {
++      "label": "Anime by Default"
++    },
++    "category_general": {
++      "label": "General by Default"
++    },
++    "category_people": {
++      "label": "People by Default"
++    },
+     "download_dir": {
+       "description": "Optional override for full-resolution downloads; empty uses your Noctalia wallpaper folder",
+       "label": "Download Directory"
+     },
+     "glyph": {
+       "label": "Bar Glyph"
++    },
++    "resolution_height": {
++      "description": "Default minimum height, 0 leaves it empty",
++      "label": "Default Height"
++    },
++    "resolution_width": {
++      "description": "Default minimum width, 0 leaves it empty",
++      "label": "Default Width"
+     }
+   },
+   "sort": {
