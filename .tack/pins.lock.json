@@ -10,6 +10,7 @@
     "nixos-hardware": "github:NixOS/nixos-hardware",
     "nixpkgs": "github:NixOS/nixpkgs/nixos-unstable",
     "nixpkgs-stable": "github:NixOS/nixpkgs/nixos-26.05",
+    "noctalia-plugins": "github:noctalia-dev/official-plugins",
     "nvf": "github:notashelf/nvf",
     "sops-nix": "github:Mic92/sops-nix",
     "systems": "github:nix-systems/default",
@@ -97,6 +98,14 @@
     "rev": "a033e66ab94a6bedf2c3d58d93a36319d3cbbbaf",
     "narHash": "sha256-yvkDdToRZ4IgPc9tSBzzCYJvTLf8n5eE3rgUkpCuD5A=",
     "lastModified": 1791883866
+  },
+  "noctalia-plugins": {
+    "type": "github",
+    "owner": "noctalia-dev",
+    "repo": "official-plugins",
+    "rev": "470013c568d734a2013a3dfe690be71507e8bf16",
+    "narHash": "sha256-IdKwFWCQOSwW+UAbyz0Z56MxSb4zFStA8n3pgKmAqts=",
+    "lastModified": 1792318671
   },
   "nvf": {
     "type": "github",

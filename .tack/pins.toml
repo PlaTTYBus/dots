@@ -79,3 +79,6 @@ url = "github:iynaix/wfetch"
 
 [inputs.hjem-rum]
 url = "github:snugnug/hjem-rum"
+
+[inputs.noctalia-plugins]
+url = "github:noctalia-dev/official-plugins"
