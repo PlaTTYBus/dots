@@ -35,11 +35,11 @@
 - **Wallpapers** are picked from `~/Pictures/Wallpapers` and rotate automatically
 
 ### User environment
-- **[hjem](https://github.com/feel-co/hjem) + [hjem-rum](https://github.com/snugnug/hjem-rum)** instead of home-manager to manage dotfiles
+- **[hjem](https://github.com/feel-co/hjem) + [hjem-rum](https://github.com/snugnug/hjem-rum)** manage dotfiles
 - **Wrapped programs** with [nix-wrapper-modules](https://github.com/BirdeeHub/nix-wrapper-modules): fish, git, starship and more carry their config with them
 - **Neovim** configured with [nvf](https://github.com/notashelf/nvf)
 - **Starship prompt** showing host, directory, git status, last command duration and local IP
-- **Git over HTTPS** authenticated with a GitHub token from sops, so no SSH passphrases
+- **Git over HTTPS** authenticated with a GitHub token from sops, so that no SSH passphrases are needed
 
 ### Hosts
 
@@ -62,7 +62,7 @@ The `vm` tag applies VMware-specific fixes: a patched wlroots for the `vmwgfx` d
 
 - A UEFI machine or VM, booted from a [NixOS ISO](https://nixos.org/download/)
 - A working internet connection
-- Your **age secret key** (`AGE-SECRET-KEY-1…`) to decrypt the secrets. It is the private key line from `~/.config/sops/age/keys.txt` on an existing machine.
+- Your **age secret key** (`AGE-SECRET-KEY-1…`) to decrypt the secrets.
 
 > [!TIP]
 > To install over SSH, which makes pasting the age key easier, set a password for the live user with `passwd` and connect with `ssh nixos@<ip>`.
@@ -73,53 +73,7 @@ The `vm` tag applies VMware-specific fixes: a patched wlroots for the `vmwgfx` d
 bash <(curl -L https://raw.githubusercontent.com/plattybus/dots/main/install.sh)
 ```
 
-### What `install.sh` does
-
-1. **Selects the disk.** In a VM with `/dev/vda` it is chosen automatically, otherwise you pick one from a list.
-2. **Asks for confirmation** before anything is written.
-3. **Wipes the disk.** `blkdiscard` runs when the disk supports it.
-4. **Partitions the disk** (GPT, `p` suffix for NVMe):
-
-   | Partition | Size      | Type       | Label     |
-   | --------- | --------- | ---------- | --------- |
-   | 3         | 1 GiB     | EFI (vfat) | `NIXBOOT` |
-   | 2         | 16 GiB    | swap       | `SWAP`    |
-   | 1         | remainder | ZFS        |           |
-
-5. **Creates swap and the boot filesystem.**
-6. **Selects the host** to install. `desktop` and `tuxedo` get native ZFS encryption; you set the passphrase here and enter it on every boot.
-7. **Creates the `zroot` pool** with `ashift=12`, zstd compression, autotrim, POSIX ACLs and `atime=off`.
-8. **Creates and mounts the datasets** (all legacy mounts, managed by NixOS):
-
-   | Dataset       | Mountpoint | Purpose                                                    |
-   | ------------- | ---------- | ---------------------------------------------------------- |
-   | `zroot/root`  | `/`        | root, with an empty `@blank` snapshot                      |
-   | `zroot/nix`   | `/nix`     | the Nix store                                              |
-   | `zroot/cache` | `/cache`   | caches that are never snapshotted                          |
-   | `zroot/home`  | `/home`    | home directories, snapshotted by sanoid                    |
-   | `zroot/tank`  | `/tank`    | bulk data, snapshotted by sanoid                           |
-
-9. **Installs NixOS** with `nixos-install` from `github:PlaTTYBus/dots#<host>`.
-10. **Reads the username** from the flake (`specialArgs.user` in `flake.nix`). If that fails, it asks for it.
-11. **Asks for your age key** (input is hidden) and saves it to `~/.config/sops/age/keys.txt` on the new system, owned by the user with mode `600`. Without it, sops can't decrypt the user passwords and you can't log in.
-12. **Clones this repo** to `~/projects/dots` over HTTPS, so `/etc/nixos`, `nh` and the `dots` alias work right away.
-13. **Unmounts everything and exports the pool**, so the reboot is clean.
-
-Reboot. You are logged in automatically and land in umbriel.
-
 ---
-
-## Usage
-
-| Task                         | Command                                                     |
-| ---------------------------- | ----------------------------------------------------------- |
-| Rebuild the current host     | `nh os switch`                                              |
-| Rebuild a specific host      | `sudo nixos-rebuild switch --flake ~/projects/dots#<host>`  |
-| Update all inputs            | `tack update`                                               |
-| Edit secrets                 | `sops modules/hosts/secrets.json`                           |
-| Format all Nix files         | `nix fmt`                                                   |
-| Show a program's final config| `<program>-config`, e.g. `umbriel-config` (see `config-list`) |
-| Jump to the flake            | `dots`                                                      |
 
 ### Adding a secret
 
@@ -136,37 +90,10 @@ Reboot. You are logged in automatically and land in umbriel.
 
 ---
 
-## Repository layout
-
-```
-.
-├── flake.nix            # hosts, tags and flake outputs
-├── inputs-patched.nix   # pinned inputs with patches applied
-├── install.sh           # installer
-├── lib.nix              # helper functions (lib.custom)
-├── .tack/               # input pins managed by tack
-├── patches/             # patches for flake inputs
-└── modules/
-    ├── hosts/           # per-host config and encrypted secrets.json
-    ├── gui/             # umbriel, noctalia, ghostty, gtk, qt, ...
-    ├── shell/           # fish, git, neovim, starship, nix settings, ...
-    ├── hardware/        # audio, bluetooth, gpu, monitors, ...
-    └── *.nix            # system-wide modules (zfs, sops, users, ssh, ...)
-```
-
----
-
 ## Credits
 
-This configuration is heavily inspired by and partly based on **[iynaix/dotfiles](https://github.com/iynaix/dotfiles)** by [@iynaix](https://github.com/iynaix). Thank you for sharing such a well-structured setup. In particular:
+This configuration is heavily inspired by and partly based on **[iynaix/dotfiles](https://github.com/iynaix/dotfiles)** by [@iynaix](https://github.com/iynaix). In particular:
 
 - **`install.sh`**: the partitioning and ZFS layout come from his installer
 - **[lamina](https://github.com/iynaix/lamina)**: the module system behind the per-host tags
 - **`lib.nix`** and **`print-config`**: helper functions and the `<program>-config` commands
-- **The umbriel, noctalia and dynamic theming setup**, plus [focal](https://github.com/iynaix/focal), [wfetch](https://github.com/iynaix/wfetch) and the Helium package
-
-Also built on the work of:
-
-- [noctalia-dev](https://github.com/noctalia-dev) for umbriel and the noctalia shell
-- [Mic92/sops-nix](https://github.com/Mic92/sops-nix), [feel-co/hjem](https://github.com/feel-co/hjem), [snugnug/hjem-rum](https://github.com/snugnug/hjem-rum) and [BirdeeHub/nix-wrapper-modules](https://github.com/BirdeeHub/nix-wrapper-modules)
-- [jfly/flake-input-patcher](https://github.com/jfly/flake-input-patcher), which `patcher.nix` is adapted from
