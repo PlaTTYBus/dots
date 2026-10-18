@@ -8,7 +8,9 @@
       ...
     }:
     let
-      focal = inputs.focal.packages.${system}.default;
+      focal = inputs.focal.packages.${system}.default.overrideAttrs (o: {
+        patches = (o.patches or [ ]) ++ [ ../../patches/focal-noctalia-ocr-delay.patch ];
+      });
     in
     {
       environment.systemPackages = [
