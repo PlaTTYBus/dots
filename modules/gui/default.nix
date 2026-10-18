@@ -26,7 +26,7 @@
       users.users.${user}.packages = with pkgs; [
         vesktop
         obsidian
-        zotero
+        stable.zotero
         spotify
         super-productivity
         proton-vpn-cli
