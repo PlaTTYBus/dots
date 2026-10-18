@@ -122,6 +122,19 @@
                 default.path = "${../../wallpaper-default.jpg}";
               };
 
+              plugins = {
+                enabled = [ "noctalia/wallhaven" ];
+                auto_update = "none";
+                source = [
+                  {
+                    name = "nix";
+                    kind = "path";
+                    location = "${inputs.noctalia-plugins}";
+                    enabled = true;
+                  }
+                ];
+              };
+
               # base control center shortcuts across all hosts
               control_center.shortcuts = [
                 { type = "caffeine"; } # idle inhibit

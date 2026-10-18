@@ -50,6 +50,7 @@
               "Mod+I" = "spawn:noctalia msg panel-toggle wallpaper";
               "Mod+Shift+I" = "spawn:noctalia msg wallpaper-random";
               "Mod+Ctrl+I" = "spawn:noctalia msg wallpaper-previous";
+              "Mod+B" = "spawn:noctalia msg panel-toggle noctalia/wallhaven:browser";
 
               # audio buttons
               "XF86AudioLowerVolume" = {
