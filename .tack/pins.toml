@@ -83,3 +83,7 @@ url = "github:snugnug/hjem-rum"
 [inputs.noctalia-plugins]
 url = "github:noctalia-dev/official-plugins"
 type = "fetch"
+
+[inputs.vpn-switcher]
+url = "github:PlaTTYBus/vpn-switcher"
+type = "fetch"

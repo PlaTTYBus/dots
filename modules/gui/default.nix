@@ -2,7 +2,7 @@
   tags = [ "gui" ];
 
   config =
-    { pkgs, ... }:
+    { pkgs, user, ... }:
     {
       environment = {
         sessionVariables = {
@@ -23,5 +23,13 @@
           })
         ];
       };
+      users.users.${user}.packages = with pkgs; [
+        vesktop
+        obsidian
+        zotero
+        spotify
+        super-productivity
+        proton-vpn-cli
+      ];
     };
 }

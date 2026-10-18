@@ -130,12 +130,6 @@
       })
     '';
 
-    dashboard = {
-      startify = {
-        enable = true;
-        changeToVCRoot = true;
-      };
-    };
 
     languages = {
       enableFormat = true;
@@ -246,6 +240,27 @@
       smartcolumn.enable = true;
     };
     utility = {
+      snacks-nvim = {
+        enable = true;
+        setupOpts.dashboard = {
+          enabled = true;
+          sections = [
+            { section = "header"; }
+            {
+              section = "keys";
+              gap = 1;
+              padding = 1;
+            }
+            {
+              section = "recent_files";
+              title = "Recent Files";
+              icon = " ";
+              indent = 2;
+              padding = 1;
+            }
+          ];
+        };
+      };
       direnv.enable = true;
       motion.leap.enable = true;
       preview.markdownPreview.enable = true;

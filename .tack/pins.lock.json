@@ -16,6 +16,7 @@
     "systems": "github:nix-systems/default",
     "tack": "github:manic-systems/tack",
     "umbriel": "github:noctalia-dev/umbriel",
+    "vpn-switcher": "github:PlaTTYBus/vpn-switcher",
     "wfetch": "github:iynaix/wfetch",
     "wrappers": "github:BirdeeHub/nix-wrapper-modules"
   },
@@ -147,6 +148,14 @@
     "narHash": "sha256-hqx2h14F7Q/ec75xrt1Lmklnmoui3tQgouGfWlROBTk=",
     "lastModified": 1791985089,
     "submodules": true
+  },
+  "vpn-switcher": {
+    "type": "github",
+    "owner": "PlaTTYBus",
+    "repo": "vpn-switcher",
+    "rev": "85ad27f426148c5445e239eb3b14b70c8ba778da",
+    "narHash": "sha256-M/IT57kWneVwx4CgzSaZ5XaxF/jXbRl09hijGe6P3Ic=",
+    "lastModified": 1792346382
   },
   "wfetch": {
     "type": "github",
