@@ -1,0 +1,21 @@
+--- a/src/capture/screenshot_service.cpp
++++ b/src/capture/screenshot_service.cpp
+@@ -8,6 +8,7 @@
+ #include "core/input/key_chord.h"
+ #include "core/input/keybind_matcher.h"
+ #include "core/log.h"
++#include "core/process/process.h"
+ #include "ipc/ipc_service.h"
+ #include "notification/notification.h"
+ #include "notification/notification_manager.h"
+@@ -1859,7 +1860,9 @@
+ }
+ 
+ void ScreenshotService::notifySaved(const std::filesystem::path& path) {
+-  m_notifications.addInternal("Noctalia", "Screenshot saved", path.string());
++  if (!process::runAsync(std::vector<std::string>{"@notifySaved@", "Screenshot saved", path.string()})) {
++    m_notifications.addInternal("Noctalia", "Screenshot saved", path.string());
++  }
+ }
+ 
+ void ScreenshotService::notifyError(const std::string& message) {

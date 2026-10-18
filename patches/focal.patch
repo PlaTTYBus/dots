@@ -1,5 +1,20 @@
 --- a/src/image.rs
 +++ b/src/image.rs
+@@ -59,10 +59,10 @@
+ 
+     /// show a notification
+     pub fn notify(&self) -> Result<()> {
+-        show_notification(
+-            &format!("Screenshot captured to {}", &self.output.display()),
+-            Some(&self.output),
+-        )?;
++        Command::new("@notifySaved@")
++            .arg("Screenshot saved")
++            .arg(&self.output)
++            .spawn()?;
+ 
+         Ok(())
+     }
 @@ -277,7 +277,7 @@
          let delay = self.delay.unwrap_or(0);
  
@@ -11,6 +26,15 @@
                  .arg("screenshot-region")
 --- a/src/video.rs
 +++ b/src/video.rs
+@@ -5,7 +5,7 @@
+ use crate::{
+     NoctaliaDmenu, Rofi, SlurpGeom, check_programs,
+     cli::video::{CaptureArea, VideoArgs},
+-    create_parent_dirs, focal_monitor, is_hyprland, iso8601_filename, show_notification,
++    create_parent_dirs, focal_monitor, is_hyprland, iso8601_filename,
+     wf_recorder::WfRecorder,
+ };
+ use execute::Execute;
 @@ -79,14 +79,14 @@
              rounding,
          };
@@ -29,3 +53,21 @@
          // duration provied, recording will stop by itself so no lock file is needed
          if let Some(duration) = self.duration {
              std::thread::sleep(std::time::Duration::from_secs(duration));
+@@ -149,10 +149,13 @@
+             .execute()?;
+ 
+         // show notifcation with the video thumbnail
+-        show_notification(
+-            &format!("Video captured to {}", video.display()),
+-            Some(&thumb_path),
+-        )
++        Command::new("@notifySaved@")
++            .arg("Video saved")
++            .arg(video)
++            .arg(&thumb_path)
++            .spawn()?;
++
++        Ok(())
+     }
+ 
+     pub fn selection(&self) -> Result<()> {

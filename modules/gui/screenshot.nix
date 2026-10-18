@@ -1,4 +1,24 @@
 {
+  packages =
+    { pkgs, ... }:
+    {
+      notify-saved = pkgs.writeShellApplication {
+        name = "notify-saved";
+        runtimeInputs = with pkgs; [
+          coreutils
+          libnotify
+          nemo-with-extensions
+        ];
+        text = /* sh */ ''
+          file="$2"
+          action=$(notify-send -a "Screenshots" -i "''${3:-$file}" --action=default="Open folder" --wait "$1" "Saved to $file" || true)
+          if [[ "$action" == "default" ]]; then
+            exec nemo "$(dirname "$file")"
+          fi
+        '';
+      };
+    };
+
   tags = [ "wm" ];
 
   config =
@@ -12,6 +32,10 @@
     let
       focal = inputs.focal.packages.${system}.default.overrideAttrs (o: {
         patches = (o.patches or [ ]) ++ [ ../../patches/focal.patch ];
+        postPatch = (o.postPatch or "") + ''
+          substituteInPlace src/image.rs src/video.rs \
+            --replace-fail "@notifySaved@" "${lib.getExe pkgs.custom.notify-saved}"
+        '';
       });
 
       noctalia-annotate = pkgs.writeShellApplication {

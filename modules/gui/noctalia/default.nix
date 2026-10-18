@@ -4,6 +4,8 @@
       inputs,
       lib,
       pkgs,
+      self,
+      system,
       ...
     }:
     {
@@ -16,7 +18,13 @@
 
             patches = (o.patches or [ ]) ++ [
               ../../../patches/face-aware-crop.patch
+              ../../../patches/noctalia-screenshot-notification.patch
             ];
+
+            postPatch = (o.postPatch or "") + ''
+              substituteInPlace src/capture/screenshot_service.cpp \
+                --replace-fail "@notifySaved@" "${lib.getExe self.packages.${system}.notify-saved}"
+            '';
 
             nativeBuildInputs = o.nativeBuildInputs ++ [ pkgs.wrapGAppsHook3 ];
 
