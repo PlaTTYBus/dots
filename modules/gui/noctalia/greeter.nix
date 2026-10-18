@@ -5,6 +5,8 @@
     {
       config,
       lib,
+      pkgs,
+      tags,
       user,
       ...
     }:
@@ -20,6 +22,14 @@
 
         noctalia-greeter = {
           enable = true;
+
+          package = lib.mkIf (builtins.elem "vm" tags) (
+            pkgs.noctalia-greeter.override {
+              wlroots_0_20 = pkgs.wlroots_0_20.overrideAttrs (o: {
+                patches = (o.patches or [ ]) ++ [ ../../../patches/wlroots-vmwgfx-dmabuf.patch ];
+              });
+            }
+          );
 
           cursorTheme = {
             inherit (config.custom.gtk.cursor)
