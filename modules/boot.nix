@@ -36,7 +36,7 @@
             efiSupport = true;
             theme = pkgs.custom.distro-grub-themes-nixos;
           };
-          timeout = 3;
+          timeout = 1;
         };
         supportedFilesystems.ntfs = true;
       };
