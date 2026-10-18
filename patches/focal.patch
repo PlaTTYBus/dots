@@ -1,0 +1,31 @@
+--- a/src/image.rs
++++ b/src/image.rs
+@@ -277,7 +277,7 @@
+         let delay = self.delay.unwrap_or(0);
+ 
+         // use noctalia's inbuilt screenshot
+-        if self.noctalia {
++        if self.noctalia && self.ocr.is_none() && delay == 0 {
+             Command::new("noctalia")
+                 .arg("msg")
+                 .arg("screenshot-region")
+--- a/src/video.rs
++++ b/src/video.rs
+@@ -79,14 +79,14 @@
+             rounding,
+         };
+ 
++        // write the lock file
++        lock.write()?;
++
+         WfRecorder::new(mon, self.output.clone())
+             .audio(self.audio.as_deref())
+             .filter(filter)
+             .record()?;
+ 
+-        // write the lock file
+-        lock.write()?;
+-
+         // duration provied, recording will stop by itself so no lock file is needed
+         if let Some(duration) = self.duration {
+             std::thread::sleep(std::time::Duration::from_secs(duration));

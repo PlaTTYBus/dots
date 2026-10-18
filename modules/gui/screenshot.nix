@@ -11,7 +11,7 @@
     }:
     let
       focal = inputs.focal.packages.${system}.default.overrideAttrs (o: {
-        patches = (o.patches or [ ]) ++ [ ../../patches/focal-noctalia-ocr-delay.patch ];
+        patches = (o.patches or [ ]) ++ [ ../../patches/focal.patch ];
       });
 
       noctalia-annotate = pkgs.writeShellApplication {
