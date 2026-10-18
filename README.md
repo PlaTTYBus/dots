@@ -93,6 +93,6 @@ bash <(curl -L https://raw.githubusercontent.com/plattybus/dots/main/install.sh)
 
 This configuration is heavily inspired by and partly based on **[iynaix/dotfiles](https://github.com/iynaix/dotfiles)** by [@iynaix](https://github.com/iynaix). In particular:
 
-- **`install.sh`**: the partitioning and ZFS layout come from his installer
+- **`install.sh`**: adapted iynaix version to fit my setup
 - **[lamina](https://github.com/iynaix/lamina)**: the module system behind the per-host tags
 - **`lib.nix`** and **`print-config`**: helper functions and the `<program>-config` commands

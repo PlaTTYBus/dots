@@ -39,13 +39,6 @@ in
       options.custom = {
         programs.btop = {
           inherit (inputs.wrappers.wrappers.btop.wrapperOptions) settings;
-
-          # convenience option to add disks to btop
-          disks = lib.mkOption {
-            type = lib.types.listOf lib.types.str;
-            default = [ ];
-            description = "List of disks to monitor in btop";
-          };
         };
       };
 
@@ -60,14 +53,11 @@ in
                 baseBtopConf
                 // {
                   color_theme = "noctalia";
-                  disks_filter = lib.concatStringsSep " " (
-                    [
-                      "/"
-                      "/boot"
-                      "/home"
-                    ]
-                    ++ config.custom.programs.btop.disks
-                  );
+                  disks_filter = lib.concatStringsSep " " [
+                    "/"
+                    "/boot"
+                    "/home"
+                  ];
                 }
                 // config.custom.programs.btop.settings
               );

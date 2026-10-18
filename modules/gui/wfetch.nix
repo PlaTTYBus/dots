@@ -4,7 +4,6 @@
   config =
     {
       inputs,
-      pkgs,
       system,
       user,
       ...
@@ -12,7 +11,6 @@
     {
       environment.systemPackages = [
         inputs.wfetch.packages.${system}.default
-        pkgs.imagemagick
       ];
 
       custom.programs = {

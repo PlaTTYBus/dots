@@ -47,7 +47,7 @@
   programs.nano.enable = lib.mkForce false;
 
   # enable sysrq in case for kernel panic
-  # boot.kernel.sysctl."kernel.sysrq" = 1;
+  boot.kernel.sysctl."kernel.sysrq" = 1;
 
   # enable opengl
   hardware.graphics.enable = true;

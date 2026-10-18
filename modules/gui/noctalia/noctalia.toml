@@ -163,16 +163,11 @@ custom_image = "/home/pviel/projects/dots/modules/gui/gtk/icons/nix.svg"
 custom_image_colorize = true
 glyph = ""
 
-[widget.session]
-custom_image = "/home/pviel/projects/dots/modules/gui/gtk/icons/nix.svg"
-glyph = ""
-icon_color = "primary"
-
 [widget.volume]
 color = "primary"
 
 [widget.volume.actions]
-middle = "exec toggle-speaker"
+middle = "exec mute-all"
 scroll_down = "volume-down 1"
 scroll_up = "volume-up 1"
 

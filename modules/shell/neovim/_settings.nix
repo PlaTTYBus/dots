@@ -62,10 +62,10 @@
     preventJunkFiles = true;
     searchCase = "smart";
 
-    # spellcheck = {
-    #   enable = true;
-    #   programmingWordlist.enable = true;
-    # };
+    spellcheck = {
+       enable = true;
+       programmingWordlist.enable = true;
+    };
 
     diagnostics = {
       enable = true;
@@ -160,11 +160,6 @@
         ];
       };
       python.enable = true;
-      qml = {
-        enable = true;
-        format.enable = true;
-        lsp.enable = true;
-      };
       rust = {
         enable = true;
         extensions.crates-nvim.enable = false;
@@ -253,7 +248,7 @@
     utility = {
       direnv.enable = true;
       motion.leap.enable = true;
-      # preview.markdownPreview.enable
+      preview.markdownPreview.enable = true;
       surround.enable = true;
     };
     visuals.nvim-web-devicons.enable = true;

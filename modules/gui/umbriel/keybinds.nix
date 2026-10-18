@@ -114,10 +114,6 @@
               "Alt+Tab" = "window-focus-next";
               "Alt+SHIFT+Tab" = "window-focus-last";
 
-              # cycle between windows of the same class
-              "CTRL+ALT+Tab" = "spawn:wm-same-class next";
-              "CTRL+ALT+SHIFT+Tab" = "spawn:wm-same-class prev";
-
               # Switches focus between the current and the previous workspace.
               "Mod+Tab" = "workspace-focus-last";
 
