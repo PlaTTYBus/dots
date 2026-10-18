@@ -1,11 +1,9 @@
 --- a/wallhaven/panel.luau
 +++ b/wallhaven/panel.luau
-@@ -759,8 +759,39 @@
-   }))
+@@ -78,6 +78,35 @@
+   return "'" .. s:gsub("'", "'\\''") .. "'"
  end
  
-+local defaultsApplied = false
-+
 +local function configBool(key, fallback)
 +  local value = noctalia.getConfig(key)
 +  if type(value) == "boolean" then
@@ -21,6 +19,45 @@
 +  end
 +  return ""
 +end
++
++local function downscaleToMonitor(path, done)
++  local w = configSize("resolution_width")
++  local h = configSize("resolution_height")
++  if w == "" or h == "" then
++    done()
++    return
++  end
++  local geometry = `{w}x{h}^>`
++  noctalia.runAsync(`@magick@ {shellQuote(path)} -resize {shellQuote(geometry)} {shellQuote(path)}`, function(_res)
++    done()
++  end)
++end
++
+ local function apiKey()
+   local key = noctalia.getConfig("api_key")
+   if type(key) == "string" then
+@@ -463,10 +492,12 @@
+         return
+       end
+ 
+-      noctalia.setWallpaper(dest)
+-      applying = false
+-      noctalia.notify(tr("title"), tr("applied"))
+-      render()
++      downscaleToMonitor(dest, function()
++        noctalia.setWallpaper(dest)
++        applying = false
++        noctalia.notify(tr("title"), tr("applied"))
++        render()
++      end)
+     end)
+   end)
+ end
+@@ -759,8 +790,23 @@
+   }))
+ end
+ 
++local defaultsApplied = false
 +
 +local function applyDefaultFilters()
 +  if defaultsApplied then

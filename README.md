@@ -15,7 +15,7 @@
 ## Features
 
 ### System
-- **Multiple hosts from one flake**: a desktop, a laptop and a VMware VM share the same modules
+- **Multiple hosts from one flake**: a desktop, a laptop and a VMware VM
 - **Feature flags**: modules are enabled per host through tags (`gui`, `wm`, `laptop`, `vm`) with [lamina](https://github.com/iynaix/lamina)
 - **ZFS on root**: zstd compression, autotrim, monthly scrubs and optional native encryption (desktop and laptop)
 - **Automatic snapshots with rotation**: [sanoid](https://github.com/jimsalterjrs/sanoid) snapshots `/home` (hourly, daily, weekly, monthly) and `/tank`

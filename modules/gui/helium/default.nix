@@ -27,8 +27,6 @@
         enable = true;
 
         extensions = [
-          # Awesome Screen Recorder & Screenshot
-          "nlipoenfbbikpbjkfpfillcgkoblgpmj"
           # Dark Reader
           "eimadpbcbfnmbkopoojfekhnkhdbieeh"
           # Refined Github
@@ -40,7 +38,7 @@
           # Return YouTube Dislike
           "gebbhagfogifgggkldgodflihgfeippi"
           # Session Manager
-          "mghenlmbmjcpehccoangkdpagbcbkdpc"
+          "edacconmaakjimmfgnblocblbcdcpbko"
           # SponsorBlock for YouTube - Skip Sponsorships
           "mnjggcdmjocbbbhaepdhchncahnbgone"
           # Tokyo Night Storm
@@ -49,8 +47,6 @@
           "jiaopdjbehhjgokpphdfgmapkobbnmjp"
           # Proton Pass
           "ghmbeldphafepmbegfdlkpapadhbakde"
-          # ABP
-          "gighmmpiobklfepjocnamgkkbiglidom"
           # Privacy Badger
           "pkehgijcmpdhfbdbbnkijodmdjhbjlgp"
         ];

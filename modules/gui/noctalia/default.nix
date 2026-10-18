@@ -134,6 +134,10 @@
                         name = "noctalia-plugins";
                         src = inputs.noctalia-plugins;
                         patches = [ ../../../patches/wallhaven-default-filters.patch ];
+                        postPatch = ''
+                          substituteInPlace wallhaven/panel.luau \
+                            --replace-fail "@magick@" "${lib.getExe' pkgs.imagemagick "magick"}"
+                        '';
                       }
                     }";
                     enabled = true;

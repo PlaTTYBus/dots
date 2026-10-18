@@ -5,10 +5,31 @@
     {
       config,
       lib,
+      pkgs,
       user,
       ...
     }:
     let
+      focus-default-workspaces = pkgs.writeShellApplication {
+        name = "umbriel-focus-default-workspaces";
+        runtimeInputs = [ pkgs.jq ];
+        text =
+          config.custom.hardware.monitors
+          |> lib.reverseList
+          |> map (
+            mon:
+            let
+              ws = toString mon.defaultWorkspace;
+            in
+            /* sh */ ''
+              if ! umbriel workspaces --json | jq -e --arg o "${mon.name}" --arg w "${ws}" 'any(.[]; .output == $o and .name == $w and .active)' >/dev/null; then
+                umbriel msg 'workspace-switch:"${ws}"/${mon.name}'
+              fi
+            ''
+          )
+          |> lib.concatStrings;
+      };
+
       startup = [
         {
           match.app_id = "helium";
@@ -45,22 +66,25 @@
             |> map (s: {
               general.autostart = [ s.spawn ];
               window_rule = [
-                {
-                  match = s.match // {
-                    at_startup = true;
-                  };
-                  default_workspace = toString s.workspace;
-                }
+                (
+                  {
+                    match = s.match // {
+                      at_startup = true;
+                    };
+                    default_workspace = toString s.workspace;
+                  }
+                  // lib.optionalAttrs (s.workspace != (lib.head config.custom.hardware.monitors).defaultWorkspace) {
+                    default_focused = false;
+                    focus_on_activate = false;
+                  }
+                )
               ];
             })
           )
           ++ [
             {
               # focus default workspace for each monitor
-              general.autostart =
-                config.custom.hardware.monitors
-                |> lib.reverseList
-                |> map (mon: ''umbriel msg workspace-switch:"${toString mon.defaultWorkspace}"'');
+              general.autostart = [ (lib.getExe focus-default-workspaces) ];
             }
           ]
         );

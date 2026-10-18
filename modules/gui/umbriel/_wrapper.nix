@@ -114,9 +114,9 @@ inputs.wrappers.lib.wrapModule (
     config = {
       package = lib.mkDefault pkgs.umbriel;
 
-      flags = {
-        "-c" = config.constructFiles.generatedConfig.path;
-      };
+      runShell = [
+        ''if [ "$#" -eq 0 ] || [[ "$1" == -* ]]; then set -- -c "${config.constructFiles.generatedConfig.path}" "$@"; fi''
+      ];
 
       filesToPatch = [
         # the session launcher falls back to exec'ing umbriel directly, which would skip the -c flag
