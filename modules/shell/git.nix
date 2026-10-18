@@ -40,12 +40,6 @@
               diff = "diff --word-diff";
             };
             branch = {
-              master = {
-                merge = "refs/heads/master";
-              };
-              main = {
-                merge = "refs/heads/main";
-              };
               sort = "-committerdate";
             };
             core = {

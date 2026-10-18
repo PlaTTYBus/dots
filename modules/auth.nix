@@ -1,4 +1,6 @@
 {
+  config,
+  pkgs,
   user,
   ...
 }:
@@ -16,6 +18,28 @@
     # keyring settings
     services.gnome.gnome-keyring.enable = true;
     security.pam.services.login.enableGnomeKeyring = true;
+
+    sops.secrets.keyring_password.owner = user;
+
+    systemd.user.services.gnome-keyring-unlock = {
+      wantedBy = [ "graphical-session-pre.target" ];
+      before = [ "graphical-session-pre.target" ];
+      serviceConfig = {
+        Type = "dbus";
+        BusName = "org.freedesktop.secrets";
+        ExecStart = pkgs.writeShellScript "gnome-keyring-unlock" ''
+          exec ${pkgs.gnome-keyring}/bin/gnome-keyring-daemon --replace --unlock --foreground \
+            --components=pkcs11,secrets --control-directory="$XDG_RUNTIME_DIR/keyring" \
+            < <(${pkgs.coreutils}/bin/tr -d '\n' < ${config.sops.secrets.keyring_password.path})
+        '';
+        Restart = "on-failure";
+      };
+    };
+
+    systemd.tmpfiles.rules = [
+      "d /home/${user}/.local/share/keyrings 0700 ${user} users -"
+      "f+ /home/${user}/.local/share/keyrings/default 0644 ${user} users - login"
+    ];
 
     security = {
       sudo = {
