@@ -2,9 +2,16 @@
   tags = [ "wm" ];
 
   config =
-    { pkgs, user, ... }:
+    {
+      inputs,
+      pkgs,
+      system,
+      user,
+      ...
+    }:
     {
       environment.systemPackages = [
+        inputs.wfetch.packages.${system}.default
         pkgs.imagemagick
       ];
 

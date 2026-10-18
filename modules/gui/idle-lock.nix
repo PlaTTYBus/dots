@@ -53,11 +53,14 @@
             umbriel.settings = {
               # manual lock keybind
               keybinds = {
-                "Ctrl+L" = "spawn:${lib.getExe lock}";
+                "Mod+Escape" = {
+                  action = "spawn:noctalia msg session lock";
+                  repeat = false;
+                };
               };
 
               events = {
-                lid_open = lib.getExe lock;
+                lid_close = lib.getExe lock;
               };
             };
           };

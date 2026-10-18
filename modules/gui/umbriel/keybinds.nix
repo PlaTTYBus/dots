@@ -47,8 +47,9 @@
               # picture in picture mode
               # "Mod+P"= "spawn:wm-pip";
 
-              "Mod+Apostrophe" = "spawn:wallpaper select";
-              "Alt+Apostrophe" = "spawn:wallpaper history";
+              "Mod+I" = "spawn:noctalia msg panel-toggle wallpaper";
+              "Mod+Shift+I" = "spawn:noctalia msg wallpaper-random";
+              "Mod+Ctrl+I" = "spawn:noctalia msg wallpaper-previous";
 
               # audio buttons
               "XF86AudioLowerVolume" = {
@@ -73,17 +74,12 @@
               # exit umbriel
               "Alt+F4" = "session-quit";
 
-              # TODO: reset monitors?
-              # "CTRL_SHIFT, Escape, exec, umbriel-monitors"
+              "Mod+O" = "overview-toggle";
 
-              # Open/close the Overview: a zoomed-out view of workspaces and windows.
-              # You can also move the mouse into the top-left hot corner,
-              # or do a four-finger swipe up on a touchpad.
-              "Mod+O" = {
+              "Mod+Shift+O" = {
                 action = "cheatsheet-toggle";
                 repeat = false;
               };
-              "Mod+Shift+O" = "overview-toggle";
 
               "Mod+H" = "window-focus-or-output-left";
               "Mod+J" = "window-focus-or-workspace-down";
@@ -111,7 +107,7 @@
               "Mod+Shift+Right" = "column-move-to-output-right";
 
               # toggle between prev and current windows
-              "Mod+grave" = "window-focus-last";
+              "Mod+Shift+Tab" = "window-focus-last";
 
               # cycle windows (classic alt tab in a workspace)
               "Alt+Tab" = "window-focus-next";
@@ -124,14 +120,11 @@
               # Switches focus between the current and the previous workspace.
               "Mod+Tab" = "workspace-focus-last";
 
-              # TODO: picture in picture mode
-              # "Mod+P" = "spawn:wm-pip";
-
               # The following binds move the focused window in and out of a column.
               # If the window is alone, they will consume it into the nearby column to the side.
               # If the window is already in a column, they will expel it out.
-              "Mod+BracketLeft" = "window-consume-or-expel-left";
-              "Mod+BracketRight" = "window-consume-or-expel-right";
+              "Mod+Comma" = "window-consume-or-expel-left";
+              "Mod+Period" = "window-consume-or-expel-right";
 
               "Mod+R" = "window-cycle-primary-extent";
               "Mod+Shift+R" = "window-cycle-secondary-extent";
@@ -146,13 +139,8 @@
               "Mod+Ctrl+C" = "column-center";
 
               # mouse bindings
-
-              # having Mod + Scroll up / Down is impossible to control with trackball, so require Shift for workspaces
-              "Mod+Shift+WheelDown" = "window-focus-or-workspace-down";
-              "Mod+Shift+WheelUp" = "window-focus-or-workspace-up";
-
-              "Mod+WheelRight" = "window-focus-or-output-right";
-              "Mod+WheelLeft" = "window-focus-or-output-left";
+              "Mod+WheelDown" = "window-focus-or-workspace-down";
+              "Mod+WheelUp" = "window-focus-or-workspace-up";
             }
             //
               # keybinds for workspace switch / move

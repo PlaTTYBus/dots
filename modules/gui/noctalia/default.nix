@@ -103,7 +103,7 @@
         ];
 
         # wallpaper folder for noctalia, created by hjem relative to the home directory
-        hj.files.${wallpaperDir}.type = "directory";
+        hj.files."${wallpaperDir}/default.jpg".source = ../../wallpaper-default.jpg;
 
         custom = {
           programs = {
@@ -117,7 +117,10 @@
             ];
 
             noctalia.settings = {
-              wallpaper.directory = "/home/${user}/${wallpaperDir}";
+              wallpaper = {
+                directory = "/home/${user}/${wallpaperDir}";
+                default.path = "${../../wallpaper-default.jpg}";
+              };
 
               # base control center shortcuts across all hosts
               control_center.shortcuts = [

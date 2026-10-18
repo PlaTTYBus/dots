@@ -5,7 +5,6 @@
 **A multi-host NixOS flake with a dynamically themed Wayland desktop**
 
 [![NixOS](https://img.shields.io/badge/NixOS-unstable-5277C3?style=for-the-badge&logo=nixos&logoColor=white)](https://nixos.org)
-[![Flakes](https://img.shields.io/badge/Nix-flakes-7EBAE4?style=for-the-badge&logo=snowflake&logoColor=white)](https://wiki.nixos.org/wiki/Flakes)
 [![Wayland](https://img.shields.io/badge/Wayland-umbriel-FFBC00?style=for-the-badge&logo=wayland&logoColor=black)](https://github.com/noctalia-dev/umbriel)
 [![Secrets](https://img.shields.io/badge/secrets-sops--nix-2E3440?style=for-the-badge&logo=gnuprivacyguard&logoColor=white)](https://github.com/Mic92/sops-nix)
 

@@ -17,11 +17,10 @@
 
       custom = {
         programs.umbriel.settings.keybinds = {
-          "Mod+backslash" =
-            "spawn:focal image --noctalia --area selection --no-notify --no-save --no-rounded-windows";
-          "Mod+Shift+backslash" = "spawn:focal image --noctalia --rofi";
-          "Mod+Ctrl+backslash" = "spawn:focal image --noctalia --area selection --ocr";
-          "Alt+backslash" = "spawn:focal video --rofi";
+          "Print" = "spawn:focal image --area selection --no-notify --no-save";
+          "Shift+Print" = "spawn:focal image --menu";
+          "Ctrl+Print" = "spawn:focal image --area selection --ocr";
+          "Mod+Print" = "spawn:focal video --area selection";
         };
       };
     };
