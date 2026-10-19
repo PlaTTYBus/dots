@@ -2,7 +2,12 @@
   tags = [ "gui" ];
 
   config =
-    { pkgs, user, ... }:
+    {
+      inputs,
+      pkgs,
+      user,
+      ...
+    }:
     {
       environment = {
         sessionVariables = {
@@ -29,7 +34,13 @@
         stable.zotero
         spotify
         super-productivity
-        nomachine-client
+        # nomachine deletes old releases from its server, which breaks the nixpkgs hash
+        (nomachine-client.overrideAttrs {
+          version = "10.2.3";
+          src = inputs.nomachine;
+          # the tack file has no .tar.gz extension for stdenv to detect
+          unpackCmd = "tar xzf $curSrc";
+        })
       ];
     };
 }
