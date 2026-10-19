@@ -17,7 +17,6 @@
             mesonFlags = (o.mesonFlags or [ ]) ++ [ (lib.mesonEnable "tests" false) ];
 
             patches = (o.patches or [ ]) ++ [
-              ../../../patches/face-aware-crop.patch
               ../../../patches/noctalia-screenshot-notification.patch
             ];
 

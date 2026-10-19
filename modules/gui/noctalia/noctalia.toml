@@ -21,12 +21,6 @@ widget_spacing = 16
 scroll_down = "volume-down 1"
 scroll_up = "volume-up 1"
 
-[calendar]
-enabled = true
-
-[calendar.account.default]
-type = "google"
-
 [control_center]
 sidebar_section = "none"
 
@@ -140,7 +134,7 @@ source = "wallpaper"
 wallpaper_scheme = "m3-tonal-spot"
 
 [theme.templates]
-builtin_ids = ["btop", "cava", "umbriel"]
+builtin_ids = ["btop", "umbriel"]
 community_ids = ["yazi"]
 
 [wallpaper]

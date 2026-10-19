@@ -75,12 +75,7 @@
                 Calendar = "https://calendar.proton.me";
                 Drive = "https://drive.proton.me";
                 Docs = "https://docs.proton.me";
-                Pass = "https://pass.proton.me";
-                Wallet = "https://wallet.proton.me";
-                Meet = "https://meet.proton.me";
                 Lumo = "https://lumo.proton.me";
-                VPN = "https://account.protonvpn.com";
-                Account = "https://account.proton.me";
               };
             };
         };

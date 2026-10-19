@@ -75,6 +75,10 @@
             # needs to be a uint64!
             thumbnail-limit = lib.gvariant.mkUint64 (100 * 1024 * 1024); # 100 mb
           };
+          # cinnamon only action, nemo logs its missing cinnamon-settings dependency otherwise
+          "org/nemo/plugins" = {
+            disabled-actions = [ "add-desklets.nemo_action" ];
+          };
           "org/nemo/window-state" = {
             sidebar-bookmark-breakpoint = lib.gvariant.mkInt32 0;
             sidebar-width = lib.gvariant.mkInt32 180;

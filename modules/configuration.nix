@@ -9,7 +9,11 @@
   networking.hostName = host;
 
   # Enable networking
-  networking.networkmanager.enable = true;
+  networking.networkmanager = {
+    enable = true;
+    # resolved is not used, stops NM from trying to activate it over dbus
+    settings.main.systemd-resolved = false;
+  };
 
   # Set your time zone.
   time.timeZone = "Europe/Amsterdam";

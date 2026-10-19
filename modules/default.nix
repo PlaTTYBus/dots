@@ -25,8 +25,8 @@
 
     # create symlinks
     systemd.tmpfiles.rules = [
-      # cleanup systemd coredumps once a week
-      "D! /var/lib/systemd/coredump root root 7d"
+      # delete systemd coredumps older than a week
+      "d /var/lib/systemd/coredump 0755 root root 7d"
     ]
     ++ (lib.mapAttrsToList (dest: src: "L+ ${dest} - - - - ${src}") config.custom.symlinks);
   };

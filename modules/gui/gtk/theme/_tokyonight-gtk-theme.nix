@@ -110,6 +110,8 @@ lib.checkListOfEnum "${pname}: colorVariants" colorVariantList colorVariants lib
         mkdir -p $out/share/icons
         cp -a ${toString (map (v: "Tokyonight-${v}") iconVariants)} $out/share/icons/
       ''}
+      # border-spacing only exists in gtk4, gtk3 apps log a parse error for it
+      find $out/share/themes -path '*/gtk-3.0/*.css' -exec sed -i '/border-spacing:/d' {} +
       runHook postInstall
     '';
 
