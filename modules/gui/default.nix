@@ -29,6 +29,7 @@
         stable.zotero
         spotify
         super-productivity
+        stable.nomachine-client
       ];
     };
 }
