@@ -4,6 +4,7 @@
 # Changes I made:
 # - Check for blkdiscard support and skip if not supported
 # - Encrypt the pool only for the desktop and tuxedo hosts
+# - Create the media datasets from the flake (custom.zfs.tank), on a second disk for hosts with their own tank pool
 # - Export zpool at the end of the script to avoid "device busy" errors when rebooting
 # - After nixos-install:
 #   1. Read the username from the flake
@@ -32,85 +33,61 @@ function yesno() {
     done
 }
 
-# in a vm, special case
-if [[ -b "/dev/vda" ]]; then
-    DISK="/dev/vda"
-else
-    # listing with the standard lsblk to help with viewing partitions
-    lsblk
+# nvme partitions have a "p" between disk and number
+function part() {
+    if [[ "$1" =~ "nvme" ]]; then
+        echo "${1}p$2"
+    else
+        echo "${1}$2"
+    fi
+}
 
-    # Get the list of disks
-    mapfile -t disks < <(lsblk -ndo NAME,SIZE,MODEL)
+# prints the selected disk, the optional second argument is left out of the list
+function select_disk() {
+    local prompt="$1"
+    local exclude="${2:-}"
+    local disks=()
+    local line selection
 
-    echo -e "\nAvailable disks:\n"
+    while read -r line; do
+        [[ "/dev/${line%% *}" == "$exclude" ]] || disks+=("$line")
+    done < <(lsblk -ndo NAME,SIZE,MODEL)
+
+    echo -e "\nAvailable disks:\n" >&2
     for i in "${!disks[@]}"; do
-        printf "%d) %s\n" $((i+1)) "${disks[i]}"
+        printf "%d) %s\n" $((i+1)) "${disks[i]}" >&2
     done
 
-    # Get user selection
     while true; do
-        echo ""
-        read -rp "Enter the number of the disk to install to: " selection
+        echo "" >&2
+        read -rp "$prompt: " selection
         if [[ "$selection" =~ ^[0-9]+$ ]] && [ "$selection" -ge 1 ] && [ "$selection" -le ${#disks[@]} ]; then
             break
-        else
-            echo "Invalid selection. Please try again."
         fi
+        echo "Invalid selection. Please try again." >&2
     done
 
-    # Get the selected disk
-    DISK="/dev/$(echo "${disks[$selection-1]}" | awk '{print $1}')"
-fi
+    echo "/dev/$(echo "${disks[$selection-1]}" | awk '{print $1}')"
+}
 
-# if disk contains "nvme", append "p" to partitions
-if [[ "$DISK" =~ "nvme" ]]; then
-    BOOTDISK="${DISK}p3"
-    SWAPDISK="${DISK}p2"
-    ZFSDISK="${DISK}p1"
-else
-    BOOTDISK="${DISK}3"
-    SWAPDISK="${DISK}2"
-    ZFSDISK="${DISK}1"
-fi
+function wipe_disk() {
+    local disk="$1"
 
-echo "Boot Partition: $BOOTDISK"
-echo "SWAP Partition: $SWAPDISK"
-echo "ZFS Partition: $ZFSDISK"
+    DISCARD_MAX=$(cat "/sys/block/$(basename "$disk")/queue/discard_max_bytes")
+    if [ "$DISCARD_MAX" -gt 0 ]; then
+        echo "Discard supported on $disk. Running blkdiscard..."
+        sudo blkdiscard -f "$disk"
+    else
+        echo "Discard not supported on $disk. Skipping blkdiscard."
+    fi
 
-echo ""
-do_format=$(yesno "This irreversibly formats the entire disk. Are you sure?")
-if [[ $do_format == "n" ]]; then
-    exit
-fi
+    sudo sgdisk --clear "$disk"
+}
 
-echo "Creating partitions"
+flake="github:PlaTTYBus/dots"
+nix_eval=(nix eval --raw --extra-experimental-features "nix-command flakes pipe-operators" --option tarball-ttl 0)
 
-DISCARD_MAX=$(cat "/sys/block/$(basename "$DISK")/queue/discard_max_bytes")
-if [ "$DISCARD_MAX" -gt 0 ]; then
-    echo "Discard supported on $DISK. Running blkdiscard..."
-    sudo blkdiscard -f "$DISK"
-else
-    echo "Discard not supported on $DISK. Skipping blkdiscard."
-fi
-
-sudo sgdisk --clear "$DISK"
-
-sudo sgdisk -n3:1M:+1G -t3:EF00 "$DISK"
-sudo sgdisk -n2:0:+16G -t2:8200 "$DISK"
-sudo sgdisk -n1:0:0 -t1:BF01 "$DISK"
-
-# notify kernel of partition changes
-sudo sgdisk -p "$DISK" > /dev/null
-sleep 5
-
-echo "Creating Swap"
-sudo mkswap "$SWAPDISK" --label "SWAP"
-sudo swapon "$SWAPDISK"
-
-echo "Creating Boot Disk"
-sudo mkfs.fat -F 32 "$BOOTDISK" -n NIXBOOT
-
-# setup encryption
+# the host decides about encryption and whether the media datasets get their own disk
 echo "Available hosts:"
 hosts=("desktop" "tuxedo" "vmware")
 for i in "${!hosts[@]}"; do
@@ -139,18 +116,76 @@ case "$host" in
         ;;
 esac
 
+echo "Reading the tank pool of $host from the flake"
+tank_pool=$("${nix_eval[@]}" "$flake#nixosConfigurations.$host.config.custom.zfs.tank.pool")
+echo "Tank pool: $tank_pool"
+
+# in a vm, special case
+if [[ -b "/dev/vda" ]]; then
+    DISK="/dev/vda"
+else
+    # listing with the standard lsblk to help with viewing partitions
+    lsblk
+    DISK=$(select_disk "Enter the number of the disk to install to")
+fi
+
+BOOTDISK=$(part "$DISK" 3)
+SWAPDISK=$(part "$DISK" 2)
+ZFSDISK=$(part "$DISK" 1)
+
+echo "Boot Partition: $BOOTDISK"
+echo "SWAP Partition: $SWAPDISK"
+echo "ZFS Partition: $ZFSDISK"
+
+# any other pool than zroot lives on its own disk
+if [[ "$tank_pool" != "zroot" ]]; then
+    TANKDISK=$(select_disk "Enter the number of the disk for the $tank_pool pool" "$DISK")
+    TANKZFSDISK=$(part "$TANKDISK" 1)
+    echo "$tank_pool Partition: $TANKZFSDISK"
+fi
+
+echo ""
+do_format=$(yesno "This irreversibly formats $DISK${TANKDISK:+ and $TANKDISK}. Are you sure?")
+if [[ $do_format == "n" ]]; then
+    exit
+fi
+
+echo "Creating partitions"
+
+wipe_disk "$DISK"
+sudo sgdisk -n3:1M:+1G -t3:EF00 "$DISK"
+sudo sgdisk -n2:0:+16G -t2:8200 "$DISK"
+sudo sgdisk -n1:0:0 -t1:BF01 "$DISK"
+
+if [[ -n "${TANKDISK:-}" ]]; then
+    wipe_disk "$TANKDISK"
+    sudo sgdisk -n1:0:0 -t1:BF01 "$TANKDISK"
+fi
+
+# notify kernel of partition changes
+sudo sgdisk -p "$DISK" > /dev/null
+sleep 5
+
+echo "Creating Swap"
+sudo mkswap "$SWAPDISK" --label "SWAP"
+sudo swapon "$SWAPDISK"
+
+echo "Creating Boot Disk"
+sudo mkfs.fat -F 32 "$BOOTDISK" -n NIXBOOT
+
+pool_options=(
+    -o ashift=12
+    -o autotrim=on
+    -O compression=zstd
+    -O acltype=posixacl
+    -O atime=off
+    -O xattr=sa
+    -O normalization=formD
+    -O mountpoint=none
+)
+
 echo "Creating base zpool"
-sudo zpool create -f \
-    -o ashift=12 \
-    -o autotrim=on \
-    -O compression=zstd \
-    -O acltype=posixacl \
-    -O atime=off \
-    -O xattr=sa \
-    -O normalization=formD \
-    -O mountpoint=none \
-    "${encryption_options[@]}" \
-    zroot "$ZFSDISK"
+sudo zpool create -f "${pool_options[@]}" "${encryption_options[@]}" zroot "$ZFSDISK"
 
 # NOTE: legacy mounts are used so they can be managed by fstab and swapped out via nixos configuration, e.g. for tmpfs
 echo "Creating /"
@@ -174,11 +209,28 @@ echo "Creating /home"
 sudo zfs create -o mountpoint=legacy zroot/home
 sudo mount --mkdir -t zfs zroot/home /mnt/home
 
-echo "Creating /tank"
-sudo zfs create -o mountpoint=legacy zroot/tank
-sudo mount --mkdir -t zfs zroot/tank /mnt/tank
+if [[ "$tank_pool" != "zroot" ]]; then
+    echo "Creating the $tank_pool pool"
+    tank_options=()
+    if [[ ${#encryption_options[@]} -gt 0 ]]; then
+        # a key file on the encrypted zroot unlocks the pool at boot, so there is only one passphrase
+        key="/etc/zfs/keys/$tank_pool.key"
+        sudo install -d -m 700 /mnt/etc/zfs/keys
+        sudo dd if=/dev/urandom of="/mnt$key" bs=32 count=1 status=none
+        sudo chmod 400 "/mnt$key"
+        tank_options=(-O encryption=aes-256-gcm -O keyformat=raw -O keylocation="file:///mnt$key")
+    fi
+    sudo zpool create -f "${pool_options[@]}" "${tank_options[@]}" "$tank_pool" "$TANKZFSDISK"
+    if [[ -n "${key:-}" ]]; then
+        # the key is only below /mnt during the install
+        sudo zfs set keylocation="file://$key" "$tank_pool"
+    fi
+fi
 
-flake="github:PlaTTYBus/dots"
+# the datasets are mounted into the home directory on boot, see modules/zfs.nix
+echo "Creating the tank datasets"
+tank_script=$("${nix_eval[@]}" "$flake#nixosConfigurations.$host.config.custom.zfs.tank.createScript")
+sudo bash -euo pipefail -c "$tank_script"
 
 echo "Installing NixOS..."
 sudo nixos-install --no-root-password --option extra-experimental-features "pipe-operators" --flake "$flake#$host" --option tarball-ttl 0
@@ -189,10 +241,7 @@ echo ""
 echo "Setting up the sops age key"
 
 # read the username from the specialArgs set in flake.nix, the flake is already fetched by nixos-install
-if ! user=$(nix eval --raw \
-    --extra-experimental-features "nix-command flakes pipe-operators" \
-    --option tarball-ttl 0 \
-    "$flake#nixosConfigurations.$host._module.specialArgs.user"); then
+if ! user=$("${nix_eval[@]}" "$flake#nixosConfigurations.$host._module.specialArgs.user"); then
     read -rp "Could not read the username from the flake, please enter it: " user
 fi
 echo "Using user: $user"
@@ -259,3 +308,6 @@ echo ""
 echo "Installation complete. It is safe to reboot now."
 sudo umount -R /mnt
 sudo zpool export zroot
+if [[ "$tank_pool" != "zroot" ]]; then
+    sudo zpool export "$tank_pool"
+fi

@@ -43,6 +43,9 @@
 
       networking.hostId = "e08abb5a"; # required for zfs
 
+      # media datasets on the second, slower nvme
+      custom.zfs.tank.pool = "ztank";
+
       # touchpad support
       services.libinput.enable = true;
 
