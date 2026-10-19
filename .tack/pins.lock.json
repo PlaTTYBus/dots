@@ -11,7 +11,7 @@
     "nixpkgs": "github:NixOS/nixpkgs/nixos-unstable",
     "nixpkgs-stable": "github:NixOS/nixpkgs/nixos-26.05",
     "noctalia-plugins": "github:noctalia-dev/official-plugins",
-    "nomachine": "https://download.nomachine.com/download/10.2/Linux/nomachine-personal-edition_10.2.3_1_x86_64.tar.",
+    "nomachine": "https://download.nomachine.com/download/10.2/Linux/nomachine-personal-edition_10.2.3_1_x86_64.tar.gz",
     "nvf": "github:notashelf/nvf",
     "sops-nix": "github:Mic92/sops-nix",
     "systems": "github:nix-systems/default",
@@ -111,9 +111,9 @@
   },
   "nomachine": {
     "type": "fixed",
-    "url": "https://download.nomachine.com/",
-    "sha256": "sha256-bVUxSAAhgLKTdBwNdap+/mG1+KfgzT5u8VkwweVH1ho=",
-    "unpack": "file"
+    "url": "https://download.nomachine.com/download/10.2/Linux/nomachine-personal-edition_10.2.3_1_x86_64.tar.gz",
+    "sha256": "sha256-cwHCG8SgdOjCZPNd3c1WFi+e0XRVJBCi6TTn2V8im44=",
+    "unpack": "tarball"
   },
   "nvf": {
     "type": "github",
