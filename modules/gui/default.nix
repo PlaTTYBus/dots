@@ -41,6 +41,7 @@
           # the tack file has no .tar.gz extension for stdenv to detect
           unpackCmd = "tar xzf $curSrc";
         })
+        vlc
       ];
     };
 }
