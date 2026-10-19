@@ -50,6 +50,33 @@
           # Privacy Badger
           "pkehgijcmpdhfbdbbnkijodmdjhbjlgp"
         ];
+
+        extraOpts = {
+          BookmarkBarEnabled = true;
+          ManagedBookmarks = [
+            { toplevel_name = "FH"; }
+            {
+              name = "eCampus";
+              url = "https://ecampus.ustp.at/local/login/index.php";
+            }
+            {
+              name = "GitLab";
+              url = "https://git.nwt.fhstp.ac.at";
+            }
+            {
+              name = "CiS";
+              url = "https://cis.ustp.at/addons/STPCore/cis/login.php";
+            }
+            {
+              name = "Mensa";
+              url = "https://cis.ustp.at/addons/STPCore/menueplan.php";
+            }
+            {
+              name = "Outlook";
+              url = "https://outlook.cloud.microsoft/mail/";
+            }
+          ];
+        };
       };
 
       environment = {
