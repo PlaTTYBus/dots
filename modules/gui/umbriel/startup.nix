@@ -30,29 +30,30 @@
           |> lib.concatStrings;
       };
 
+      # each app is autostarted and always opens on its own workspace
       startup = [
         {
-          match.app_id = "helium";
+          app_id = "helium";
           spawn = "helium --profile-directory=Default";
           workspace = 1;
         }
         # neovim, needs a terminal to show a window
         # ghostty only accepts a --class containing a dot
         rec {
-          match.app_id = "dev.${user}.nvim";
-          spawn = "ghostty --class=${match.app_id} -e nvim";
+          app_id = "dev.${user}.nvim";
+          spawn = "ghostty --class=${app_id} -e nvim";
           workspace = 3;
         }
         # file manager
         {
-          match.app_id = "nemo";
+          app_id = "nemo";
           spawn = "nemo";
           workspace = 4;
         }
 
         # terminal, opens a window in the ghostty background service (started via dbus if not running yet)
         {
-          match.app_id = config.custom.programs.terminal.app_id;
+          inherit (config.custom.programs.terminal) app_id;
           spawn = "ghostty +new-window";
           workspace = 2;
         }
@@ -63,35 +64,36 @@
         umbriel.settings = lib.mkMerge (
           (
             startup
-            |> map (s: {
-              general.autostart = [ s.spawn ];
-              window_rule = [
-                (
+            |> map (
+              s:
+              {
+                general.autostart = [ s.spawn ];
+                window_rule = [
                   {
-                    match = s.match // {
-                      at_startup = true;
+                    match = {
+                      app_id = "^${lib.escapeRegex s.app_id}$";
+                      # dialogs open floating and stay with their parent
+                      is_floating = false;
                     };
                     default_workspace = toString s.workspace;
                   }
-                  // lib.optionalAttrs (s.workspace != (lib.head config.custom.hardware.monitors).defaultWorkspace) {
-                    default_focused = false;
-                    focus_on_activate = false;
-                  }
-                )
-              ];
-            })
+                ];
+              }
+            )
           )
           ++ [
             {
               # focus default workspace for each monitor
               general.autostart = [ (lib.getExe focus-default-workspaces) ];
 
-              # 1-4 are reserved for the startup apps, everything else opens on 5. the later rule wins,
-              # so this has to come before the startup rules. dialogs open floating and stay with their parent
+              # 1-4 belong to the apps above, everything else opens on 5. no window steals focus,
+              # neither when it opens nor through activation. the later rule wins, so this comes first
               window_rule = lib.mkBefore [
                 {
                   match.is_floating = false;
                   default_workspace = "5";
+                  default_focused = false;
+                  focus_on_activate = false;
                 }
               ];
             }
