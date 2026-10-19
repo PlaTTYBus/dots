@@ -32,6 +32,7 @@ appimageTools.wrapType2 {
   extraBwrapArgs = [
     # chromium policies
     "--ro-bind-try /etc/chromium/policies/managed/default.json /etc/chromium/policies/managed/default.json"
+    "--ro-bind-try /etc/chromium/policies/managed/extra.json /etc/chromium/policies/managed/extra.json"
     # xdg scheme-handlers
     "--ro-bind-try /etc/xdg/ /etc/xdg/"
   ];
