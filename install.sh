@@ -249,6 +249,11 @@ echo "Using user: $user"
 age_dir="/mnt/home/$user/.config/sops/age"
 age_keyfile="$age_dir/keys.txt"
 
+# owner as created by nixos-install, fall back to the defaults for the first normal user
+uid=$(awk -F: -v u="$user" '$1 == u { print $3 }' /mnt/etc/passwd 2>/dev/null)
+gid=$(awk -F: -v u="$user" '$1 == u { print $4 }' /mnt/etc/passwd 2>/dev/null)
+uid=${uid:-1000}
+gid=${gid:-100}
 
 while true; do
     # -s hides the key while typing / pasting
