@@ -53,29 +53,36 @@
 
         extraOpts = {
           BookmarkBarEnabled = true;
+          # chromium allows only one managed top level folder
           ManagedBookmarks = [
-            { toplevel_name = "FH"; }
+            { toplevel_name = "Bookmarks"; }
+          ]
+          ++ lib.mapAttrsToList
+            (name: links: {
+              inherit name;
+              children = lib.mapAttrsToList (name: url: { inherit name url; }) links;
+            })
             {
-              name = "eCampus";
-              url = "https://ecampus.ustp.at/local/login/index.php";
-            }
-            {
-              name = "GitLab";
-              url = "https://git.nwt.fhstp.ac.at";
-            }
-            {
-              name = "CiS";
-              url = "https://cis.ustp.at/addons/STPCore/cis/login.php";
-            }
-            {
-              name = "Mensa";
-              url = "https://cis.ustp.at/addons/STPCore/menueplan.php";
-            }
-            {
-              name = "Outlook";
-              url = "https://outlook.cloud.microsoft/mail/";
-            }
-          ];
+              FH = {
+                eCampus = "https://ecampus.ustp.at/local/login/index.php";
+                GitLab = "https://git.nwt.fhstp.ac.at";
+                CiS = "https://cis.ustp.at/addons/STPCore/cis/login.php";
+                Mensa = "https://cis.ustp.at/addons/STPCore/menueplan.php";
+                Outlook = "https://outlook.cloud.microsoft/mail/";
+              };
+              Proton = {
+                Mail = "https://mail.proton.me";
+                Calendar = "https://calendar.proton.me";
+                Drive = "https://drive.proton.me";
+                Docs = "https://docs.proton.me";
+                Pass = "https://pass.proton.me";
+                Wallet = "https://wallet.proton.me";
+                Meet = "https://meet.proton.me";
+                Lumo = "https://lumo.proton.me";
+                VPN = "https://account.protonvpn.com";
+                Account = "https://account.proton.me";
+              };
+            };
         };
       };
 
