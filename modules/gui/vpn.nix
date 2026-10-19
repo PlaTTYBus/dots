@@ -38,8 +38,12 @@
         updateResolvConf = true;
       };
 
-      # Type=notify, so "systemctl start" waits for the tunnel; runAsync gives up after 60s
-      systemd.services.openvpn-university.serviceConfig.TimeoutStartSec = 50;
+      systemd.services.openvpn-university.serviceConfig = {
+        # Type=notify, so "systemctl start" waits for the tunnel; runAsync gives up after 60s
+        TimeoutStartSec = 50;
+        # openvpn exits 0 on AUTH_FAILED, so this avoids hammering the server with bad credentials
+        Restart = lib.mkForce "on-failure";
+      };
 
       # lets the bar widget switch the tunnel without a password prompt
       security.polkit.extraConfig = ''
