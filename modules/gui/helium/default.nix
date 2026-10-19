@@ -33,8 +33,6 @@
           "eimadpbcbfnmbkopoojfekhnkhdbieeh"
           # Refined Github
           "hlepfoohegkhhmjieoechaddaejaokhf"
-          # JSON Viewer
-          "gbmdgpbipfallnflgajpaliibnhdgobh"
           # Redirector
           "lioaeidejmlpffbndjhaameocfldlhin"
           # Return YouTube Dislike
