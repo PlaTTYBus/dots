@@ -89,5 +89,5 @@ url = "github:PlaTTYBus/vpn-switcher"
 type = "fetch"
 
 [inputs.nomachine]
-url = "https://download.nomachine.com/download/10.2/Linux/nomachine-personal-edition_10.2.3_1_x86_64.tar."
+url = "https://download.nomachine.com/download/10.2/Linux/nomachine-personal-edition_10.2.3_1_x86_64.tar.gz"
 type = "fixed"
