@@ -12,11 +12,6 @@
 
 ---
 
-
-
-
----
-
 ## Installation
 
 > [!WARNING]
@@ -53,6 +48,8 @@ bash <(curl -L https://raw.githubusercontent.com/plattybus/dots/main/install.sh)
 3. Add it to the `hosts` list in `install.sh`, and to the encryption case if it should be encrypted.
 4. If the media folders should go on a second disk, set `custom.zfs.tank.pool` to a new pool name (e.g. `ztank`), the installer then asks for that disk.
 5. Push, then install with the steps above.
+
+---
 
 ## Features
 
