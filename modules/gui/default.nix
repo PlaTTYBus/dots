@@ -29,7 +29,6 @@
         stable.zotero
         spotify
         super-productivity
-        proton-vpn-cli
       ];
     };
 }
