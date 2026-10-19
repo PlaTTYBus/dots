@@ -85,6 +85,15 @@
             {
               # focus default workspace for each monitor
               general.autostart = [ (lib.getExe focus-default-workspaces) ];
+
+              # 1-4 are reserved for the startup apps, everything else opens on 5. the later rule wins,
+              # so this has to come before the startup rules. dialogs open floating and stay with their parent
+              window_rule = lib.mkBefore [
+                {
+                  match.is_floating = false;
+                  default_workspace = "5";
+                }
+              ];
             }
           ]
         );
