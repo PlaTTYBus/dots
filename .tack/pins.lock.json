@@ -113,7 +113,7 @@
     "type": "fixed",
     "url": "https://download.nomachine.com/download/10.2/Linux/nomachine-personal-edition_10.2.3_1_x86_64.tar.gz",
     "sha256": "sha256-cwHCG8SgdOjCZPNd3c1WFi+e0XRVJBCi6TTn2V8im44=",
-    "unpack": "tarball"
+    "unpack": "file"
   },
   "nvf": {
     "type": "github",
