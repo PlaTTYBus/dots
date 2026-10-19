@@ -13,6 +13,8 @@
         flags = [
           "--restore-last-session"
           "--hide-crash-restore-bubble"
+          # skip the welcome page on a fresh profile
+          "--no-first-run"
         ];
       };
     };
@@ -37,7 +39,7 @@
           "lioaeidejmlpffbndjhaameocfldlhin"
           # Return YouTube Dislike
           "gebbhagfogifgggkldgodflihgfeippi"
-          # Session Manager
+          # Session Buddy
           "edacconmaakjimmfgnblocblbcdcpbko"
           # SponsorBlock for YouTube - Skip Sponsorships
           "mnjggcdmjocbbbhaepdhchncahnbgone"
@@ -52,6 +54,25 @@
         ];
 
         extraOpts = {
+          # pin to the toolbar
+          ExtensionSettings =
+            lib.genAttrs
+              [
+                # Dark Reader
+                "eimadpbcbfnmbkopoojfekhnkhdbieeh"
+                # Proton Pass
+                "ghmbeldphafepmbegfdlkpapadhbakde"
+                # Privacy Badger
+                "pkehgijcmpdhfbdbbnkijodmdjhbjlgp"
+                # Session Buddy
+                "edacconmaakjimmfgnblocblbcdcpbko"
+                # uBlock Origin, built into helium
+                "blockjmkbacgjkknlgpkjjiijinjdanf"
+              ]
+              (_: {
+                toolbar_pin = "force_pinned";
+              });
+
           BookmarkBarEnabled = true;
           # chromium allows only one managed top level folder
           ManagedBookmarks = [

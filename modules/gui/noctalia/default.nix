@@ -112,6 +112,9 @@
         # wallpaper folder for noctalia, created by hjem relative to the home directory
         hj.files."${wallpaperDir}/default.jpg".source = ../../wallpaper-default.jpg;
 
+        # skip the welcome wizard, the settings come from nix
+        hj.xdg.state.files."noctalia/.setup-complete".text = "";
+
         custom = {
           programs = {
             umbriel.settings.layer_rule = [

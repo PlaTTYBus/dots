@@ -37,6 +37,9 @@
     };
 
     systemd.tmpfiles.rules = [
+      # tmpfiles creates missing parents as root, which locks the user out of ~/.local on a fresh install
+      "d /home/${user}/.local 0755 ${user} users -"
+      "d /home/${user}/.local/share 0755 ${user} users -"
       "d /home/${user}/.local/share/keyrings 0700 ${user} users -"
       "f+ /home/${user}/.local/share/keyrings/default 0644 ${user} users - login"
     ];
