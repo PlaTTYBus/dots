@@ -12,7 +12,7 @@
               width = 2880;
               height = 1800;
               refreshRate = "120.000";
-              scale = 2;
+              scale = 2.0;
               vrr = true;
               workspaces = [
                 1
