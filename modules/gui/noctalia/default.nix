@@ -190,7 +190,7 @@
                   |> map (
                     d:
                     let
-                      target_width = 600;
+                      target_width = 720;
                       normalized_width = builtins.div (if d.isVertical then d.height else d.width) d.scale;
                     in
                     {

@@ -13,8 +13,6 @@
         flags = [
           "--restore-last-session"
           "--hide-crash-restore-bubble"
-          # skip the welcome page on a fresh profile
-          "--no-first-run"
         ];
       };
     };
