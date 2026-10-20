@@ -10,10 +10,9 @@
             {
               name = "eDP-1";
               width = 2880;
-              height = 1920;
-              # 60.001 for 60 fps
+              height = 1800;
               refreshRate = "120.000";
-              scale = 1.5;
+              scale = 2;
               vrr = true;
               workspaces = [
                 1
@@ -25,8 +24,8 @@
                 7
                 8
                 9
-                10
               ];
+              hdr = true;
             }
           ];
         };
@@ -36,7 +35,7 @@
           };
 
           umbriel.settings = {
-            general.autostart = [ "${lib.getExe pkgs.brightnessctl} s 40%" ];
+            general.autostart = [ "${lib.getExe pkgs.brightnessctl} s 60%" ];
           };
         };
       };

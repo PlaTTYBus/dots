@@ -20,7 +20,7 @@
               4
               5
             ];
-            hdr = true; # toggle to use hdr
+            hdr = true;
           }
         ];
       };
