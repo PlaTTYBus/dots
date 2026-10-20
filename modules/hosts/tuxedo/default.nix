@@ -15,10 +15,10 @@
               scale = 2.0;
               vrr = true;
               workspaces = [
-                
-                
-                
-                
+                1
+                2
+                3
+                4
                 5
                 6
                 7
