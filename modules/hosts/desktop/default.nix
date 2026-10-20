@@ -10,9 +10,9 @@
             width = 2560;
             height = 1440;
             refreshRate = "360.000";
-            vrr = false;
             x = 1440;
-            y = 1080;
+            y = 560;
+            vrr = true;
             workspaces = [
               1
               2
@@ -21,6 +21,33 @@
               5
             ];
             hdr = true;
+          }
+          {
+            name = "DP-2";
+            width = 2560;
+            height = 1440;
+            refreshRate = "75.000";
+            x = 4000;
+            y = 560;
+            workspaces = [
+              6
+              7
+            ];
+            defaultWorkspace = 6;
+          }
+          {
+            name = "DP-3";
+            width = 2560;
+            height = 1440;
+            refreshRate = "60.000";
+            x = 0;
+            y = 0;
+            workspaces = [
+              8
+              9
+            ];
+            defaultWorkspace = 8;
+            transform = 1;
           }
         ];
       };
