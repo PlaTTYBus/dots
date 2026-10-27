@@ -48,5 +48,8 @@ in
         mute-all
     ];
 
-    users.users.${user}.extraGroups = [ "audio" ];
+    users.users.${user}.extraGroups = [
+        "audio"
+        "pipewire"
+    ];
 }
