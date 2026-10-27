@@ -42,7 +42,6 @@
                     unpackCmd = "tar xzf $curSrc";
                 })
                 vlc
-                autopsy
             ];
         };
 }
