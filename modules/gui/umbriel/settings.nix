@@ -339,10 +339,13 @@
                                         anchor = "bottom_right";
                                     };
                                 }
-                                # vm displays are sdr, hdr = "fullscreen" would map them into hdr and dim them
+                                # vm displays are sdr, hdr = "fullscreen" would map them into hdr and dim them.
+                                # their irregular redraws also make vrr flicker on oled
+                                # the nix wrapper turns the app id into the name of the wrapped binary
                                 {
-                                    match.app_id = "^org[.]virt-manager[.]virt-manager$";
+                                    match.app_id = "^[.]virt-manager-wrapped$";
                                     hdr = "off";
+                                    vrr = "disabled";
                                 }
                                 # open single applications maximized
                                 {
