@@ -12,7 +12,9 @@
                         refreshRate = "360.000";
                         x = 1440;
                         y = 560;
-                        vrr = true;
+                        # oled brightness follows the refresh rate, so an idle desktop under vrr
+                        # flickers on every redraw
+                        vrr = "fullscreen";
                         workspaces = [
                             1
                             2

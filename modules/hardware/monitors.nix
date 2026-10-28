@@ -42,7 +42,15 @@
                 type = lib.types.float;
                 default = 1.0;
               };
-              vrr = lib.mkEnableOption "Variable Refresh Rate";
+              vrr = lib.mkOption {
+                type = lib.types.enum [
+                  "disabled"
+                  "always"
+                  "fullscreen"
+                ];
+                default = "disabled";
+                description = "Variable Refresh Rate policy, fullscreen only enables it for fullscreen windows";
+              };
               transform = lib.mkOption {
                 type = lib.types.int;
                 description = "Transform for rotation";

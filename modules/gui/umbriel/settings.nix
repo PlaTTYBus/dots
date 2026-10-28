@@ -34,7 +34,7 @@
                                             d.x
                                             d.y
                                         ];
-                                        vrr = if d.vrr then "always" else "disabled";
+                                        inherit (d) vrr;
                                         hdr = if d.hdr then "fullscreen" else "off";
                                         transform = "${lib.optionalString flipped "flipped-"}${
                                             if rotation == "0" then "normal" else rotation
@@ -338,6 +338,11 @@
                                         y = 20;
                                         anchor = "bottom_right";
                                     };
+                                }
+                                # vm displays are sdr, hdr = "fullscreen" would map them into hdr and dim them
+                                {
+                                    match.app_id = "^org[.]virt-manager[.]virt-manager$";
+                                    hdr = "off";
                                 }
                                 # open single applications maximized
                                 {

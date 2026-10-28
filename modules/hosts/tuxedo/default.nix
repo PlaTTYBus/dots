@@ -13,7 +13,8 @@
               height = 1800;
               refreshRate = "120.000";
               scale = 2.0;
-              vrr = true;
+              # lowers the refresh rate on an idle desktop to save power
+              vrr = "always";
               workspaces = [
                 1
                 2
