@@ -39,6 +39,11 @@
           timeout = 1;
         };
         supportedFilesystems.ntfs = true;
+        
+        kernel.sysctl = {
+          "vm.swappiness" = 180;
+          "vm.page-cluster" = 0;
+        };
       };
 
       # faster boot times

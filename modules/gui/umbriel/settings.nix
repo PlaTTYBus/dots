@@ -47,7 +47,6 @@
                             |> lib.listToAttrs;
                     }
                     //
-                        # setup vertical monitors if any
                         (
                             config.custom.hardware.monitors
                             |> lib.concatMap (d: if d.isVertical then d.workspaces else [ ])
@@ -67,14 +66,13 @@
                             |> lib.custom.recursiveMergeAttrsList
                         )
                     //
-                        # general umbriel settings
                         {
                             general = {
                                 mod_key = lib.mkIf (builtins.elem "vm" tags) "Alt";
-                                xwayland = true; # requires restart to change
+                                xwayland = true; # needs a restart
                                 show_cheatsheet = false;
-                                focus_on_activate = true; # unsolicited requests cannot add focus; trusted launches may still focus
-                                honor_restored_maximize = false; # let apps restore their saved maximized state
+                                focus_on_activate = true;
+                                honor_restored_maximize = false;
                             };
 
                             workspaces = {
@@ -83,80 +81,59 @@
                             };
 
                             animation = {
-                                enabled = true; # Master animation switch
-                                duration_ms = 250; # Shared duration, 1-10000 ms
-                                curve = "easeout"; # Built-in or registered bezier/spring curve name
-                                # A spring curve such as "spring:1,1000" (damping, stiffness) sets its own length from its physics and
-                                # ignores duration_ms: raise stiffness for a faster settle, lower damping below 1 for overshoot.
+                                enabled = true;
+                                duration_ms = 250;
+                                curve = "easeout";
 
-                                # Window opening animation
                                 windows_in = {
                                     enabled = true;
-                                    curve = "spring:1,1900"; # 278 ms critically damped settle
-                                    style = "popin"; # popin, zoom, slide, fade, or none
-                                    scale = 0.85; # Popin start scale, 0.1-1.0
-                                    # shader = "shaders/reveal.glsl";      # Replaces the built-in opening style
+                                    curve = "spring:1,1900";
+                                    style = "popin";
+                                    scale = 0.85;
                                 };
 
-                                # Window closing animation
                                 windows_out = {
                                     enabled = true;
-                                    curve = "spring:1,900"; # 403 ms critically damped settle
-                                    style = "fade"; # fade, slide, popin, or zoom
-                                    scale = 0.8; # Popin end scale, 0.1-1.0
-                                    # shader = "shaders/reveal.glsl";
+                                    curve = "spring:1,900";
+                                    style = "fade";
+                                    scale = 0.8;
                                 };
 
-                                # Window movement, resizing, layout changes, maximize and restore, and visible
-                                # scratchpad resizing
                                 windows_move = {
                                     enabled = true;
-                                    curve = "spring:1,4400"; # 183 ms critically damped settle
-                                    # shader = "shaders/squash.glsl";      # Subtle compression and settle during move/resize
+                                    curve = "spring:1,4400";
                                 };
 
-                                # Wobbly Windows
-                                # windows_drag = {
-                                #   physics = true;
-                                # };
-
-                                # Workspace switching
                                 workspaces = {
                                     enabled = true;
-                                    curve = "spring:1,800"; # 428 ms critically damped settle
+                                    curve = "spring:1,800";
                                 };
 
-                                # Entering and leaving overview
                                 overview = {
                                     enabled = true;
-                                    curve = "spring:1,800"; # 428 ms critically damped settle
-                                    # Filmstrip movement from wheel, keyboard, and touchpad navigation
+                                    curve = "spring:1,800";
                                     workspace_curve = "spring:1,1000";
                                 };
 
-                                # Scratchpad show, hide, and backdrop
                                 scratchpad = {
                                     enabled = true;
-                                    curve = "spring:1,800"; # 428 ms critically damped settle
-                                    dim = 0.8; # Backdrop dim amount, 0.0-1.0
-                                    blur = false; # Requires appearance.blur.enabled
+                                    curve = "spring:1,800";
+                                    dim = 0.8;
+                                    blur = false;
                                 };
 
-                                # Focus border color
                                 border = {
                                     enabled = true;
-                                    curve = "spring:1,600"; # 494 ms critically damped settle
+                                    curve = "spring:1,600";
                                 };
 
-                                # Unfocused window opacity
                                 dim_unfocused = {
                                     enabled = false;
                                     duration_ms = 250;
                                     curve = "easeout";
-                                    dim = 0.0; # 0 disables dimming; maximum is 1.0
+                                    dim = 0.0;
                                 };
 
-                                # Layer-shell surface mapping and unmapping
                                 layers = {
                                     enabled = false;
                                     duration_ms = 250;
@@ -165,28 +142,28 @@
                             };
 
                             appearance = {
-                                prefer_no_csd = true; # false lets newly started apps draw their own decorations
-                                border_width = 2; # 0-100
-                                outer_border_width = 0; # 0-100
-                                corner_radius = 10; # 0-100, radius of the final decorated outer edge
+                                prefer_no_csd = true;
+                                border_width = 2;
+                                outer_border_width = 0;
+                                corner_radius = 10;
                                 drag_opacity = 0.75;
                                 opaque_fullscreen = false;
 
                                 blur = {
                                     enabled = true;
                                     optimized = true;
-                                    passes = 3; # 0-8
-                                    radius = 3; # 0-100
-                                    noise = 0.02; # 0.0-1.0
-                                    brightness = 0.9; # 0.0-2.0
-                                    contrast = 0.9; # 0.0-2.0
-                                    saturation = 1.1; # 0.0-2.0
+                                    passes = 3;
+                                    radius = 3;
+                                    noise = 0.02;
+                                    brightness = 0.9;
+                                    contrast = 0.9;
+                                    saturation = 1.1;
                                 };
 
                                 shadow = {
                                     enabled = true;
-                                    softness = 10; # 0-200, 0 = hard edge
-                                    offset_x = 2; # -200 to 200
+                                    softness = 10;
+                                    offset_x = 2;
                                     offset_y = 2;
                                 };
                             };
@@ -197,19 +174,11 @@
                             };
 
                             overview = {
-                                zoom = 0.5; # 0.1-0.75
-                                # Pinned windows stay hidden until overview closes; visible scratchpads are dismissed.
-                                # background_blur = true         # blur the wallpaper while the overview is open
-                                # background_tint = "#10101430"
-                                # workspace_background = "#00000044" # set alpha to FF for an opaque background
-                                # shortcuts = true
-                                # shortcut_keys = "1234567890" # favorite keys in preference order
-                                # badge_color = "#7AA3FFFF"   # defaults to colors.accent_primary
+                                zoom = 0.5;
                             };
 
                             layout = {
-                                mode = "scrolling"; # "scrolling", "dwindle", or "master"
-                                # Inspect every workspace's effective mode with `umbriel workspaces --json`.
+                                mode = "scrolling";
                                 inherit gap;
                                 extent_presets = [
                                     0.33333
@@ -226,96 +195,55 @@
                                 };
 
                                 scrolling = {
-                                    default_extent_fraction = 0.5; # remove to let clients choose their initial width
-                                    center_underfull_strip = true; # center the strip whenever it is narrower than the viewport
-                                    center_focused = "never"; # always center the focused column
-                                };
-
-                                dwindle = {
-                                    # Keep each split direction fixed after it is created.
-                                    # preserve_split = false
+                                    default_extent_fraction = 0.5;
+                                    center_underfull_strip = true;
+                                    center_focused = "never";
                                 };
 
                                 master = {
-                                    position = "left"; # "left" or "right"
-                                    default_width_fraction = 0.5; # 0.1-0.9
-                                    new_on_top = true; # place new windows at the top of the stack
+                                    position = "left";
+                                    default_width_fraction = 0.5;
+                                    new_on_top = true;
                                 };
                             };
 
-                            # Workspace layout overrides (see docs/user/workspaces.md#workspace-rules)
-                            # [[workspace]]
-                            # name = "chat"
-                            # layout.mode = "dwindle"
-                            # layout.gap = 4
-                            # layout.struts.top = 24       # override one edge and inherit the others
-                            # layout.scrolling.center_underfull_strip = false
-                            # layout.dwindle.preserve_split = true
-
                             input = {
-                                middle_click_paste = false; # primary-selection clipboard, disabled like gtk-enable-primary-paste, applies on reload
+                                middle_click_paste = false;
 
                                 keyboard = {
-                                    # ASCII keybind fallback uses only layouts listed for this keyboard; a single
-                                    # non-Latin layout has no implicit Latin fallback.
-                                    # use the system layout from services.xserver.xkb (also used by the tty and xwayland),
-                                    # an empty layout makes libxkbcommon fall back to "us"
-                                    # "us,de" loads both; switch with keyboard-layout-next
-                                    inherit (config.services.xserver.xkb) layout variant options; # options e.g. "grp:alt_shift_toggle"
-                                    repeat_rate = 25; # 0-1000 Hz
-                                    repeat_delay = 600; # 0-10000 ms
-                                    numlock_toggle = true; # true enables NumLock when a keyboard connects; false leaves it off
-                                    track_layout = "global"; # "global", or "window" to track the layout per surface
+                                    inherit (config.services.xserver.xkb) layout variant options;
+                                    repeat_rate = 25;
+                                    repeat_delay = 600;
+                                    numlock_toggle = true;
+                                    track_layout = "global";
                                 };
 
                                 touchpad = {
-                                    tap = true; # enabled by default; false disables tap-to-click
+                                    tap = true;
                                     natural_scroll = false;
-                                    # accel_profile = "adaptive"    # "flat", "adaptive", or "custom <step> <points...>"
-                                    # sensitivity = 0.5             # pointer speed, -1.0 to 1.0
-                                    # scroll_factor = 1.5           # touchpad scroll speed, 0.1 to 10.0
-                                    # disable_while_typing = true   # omitted preserves the device's libinput default
-                                    # disable_on_external_mouse = true  # disable the touchpad while an external mouse is connected
                                 };
 
                                 mouse = {
-                                    # accel_profile = "flat"       # omitted preserves the device's libinput default
-                                    sensitivity = 0.0; # pointer speed, -1.0 to 1.0
-                                    scroll_wheel_step = 60; # 1-1000
-                                    # Override only the listed settings for an exact, case-sensitive device name.
-                                    # Applies per device kind: layout, variant, options, repeat_rate, and
-                                    # repeat_delay to keyboards; tap and disable_while_typing to touchpads;
-                                    # natural_scroll, accel_profile, and sensitivity to touchpads and mice.
-                                    # Find names with `libinput list-devices`.
-                                    # [[input.device]]
-                                    # name = "Acme Precision Touchpad"
-                                    # tap = true
-                                    # natural_scroll = false
-                                    # accel_profile = "flat"
-                                    # sensitivity = 0.0
-                                    # disable_while_typing = false
+                                    sensitivity = 0.0;
+                                    scroll_wheel_step = 60;
                                 };
 
                                 cursor = {
                                     theme = config.custom.gtk.cursor.name;
                                     size = config.custom.gtk.cursor.size;
-                                    # false forces software cursor composition, the hardware cursor plane is invisible on vmwgfx
+                                    # the virtio-gpu cursor plane is invisible or offset under spice
                                     hardware_cursor = !(builtins.elem "vm" tags);
-                                    follows_focus = false; # warp to windows selected by focus navigation
-                                    hide_when_typing = false; # hide after typing unless a pointer button is held
-                                    hide_timeout_ms = 0; # 0-3600000, 0 disables hiding
+                                    follows_focus = false;
+                                    hide_when_typing = false;
+                                    hide_timeout_ms = 0;
                                 };
 
                                 focus = {
                                     follows_mouse = true;
-                                    # Refuse hover focus when revealing the window would scroll further than this,
-                                    # measured in viewport widths (1.0 = one full screen). Omit for no limit.
-                                    # follows_mouse_max_scroll = 0.5
                                 };
                             };
 
                             window_rule = [
-                                # blur all windows
                                 {
                                     blur = true;
                                     blur_optimized = true;
@@ -328,7 +256,6 @@
                                         height = 600;
                                     };
                                 }
-                                # Browsers do not expose a semantic PiP role or control global window position.
                                 {
                                     match.title = "^(Picture-in-Picture|Picture in picture)$";
                                     default_floating = true;
@@ -339,15 +266,13 @@
                                         anchor = "bottom_right";
                                     };
                                 }
-                                # vm displays are sdr, hdr = "fullscreen" would map them into hdr and dim them.
-                                # their irregular redraws also make vrr flicker on oled
+                                # vm displays are sdr and their irregular redraws make vrr flicker on oled
                                 # the nix wrapper turns the app id into the name of the wrapped binary
                                 {
                                     match.app_id = "^[.]virt-manager-wrapped$";
                                     hdr = "off";
                                     vrr = "disabled";
                                 }
-                                # open single applications maximized
                                 {
                                     match.is_alone = true;
                                     default_maximize = config.custom.programs.noctalia.minibar;

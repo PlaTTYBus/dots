@@ -132,11 +132,7 @@ inputs.wrappers.lib.wrapModule (
         runHook postInstall
       '';
 
-      # User supplied settings are written to a separate file before being included in a
-      # minimal wrapper file with just includes.
-      # This is so files in includeOptional are able to override settings within the
-      # user config; otherwise the including file takes priority over any other settings, see:
-      # https://docs.noctalia.dev/umbriel/configuration/?section=include#include
+      # user settings live in their own file, so includeOptional files can override them
       constructFiles.userConfig =
         if config."config.toml".content or "" != "" then
           {

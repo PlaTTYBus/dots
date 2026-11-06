@@ -8,22 +8,12 @@
       lib,
       pkgs,
       system,
-      tags,
       user,
       ...
     }:
     let
       tomlFormat = pkgs.formats.toml { };
       umbrielWrapper = import ./_wrapper.nix { inherit inputs; };
-
-      umbrielPackage = inputs.umbriel.packages.${system}.default;
-      # vmwgfx returns TTM handles for imported dmabufs, which makes wlroots reject every gpu rendered
-      # client (noctalia, ghostty, ...). Only patched for vms, so real hosts keep the cached wlroots
-      umbrielVmPackage = umbrielPackage.override {
-        wlroots_0_20 = pkgs.wlroots_0_20.overrideAttrs (o: {
-          patches = (o.patches or [ ]) ++ [ ../../../patches/wlroots-vmwgfx-dmabuf.patch ];
-        });
-      };
     in
     {
       options.custom = {
@@ -41,12 +31,11 @@
           enable = true;
           package = umbrielWrapper.wrap {
             inherit pkgs;
-            package = if builtins.elem "vm" tags then umbrielVmPackage else umbrielPackage;
+            package = inputs.umbriel.packages.${system}.default;
             settings =
               let
                 inherit (config.custom.programs.umbriel) settings;
-                # when Mod is Alt (e.g. in vms), explicit Alt binds resolve to the same chord as Mod binds,
-                # umbriel does not warn about this, so drop the colliding Alt binds and keep the Mod ones
+                # with Mod = Alt, explicit Alt binds collide with Mod binds and umbriel does not warn
                 normalize = key: lib.toLower (lib.replaceStrings [ "Mod+" ] [ "Alt+" ] key);
                 modChords =
                   settings.keybinds
@@ -65,9 +54,7 @@
                 settings;
 
             includeOptional = [
-              # use noctalia colors
               "/home/${user}/.config/umbriel/noctalia.toml"
-              # dynamic cursor
               "/home/${user}/.config/umbriel/cursor.toml"
             ];
           };
@@ -75,10 +62,8 @@
 
         xdg.portal = {
           config = {
-            # xdg-desktop-portal-gnome is not installed, gtk is the generic fallback
             common.default = [ "gtk" ];
-            # this replaces umbriel-portals.conf from the umbriel portal package, so keep its default,
-            # otherwise screencasting and screenshots never reach the umbriel portal
+            # replaces umbriel-portals.conf, without the umbriel default screencasts and screenshots break
             umbriel = {
               default = [
                 "umbriel"

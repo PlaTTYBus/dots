@@ -57,7 +57,7 @@
           "laptop"
         ];
 
-        vmware = mkHostInfo [
+        qemu = mkHostInfo [
           "gui"
           "wm"
           "vm"
@@ -68,7 +68,7 @@
       nixosConfigurations = {
         desktop = mkHost "desktop" hostInfo.desktop;
         tuxedo = mkHost "tuxedo" hostInfo.tuxedo;
-        vmware = mkHost "vmware" hostInfo.vmware;
+        qemu = mkHost "qemu" hostInfo.qemu;
       };
 
       devShells = forAllSystems (pkgs: {

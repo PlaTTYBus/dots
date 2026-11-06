@@ -12,10 +12,6 @@
 #   3. Clone the flake into /home/<username>/projects/dots
 # See README.md for a step by step description
 
-# bash <(curl -L https://raw.githubusercontent.com/plattybus/dots/main/install.sh)
-# nix eval '.#nixosConfigurations.vmware.config.services.desktopManager.plasma6.enable'
-
-
 set -o errexit
 set -o nounset
 set -o pipefail
@@ -89,7 +85,7 @@ nix_eval=(nix eval --raw --extra-experimental-features "nix-command flakes pipe-
 
 # the host decides about encryption and whether the media datasets get their own disk
 echo "Available hosts:"
-hosts=("desktop" "tuxedo" "vmware")
+hosts=("desktop" "tuxedo" "qemu")
 for i in "${!hosts[@]}"; do
     printf "%d) %s\n" $((i + 1)) "${hosts[i]}"
 done
@@ -234,7 +230,7 @@ sudo bash -euo pipefail -c "$tank_script"
 
 echo "Installing NixOS..."
 sudo nixos-install --no-root-password --option extra-experimental-features "pipe-operators" --flake "$flake#$host" --option tarball-ttl 0
-# sudo nixos-install --no-root-password --option extra-experimental-features "pipe-operators" --flake "/mnt/home/pviel/projects/dots#vmware" --option tarball-ttl 0
+# sudo nixos-install --no-root-password --option extra-experimental-features "pipe-operators" --flake "/mnt/home/pviel/projects/dots#qemu" --option tarball-ttl 0
 
 # sops-nix needs the age key on first boot to decrypt the user passwords, otherwise no user can log in
 echo ""

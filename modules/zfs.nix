@@ -102,6 +102,8 @@ in
       trim.enable = true;
     };
 
+    zramSwap.enable = true;
+
     # 16GB swap
     swapDevices = [ { device = "/dev/disk/by-label/SWAP"; } ];
 

@@ -13,12 +13,10 @@
         umbriel.settings = {
           keybinds =
             let
-              # ghostty needs -e to run a command, positional args are rejected
+              # ghostty rejects positional args
               termExec = cmd: "spawn:ghostty -e ${cmd}";
             in
-            # shared keybinds
             {
-              # opens a window in the ghostty background service, dbus activation starts it if needed
               "Mod+Return" = "spawn:ghostty +new-window";
               "Mod+Shift+Return" = "spawn:noctalia msg panel-toggle launcher";
 
@@ -32,27 +30,19 @@
 
               "Ctrl+Alt+Delete" = "spawn:noctalia msg panel-toggle session";
 
-              # toggle the bar
               "Mod+A" = "spawn:noctalia msg bar-toggle";
 
-              # restart noctalia
               "Mod+Shift+A" = "spawn:noctalia-reload";
 
-              # clipboard history
               "Mod+Ctrl+V" = "spawn:noctalia msg panel-toggle clipboard";
 
-              # notification history
               "Mod+N" = "spawn:noctalia msg panel-toggle control-center notifications";
-
-              # picture in picture mode
-              # "Mod+P"= "spawn:wm-pip";
 
               "Mod+I" = "spawn:noctalia msg panel-toggle wallpaper";
               "Mod+Shift+I" = "spawn:noctalia msg wallpaper-random";
               "Mod+Ctrl+I" = "spawn:noctalia msg wallpaper-previous";
               "Mod+B" = "spawn:noctalia msg panel-toggle noctalia/wallhaven:browser";
 
-              # audio buttons
               "XF86AudioLowerVolume" = {
                 action = "spawn:pamixer -d 5";
                 allow_when_locked = true;
@@ -72,7 +62,6 @@
                 repeat = false;
               };
 
-              # exit umbriel
               "Alt+F4" = "session-quit";
 
               "Mod+O" = "overview-toggle";
@@ -107,19 +96,13 @@
               "Mod+Shift+Up" = "column-move-to-output-up";
               "Mod+Shift+Right" = "column-move-to-output-right";
 
-              # toggle between prev and current windows
               "Mod+Shift+Tab" = "window-focus-last";
 
-              # cycle windows (classic alt tab in a workspace)
               "Alt+Tab" = "window-focus-next";
               "Alt+SHIFT+Tab" = "window-focus-last";
 
-              # Switches focus between the current and the previous workspace.
               "Mod+Tab" = "workspace-focus-last";
 
-              # The following binds move the focused window in and out of a column.
-              # If the window is alone, they will consume it into the nearby column to the side.
-              # If the window is already in a column, they will expel it out.
               "Mod+Comma" = "window-consume-or-expel-left";
               "Mod+Period" = "window-consume-or-expel-right";
 
@@ -135,21 +118,17 @@
               "Mod+C" = "window-center";
               "Mod+Ctrl+C" = "column-center";
 
-              # mouse bindings
               "Mod+WheelDown" = "window-focus-or-workspace-down";
               "Mod+WheelUp" = "window-focus-or-workspace-up";
             }
             //
-              # keybinds for workspace switch / move
               (
                 config.custom.hardware.monitors
                 |> lib.custom.mapWorkspaces (
                   { workspace, key, ... }:
                   [
                     {
-                      # Switch workspaces with mainMod + [0-9]
                       "Mod+${key}" = ''workspace-switch:"${toString workspace}"'';
-                      # Move active window to a workspace with mainMod + SHIFT + [0-9]
                       "Mod+Shift+${key}" = ''window-move-to-workspace:"${toString workspace}"'';
                     }
                   ]
