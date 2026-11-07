@@ -25,25 +25,25 @@
     "type": "github",
     "owner": "iynaix",
     "repo": "focal",
-    "rev": "f19fa252c3c49db62dc5577936bf62c2b57f61b6",
-    "narHash": "sha256-dabqfjfcMkSMcUhFPcYYUrWwUmsuwl/0hWYzSKQnJyE=",
-    "lastModified": 1791964242
+    "rev": "46abd50729e244e34e88c34c7a7004d15069e5ef",
+    "narHash": "sha256-cV2SFilEPqm04TCZPM6nu8rxUy1+zbL+soN0Ry8XPR0=",
+    "lastModified": 1793867470
   },
   "helium": {
     "type": "fixed",
-    "url": "https://github.com/imputnet/helium-linux/releases/download/0.20.1.1/helium-0.20.1.1-x86_64.AppImage",
-    "sha256": "sha256-1LeJsl0KmuEsdmceRE6Khe3Pgo4EGcZ40YxB+xrDAw4=",
+    "url": "https://github.com/imputnet/helium-linux/releases/download/0.21.1.1/helium-0.21.1.1-x86_64.AppImage",
+    "sha256": "sha256-pivECBuZcJsxFxZc96vnER07VEZxqxcjL0KbmwVEs/o=",
     "unpack": "file",
-    "tag": "0.20.1.1",
-    "version": "0.20.1.1"
+    "tag": "0.21.1.1",
+    "version": "0.21.1.1"
   },
   "hjem": {
     "type": "github",
     "owner": "feel-co",
     "repo": "hjem",
-    "rev": "d219ef55ab7311d884cf33e114561082fec95f34",
-    "narHash": "sha256-BohcZsIqBOd6YL6+jUkdM4GE+aQc72E6yrqVyt1z5X4=",
-    "lastModified": 1793026809
+    "rev": "8408642aa3035135fa6d70269dc93e0814e2a4f6",
+    "narHash": "sha256-hmlUXxCk6On7Hrop/TyS3//dgI2BLvaN4TEsOq1ma+Y=",
+    "lastModified": 1793333241
   },
   "hjem-rum": {
     "type": "github",
@@ -65,49 +65,49 @@
     "type": "github",
     "owner": "fzakaria",
     "repo": "nixpkgs-multiverse",
-    "rev": "5f6ab42a3824515c3e08a2bfd5577e3ea2951c7a",
-    "narHash": "sha256-S9qeCkrNZmNCnC5aU3uXh8P83f4nc4GLq9P/7sGTWXo=",
-    "lastModified": 1793161993
+    "rev": "d5e658e8ae8a3735512e1d11b537169f5911e7e1",
+    "narHash": "sha256-pAEqR9flODKfWAMC3H2JXXndnj2KVQKoLmbB3nF9DLM=",
+    "lastModified": 1794065979
   },
   "nix-index-database": {
     "type": "github",
     "owner": "nix-community",
     "repo": "nix-index-database",
-    "rev": "93696586f3463024cceb089353539be95a38ae2b",
-    "narHash": "sha256-v75hPw5NJ+mRRcwUzKi2OQtVSVv1hgq6ceAlPQB2kEE=",
-    "lastModified": 1792915725
+    "rev": "cee0f879d338cf08f814210fa6c2b280594ade0a",
+    "narHash": "sha256-PHtGxKYM99f8WhGR5YD7iiCiwemKa2wUD4yVI2oALFg=",
+    "lastModified": 1793543282
   },
   "nixos-hardware": {
     "type": "github",
     "owner": "NixOS",
     "repo": "nixos-hardware",
-    "rev": "8ba09466dc929acf5c8bb3e0cc40f472a7df3630",
-    "narHash": "sha256-mhud3nRH8RoP0h9MydfkJ8mISpj+QE/S//wOt9bNgC0=",
-    "lastModified": 1793054847
+    "rev": "1a8ff4f57ffe1f732beaa1db842247a381ea471d",
+    "narHash": "sha256-mJok3uMK0awq2MPKdSnvTxm3UD89KD3LclQzASgtY1s=",
+    "lastModified": 1794051415
   },
   "nixpkgs": {
     "type": "github",
     "owner": "NixOS",
     "repo": "nixpkgs",
-    "rev": "31ecbaca1bdefa45dffc409f0250bd8039ea0010",
-    "narHash": "sha256-dhoW6VgFWlaodSY5jrBn+CF2FLmaUvDVgM7+C7T2+NM=",
-    "lastModified": 1793110635
+    "rev": "f9a75f41be3a74eab55d3a7679d34ad6cc0da977",
+    "narHash": "sha256-Wojg9lIH/hDH91iDVH2/EPw8oDSpxjxhXONbU1yf4Zg=",
+    "lastModified": 1793876309
   },
   "nixpkgs-stable": {
     "type": "github",
     "owner": "NixOS",
     "repo": "nixpkgs",
-    "rev": "718f670e845328e9c2cecdd832835712b2cbd065",
-    "narHash": "sha256-Ee5BWo8sh3pGt70QUdRajnaginqFmWvrtdBc4gJzhks=",
-    "lastModified": 1793015021
+    "rev": "c56a87d8e41ce69bd2af57eb35dcc117a9dfca33",
+    "narHash": "sha256-/cpdPHaySDIyCgZI6EWngiM6jK3YLUNzv1b7lTzy6Bk=",
+    "lastModified": 1793865203
   },
   "noctalia-plugins": {
     "type": "github",
     "owner": "noctalia-dev",
     "repo": "official-plugins",
-    "rev": "d696743c5e6718ed5bf6b4a4ef10d2636002d80c",
-    "narHash": "sha256-bs8F2dSBHfq6hc4MQIvNAPnMfD1JU6jH08VBHLbOaGM=",
-    "lastModified": 1793026850
+    "rev": "68d491f4633ba61bc9ead01a3f0ecb499d4d9af4",
+    "narHash": "sha256-BM6/TC2jI1jf/NL5DGA3zrWrEaWFTwm7e3GHfT6NKLI=",
+    "lastModified": 1793996893
   },
   "nomachine": {
     "type": "fixed",
@@ -119,17 +119,17 @@
     "type": "github",
     "owner": "notashelf",
     "repo": "nvf",
-    "rev": "0ae8788d14334c9dd4bcd68d951bee661b00ad87",
-    "narHash": "sha256-hH7rK3yF7lMdrJYqF9cZbGheq8qNPgCYJDsfJovh7UY=",
-    "lastModified": 1793152231
+    "rev": "d36cd373c5636f9a97c228ffaaec857383d88cbc",
+    "narHash": "sha256-K1rzAlksFZWJ0JQfB9kIEFIp9N+pzZs9881Va5LmytY=",
+    "lastModified": 1794049908
   },
   "sops-nix": {
     "type": "github",
     "owner": "Mic92",
     "repo": "sops-nix",
-    "rev": "60182817ee048ac94b4c68ea76d5ef2e8aac730d",
-    "narHash": "sha256-Y/JIHTnMlOabDfyaSBubWGLDIVGihLEUuoMhFvQKaDo=",
-    "lastModified": 1793052255
+    "rev": "89a234ce2daf6e568a7d4b4fe250afdd23d84e20",
+    "narHash": "sha256-ZlE4BtMjWhfC6rFXLO9Qimn36Ene1INqCgKDDvazjhc=",
+    "lastModified": 1793995029
   },
   "systems": {
     "type": "github",
@@ -143,17 +143,17 @@
     "type": "github",
     "owner": "manic-systems",
     "repo": "tack",
-    "rev": "f7cce4f7e53c9482661b158824522fefef2d7920",
-    "narHash": "sha256-vOIIx/QU6xEjMZTMZM8GNNXS/p4Idvw8V09KT5zNwTI=",
-    "lastModified": 1792630541
+    "rev": "cd02f41558f0ccf8b1ae67fd96950ed0e6553129",
+    "narHash": "sha256-NkEQK3h5pn39Cj4zMf/EYoxUo0/SNnkR0yGaYvJ96DA=",
+    "lastModified": 1794039014
   },
   "umbriel": {
     "type": "git",
     "url": "https://github.com/noctalia-dev/umbriel.git",
     "ref": "HEAD",
-    "rev": "b456dc29610dff3e92a1cc42a489e3b6d86cbf01",
-    "narHash": "sha256-P5U/uZpscFkJ1ygEpbpn5vADaXoJ5ekgnwy76GJMPHI=",
-    "lastModified": 1793155970,
+    "rev": "ad46c7d14ca1f59f2874f3df74773f781fb39c80",
+    "narHash": "sha256-qeoOmVGV8bpEuq/dxHhMX0jrLSy4T6LrU7OKXt54/lA=",
+    "lastModified": 1794066163,
     "submodules": true
   },
   "vpn-switcher": {
@@ -176,8 +176,8 @@
     "type": "github",
     "owner": "BirdeeHub",
     "repo": "nix-wrapper-modules",
-    "rev": "41263424578dbbcdda3e80f9725449afcf9b3e70",
-    "narHash": "sha256-QmYgTfZxdZdO3CkMnYtK8Mxusp4LKNTHpdyjrza/3C8=",
-    "lastModified": 1793125706
+    "rev": "b22d6a0b083c527cb36e022f48c91e7a6bfcc1fc",
+    "narHash": "sha256-6fOs/JGxuHJxgf5mqz9VPvWIuZ/HEJ2gPYoxmdOV/bg=",
+    "lastModified": 1794070307
   }
 }
