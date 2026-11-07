@@ -23,7 +23,7 @@
                         in
                         /* sh */ ''
                             if ! umbriel workspaces --json | jq -e --arg o "${mon.name}" --arg w "${ws}" 'any(.[]; .output == $o and .name == $w and .active)' >/dev/null; then
-                              umbriel msg 'workspace-switch:"${ws}"/${mon.name}'
+                              umbriel msg workspace-switch --name "${ws}" --output "${mon.name}"
                             fi
                         ''
                     )

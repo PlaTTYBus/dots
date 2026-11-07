@@ -12,10 +12,15 @@
     let
       lock = pkgs.writeShellApplication {
         name = "lock";
-        runtimeInputs = [ pkgs.noctalia ];
+        runtimeInputs = [ config.programs.noctalia.package ];
         text = /* sh */ ''
           ${lib.optionalString config.custom.lock.enable "noctalia msg session lock-and-suspend"}
-          noctalia msg dpms-off
+          # noctalia msg dpms-off sometimes fails
+          if [ "$XDG_CURRENT_DESKTOP" == "umbriel" ]; then
+            umbriel msg dpms-off
+          else
+            noctalia msg dpms-off
+          fi
         '';
       };
     in
@@ -54,7 +59,7 @@
               # manual lock keybind
               keybinds = {
                 "Mod+Escape" = {
-                  action = "spawn:noctalia msg session lock";
+                  action = "spawn noctalia msg session lock";
                   repeat = false;
                 };
               };

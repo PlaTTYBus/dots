@@ -18,6 +18,8 @@
 
             patches = (o.patches or [ ]) ++ [
               ../../../patches/noctalia-screenshot-notification.patch
+              # the template hook edits ~/.config/umbriel/config.toml, which does not exist with the nix config
+              ../../../patches/noctalia-umbriel-template-no-apply.patch
             ];
 
             postPatch = (o.postPatch or "") + ''
@@ -87,20 +89,14 @@
       };
 
       config = {
-        nixpkgs.overlays = [
-          (_: _prev: {
-            noctalia = pkgs.custom.noctalia.wrap {
-              settings = lib.mkMerge [
-                config.custom.programs.noctalia.settings
-                { theme.templates.user = config.custom.programs.noctalia.user-templates; }
-              ];
-            };
-          })
-        ];
-
         programs.noctalia = {
           enable = true;
-          package = pkgs.noctalia; # overlay-ed above
+          package = pkgs.custom.noctalia.wrap {
+            settings = lib.mkMerge [
+              config.custom.programs.noctalia.settings
+              { theme.templates.user = config.custom.programs.noctalia.user-templates; }
+            ];
+          };
           systemd.enable = true;
         };
 

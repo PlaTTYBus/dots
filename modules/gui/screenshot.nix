@@ -33,7 +33,7 @@
       focal = inputs.focal.packages.${system}.default.overrideAttrs (o: {
         patches = (o.patches or [ ]) ++ [ ../../patches/focal.patch ];
         postPatch = (o.postPatch or "") + ''
-          substituteInPlace src/image.rs src/video.rs \
+          substituteInPlace src/screenshot.rs src/video.rs \
             --replace-fail "@notifySaved@" "${lib.getExe pkgs.custom.notify-saved}"
         '';
       });
@@ -67,11 +67,11 @@
 
       custom = {
         programs.umbriel.settings.keybinds = {
-          "Print" = "spawn:focal image --area selection --no-notify --no-save";
-          "Shift+Print" = "spawn:focal image --menu --no-notify --no-save --edit ${lib.getExe noctalia-annotate}";
-          "Ctrl+Print" = "spawn:focal image --area selection --ocr";
+          "Print" = "spawn focal image --area selection --no-notify --no-save";
+          "Shift+Print" = "spawn focal image --menu --no-notify --no-save --edit ${lib.getExe noctalia-annotate}";
+          "Ctrl+Print" = "spawn focal image --area selection --ocr";
           "Mod+Print" = {
-            action = "spawn:${lib.getExe screen-record}";
+            action = "spawn ${lib.getExe screen-record}";
             repeat = false;
           };
         };

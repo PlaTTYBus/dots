@@ -17,9 +17,6 @@
       config = {
         hjem = {
           clobberByDefault = true;
-          users.${user} = {
-            directory = "/home/${user}";
-          };
           extraModules = [
             inputs.hjem-rum.hjemModules.default
           ];

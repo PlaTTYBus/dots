@@ -20,12 +20,6 @@
   config =
     { lib, pkgs, ... }:
     {
-      nixpkgs.overlays = [
-        (_: _prev: {
-          moor = pkgs.custom.moor;
-        })
-      ];
-
       environment = {
         variables = {
           PAGER = "moor";
@@ -35,7 +29,7 @@
       };
 
       custom.programs.print-config = {
-        moor = /* sh */ ''moor --lang sh "${lib.getExe pkgs.moor}"'';
+        moor = /* sh */ ''moor --lang sh "${lib.getExe pkgs.custom.moor}"'';
       };
     };
 }

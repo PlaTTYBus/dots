@@ -26,8 +26,13 @@
                             nix-shell -p xhost gparted --command "xhost si:localuser:root && sudo gparted; xhost -si:localuser:root"
                         '';
                     })
+                    pkgs.wl-clipboard
                 ];
             };
+
+            # saves approx 700 mb
+            services.speechd.enable = false;
+
             users.users.${user}.packages = with pkgs; [
                 vesktop
                 obsidian

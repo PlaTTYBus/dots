@@ -32,7 +32,7 @@
         prog: cmd:
         pkgs.writeShellApplication {
           name = "${prog}-config";
-          runtimeInputs = [ pkgs.moor ];
+          runtimeInputs = [ pkgs.custom.moor ];
           text = cmd;
         }
       ) config.custom.programs.print-config);

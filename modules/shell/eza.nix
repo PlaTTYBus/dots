@@ -50,12 +50,6 @@
   config =
     { lib, pkgs, ... }:
     {
-      nixpkgs.overlays = [
-        (_: _prev: {
-          eza = pkgs.custom.eza;
-        })
-      ];
-
       environment = {
         shellAliases = {
           t = "tree";
@@ -63,7 +57,7 @@
       };
 
       custom.programs.print-config = {
-        eza = /* sh */ ''moor --lang sh "${lib.getExe pkgs.eza}"'';
+        eza = /* sh */ ''moor --lang sh "${lib.getExe pkgs.custom.eza}"'';
       };
     };
 }

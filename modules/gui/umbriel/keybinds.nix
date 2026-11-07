@@ -14,45 +14,45 @@
           keybinds =
             let
               # ghostty rejects positional args
-              termExec = cmd: "spawn:ghostty -e ${cmd}";
+              termExec = cmd: "spawn ghostty -e ${cmd}";
             in
             {
-              "Mod+Return" = "spawn:ghostty +new-window";
-              "Mod+Shift+Return" = "spawn:noctalia msg panel-toggle launcher";
+              "Mod+Return" = "spawn ghostty +new-window";
+              "Mod+Shift+Return" = "spawn noctalia msg panel-toggle launcher";
 
-              "Mod+E" = "spawn:nemo /home/${user}/Downloads";
+              "Mod+E" = "spawn nemo /home/${user}/Downloads";
               "Mod+Shift+E" = termExec "yazi /home/${user}/Downloads";
 
-              "Mod+W" = "spawn:helium --profile-directory=Default";
-              "Mod+Shift+W" = "spawn:helium --profile-directory=Default --incognito";
+              "Mod+W" = "spawn helium --profile-directory=Default";
+              "Mod+Shift+W" = "spawn helium --profile-directory=Default --incognito";
 
               "Mod+V" = termExec "nvim";
 
-              "Ctrl+Alt+Delete" = "spawn:noctalia msg panel-toggle session";
+              "Ctrl+Alt+Delete" = "spawn noctalia msg panel-toggle session";
 
-              "Mod+A" = "spawn:noctalia msg bar-toggle";
+              "Mod+A" = "spawn noctalia msg bar-toggle";
 
-              "Mod+Shift+A" = "spawn:noctalia-reload";
+              "Mod+Shift+A" = "spawn noctalia-reload";
 
-              "Mod+Ctrl+V" = "spawn:noctalia msg panel-toggle clipboard";
+              "Mod+Ctrl+V" = "spawn noctalia msg panel-toggle clipboard";
 
-              "Mod+N" = "spawn:noctalia msg panel-toggle control-center notifications";
+              "Mod+N" = "spawn noctalia msg panel-toggle control-center notifications";
 
-              "Mod+I" = "spawn:noctalia msg panel-toggle wallpaper";
-              "Mod+Shift+I" = "spawn:noctalia msg wallpaper-random";
-              "Mod+Ctrl+I" = "spawn:noctalia msg wallpaper-previous";
-              "Mod+B" = "spawn:noctalia msg panel-toggle noctalia/wallhaven:browser";
+              "Mod+I" = "spawn noctalia msg panel-toggle wallpaper";
+              "Mod+Shift+I" = "spawn noctalia msg wallpaper-random";
+              "Mod+Ctrl+I" = "spawn noctalia msg wallpaper-previous";
+              "Mod+B" = "spawn noctalia msg panel-toggle noctalia/wallhaven:browser";
 
               "XF86AudioLowerVolume" = {
-                action = "spawn:pamixer -d 5";
+                action = "spawn pamixer -d 5";
                 allow_when_locked = true;
               };
               "XF86AudioRaiseVolume" = {
-                action = "spawn:pamixer -i 5";
+                action = "spawn pamixer -i 5";
                 allow_when_locked = true;
               };
               "XF86AudioMute" = {
-                action = "spawn:pamixer -t";
+                action = "spawn pamixer -t";
                 allow_when_locked = true;
               };
             }
@@ -128,8 +128,8 @@
                   { workspace, key, ... }:
                   [
                     {
-                      "Mod+${key}" = ''workspace-switch:"${toString workspace}"'';
-                      "Mod+Shift+${key}" = ''window-move-to-workspace:"${toString workspace}"'';
+                      "Mod+${key}" = "workspace-switch --name ${toString workspace}";
+                      "Mod+Shift+${key}" = "window-move-to-workspace --name ${toString workspace}";
                     }
                   ]
                 )

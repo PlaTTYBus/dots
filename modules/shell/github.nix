@@ -6,26 +6,24 @@
   user,
   ...
 }:
+let
+  # wrap gh to set GITHUB_TOKEN
+  gh = inputs.wrappers.lib.wrapPackage {
+    inherit pkgs;
+    package = pkgs.gh;
+    env.GH_CONFIG_DIR = pkgs.writeTextDir "/config.yml" (lib.strings.toJSON { version = 1; });
+    runShell = [
+      /* sh */ ''
+        GITHUB_TOKEN=$(cat "${config.sops.secrets.github_token.path}")
+        export GITHUB_TOKEN
+      ''
+    ];
+  };
+in
 {
   # setup auth token for gh
   sops.secrets.github_token.owner = user;
 
-  nixpkgs.overlays = [
-    (_: prev: {
-      # wrap gh to set GITHUB_TOKEN
-      gh = inputs.wrappers.lib.wrapPackage {
-        pkgs = prev;
-        package = prev.gh;
-        env.GH_CONFIG_DIR = pkgs.writeTextDir "/config.yml" (lib.strings.toJSON { version = 1; });
-        runShell = [
-          /* sh */ ''
-            GITHUB_TOKEN=$(cat "${config.sops.secrets.github_token.path}")
-            export GITHUB_TOKEN
-          ''
-        ];
-      };
-    })
-  ];
 
   # needed for github authentication for private repos
   # adapted from home-manager:
@@ -47,12 +45,12 @@
         lib.nameValuePair host {
           helper = [
             ""
-            "${lib.getExe pkgs.gh} auth git-credential"
+            "${lib.getExe gh} auth git-credential"
           ];
         }
       )
       |> lib.listToAttrs;
   };
 
-  environment.systemPackages = [ pkgs.gh ]; # overlay-ed above
+  environment.systemPackages = [ gh ];
 }

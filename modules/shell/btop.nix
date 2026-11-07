@@ -33,8 +33,32 @@ in
       inputs,
       lib,
       pkgs,
+      user,
       ...
     }:
+    let
+      btop' = pkgs.custom.btop.wrap {
+        package = pkgs.btop.override {
+          rocmSupport = host == "desktop" || host == "tuxedo";
+        };
+        # the wrapped config lives in the store, so btop would not find the theme noctalia writes
+        flags = {
+          "--themes-dir" = "/home/${user}/.config/btop/themes";
+        };
+        settings = lib.mkForce (
+          baseBtopConf
+          // {
+            color_theme = "noctalia";
+            disks_filter = lib.concatStringsSep " " [
+              "/"
+              "/boot"
+              "/home"
+            ];
+          }
+          // config.custom.programs.btop.settings
+        );
+      };
+    in
     {
       options.custom = {
         programs.btop = {
@@ -43,34 +67,12 @@ in
       };
 
       config = {
-        nixpkgs.overlays = [
-          (_: prev: {
-            btop = pkgs.custom.btop.wrap {
-              package = prev.btop.override {
-                rocmSupport = host == "desktop" || host == "tuxedo";
-              };
-              settings = lib.mkForce (
-                baseBtopConf
-                // {
-                  color_theme = "noctalia";
-                  disks_filter = lib.concatStringsSep " " [
-                    "/"
-                    "/boot"
-                    "/home"
-                  ];
-                }
-                // config.custom.programs.btop.settings
-              );
-            };
-          })
-        ];
-
         environment.systemPackages = [
-          pkgs.btop # overlay-ed above
+          btop'
         ];
 
         custom.programs.print-config = {
-          btop = /* sh */ ''moor --lang ini "${pkgs.btop.configuration.constructFiles.generatedConfig.outPath}"'';
+          btop = /* sh */ ''moor --lang ini "${btop'.configuration.constructFiles.generatedConfig.outPath}"'';
         };
       };
     };

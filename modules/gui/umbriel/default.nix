@@ -16,6 +16,9 @@
       umbrielWrapper = import ./_wrapper.nix { inherit inputs; };
     in
     {
+      # ships the portal from the umbriel flake, so it matches the compositor version
+      imports = [ inputs.umbriel.nixosModules.default ];
+
       options.custom = {
         programs.umbriel = {
           settings = lib.mkOption {
@@ -63,14 +66,7 @@
         xdg.portal = {
           config = {
             common.default = [ "gtk" ];
-            # replaces umbriel-portals.conf, without the umbriel default screencasts and screenshots break
-            umbriel = {
-              default = [
-                "umbriel"
-                "gtk"
-              ];
-              "org.freedesktop.impl.portal.FileChooser" = "gtk";
-            };
+            umbriel."org.freedesktop.impl.portal.FileChooser" = "gtk";
           };
 
           extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
