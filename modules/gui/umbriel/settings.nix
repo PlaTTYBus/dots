@@ -35,7 +35,10 @@
                                             d.y
                                         ];
                                         inherit (d) vrr;
-                                        hdr = if d.hdr then "fullscreen" else "off";
+                                        # fullscreen turns hdr on for any fullscreen window, window rules only apply while
+                                        # focused, so focus leaving a fullscreen sdr window (the vm) triggers an hdr modeset
+                                        # auto only switches for fullscreen content with hdr metadata
+                                        hdr = if d.hdr then "auto" else "off";
                                         transform = "${lib.optionalString flipped "flipped-"}${
                                             if rotation == "0" then "normal" else rotation
                                         }";
