@@ -9,7 +9,7 @@
 # - Video: model Virtio, enable 3D acceleration, otherwise umbriel falls back to software rendering
 # - Display Spice: listen type None, enable OpenGL
 # - Channel: keep the qemu-ga channel (org.qemu.guest_agent.0) that virt-manager adds
-# - Filesystem (optional): driver virtiofs, mount it in the guest with fsType = "virtiofs"
+# - Filesystem: driver virtiofs, source path /shared, target path shared, see shared.nix
 {
   hosts = [ "qemu" ];
 
