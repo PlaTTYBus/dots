@@ -38,6 +38,7 @@
                 vesktop
                 obsidian
                 stable.zotero
+                stable.firefox
                 spotify
                 super-productivity
                 # nomachine deletes old releases from its server, which breaks the nixpkgs hash
